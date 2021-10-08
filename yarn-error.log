@@ -1,0 +1,85 @@
+Arguments: 
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js
+
+PATH: 
+  C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Python39\Scripts\;C:\Python39\;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\ProgramData\chocolatey\bin;C:\Program Files\Amazon\AWSCLIV2\;C:\Program Files\Git\cmd;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\PuTTY\;C:\Program Files\Git LFS;C:\Program Files\MySQL\MySQL Utilities 1.6\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\OpenJDK\openjdk-8u292-b10\bin;C:\Users\ksvmk\AppData\Local\Microsoft\WindowsApps;C:\Users\ksvmk\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\ksvmk\AppData\Local\GitHubDesktop\bin;C:\Program Files\Amazon\AWSCLI\bin\aws.exe;C:\Program Files\heroku\bin;C:\Users\ksvmk\AppData\Local\Yarn\bin;C:\Users\ksvmk\AppData\Roaming\npm;C:\Users\ksvmk\AppData\Local\Android\Sdk\platform-tools;
+
+Yarn version: 
+  1.22.5
+
+Node version: 
+  16.4.0
+
+Platform: 
+  win32 x64
+
+Trace: 
+  SyntaxError: C:\Users\ksvmk\Documents\mishreview\candidapp\package.json: Unexpected token } in JSON at position 1683
+      at JSON.parse (<anonymous>)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:1625:59
+      at Generator.next (<anonymous>)
+      at step (C:\Program Files (x86)\Yarn\lib\cli.js:310:30)
+      at C:\Program Files (x86)\Yarn\lib\cli.js:321:13
+
+npm manifest: 
+  {
+    "main": "node_modules/expo/AppEntry.js",
+    "scripts": {
+      "start": "expo start",
+      "android": "expo start --android",
+      "ios": "expo start --ios",
+      "web": "expo start --web",
+      "eject": "expo eject"
+    },
+    "dependencies": {
+      "@expo/vector-icons": "^12.0.0",
+      "@freakycoder/react-native-header-view": "^1.2.0",
+      "@react-native-async-storage/async-storage": "^1.15.9",
+      "@react-navigation/bottom-tabs": "^6.0.7",
+      "@react-navigation/drawer": "^6.1.6",
+      "@react-navigation/material-bottom-tabs": "^6.0.7",
+      "@react-navigation/material-top-tabs": "^6.0.4",
+      "@react-navigation/native": "^6.0.4",
+      "@react-navigation/native-stack": "^6.2.2",
+      "@react-navigation/stack": "^6.0.9",
+      "axios": "^0.22.0",
+      "expo": "~42.0.1",
+      "expo-constants": "~11.0.1",
+      "expo-firebase-recaptcha": "^1.4.2",
+      "expo-linking": "~2.3.1",
+      "expo-notifications": "~0.12.3",
+      "expo-status-bar": "~1.0.4",
+      "expo-web-browser": "~9.2.0",
+      "faker": "^5.5.3",
+      "firebase": "8.2.3",
+     
+      "moment": "^2.29.1",
+      "nanoid": "^3.1.29",
+      "react": "16.13.1",
+      "react-dom": "16.13.1",
+      "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
+      "react-native-gesture-handler": "^1.10.3",
+      "react-native-get-random-values": "^1.7.0",
+      "react-native-pager-view": "5.0.12",
+      "react-native-paper": "^4.9.2",
+      "react-native-popup-menu": "^0.15.11",
+      "react-native-reanimated": "^2.2.2",
+      "react-native-safe-area-context": "3.2.0",
+     
+      "react-native-swiper": "^1.6.0",
+      "react-native-tab-view": "^3.1.1",
+      "react-native-vector-icons": "^8.1.0",
+      "react-native-web": "~0.13.12",
+     
+    },
+    "devDependencies": {
+      "@babel/core": "^7.9.0"
+    },
+    "private": true
+  }
+
+yarn manifest: 
+  No manifest
+
+Lockfile: 
+  No lockfile
