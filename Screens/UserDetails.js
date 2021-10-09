@@ -187,7 +187,7 @@ const UserDetails = () => {
                 <ScrollView 
                 contentContainerStyle = {user.mainViewContentContainer}
                 style = {user.mainViewContainer}>
-                    {userInfo.length && userInfo[0].cover_image ?
+                    {/* {userInfo.length && userInfo[0].cover_image ?
                     <View style = {user.mainViewCoverContainer}>
                      <ImageLoader 
                         source = {userInfo[0].cover_image + "?" + new Date()} 
@@ -195,7 +195,8 @@ const UserDetails = () => {
                         fallback = {require("../assets/defaultCover.png")}
                         />
                     </View> : null
-                    }
+                    } */}
+                    <View style = {{flexDirection : 'row'}}>
                     <View style = {user.mainViewDisplayContainer}>
                         {  userInfo[0] && userInfo[0].profile_image && userInfo[0].profile_image != "None" && userInfo[0].profile_image != "" ?
                         <Image source = {{uri : userInfo[0].profile_image + "?" + new Date()}} style = {{width : 100, height : 100 , borderRadius : 50 , }}/> :
@@ -229,6 +230,7 @@ const UserDetails = () => {
                             <Text style={user.mainViewDetailsSummaryName}>Likes</Text>
                         </View>   
                         </View>   
+                    </View>
                     </View>
                     {userDetails.length &&  userDetails[0].show_referral_code && userDetails[0].existing_referral_code ?
                     <TouchableWithoutFeedback style = {user.mainViewReferralCodeView} onPress = {onReferralPress}>

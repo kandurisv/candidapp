@@ -93,7 +93,10 @@ const App = ()  => {
 
 return (
   <View style = {{flex : 1}}>
-  {isLoading ? <LoadingPage /> : 
+  {isLoading ? 
+  <View style = {{flex:1 , justifyContent : 'center', alignItems : 'center', marginTop : 50}}>
+    <LoadingPage /> 
+  </View> : 
   loadingTimeWait ?
   (
     <MenuProvider>
@@ -104,7 +107,7 @@ return (
       </AuthProvider>
   </MenuProvider>
   ) : (
-    <View style = {{flex:1 , justifyContent : 'center', alignItems : 'center'}}>
+    <View style = {{flex:1 , justifyContent : 'center', alignItems : 'center' , marginTop : 50}}>
         <LoadingPage />
     </View>
   )

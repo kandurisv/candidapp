@@ -5,9 +5,9 @@ const bucketname = "mish-fit-user-post-images"
 // import axios from 'axios'
 import React,{useEffect , createContext} from 'react'
 import { View , Text, ScrollView, Dimensions, TouchableOpacity, ToastAndroid , ActivityIndicator, StyleSheet, Animated, Easing} from 'react-native'
-// import {S3} from 'aws-sdk'
-// import {decode} from 'base64-arraybuffer'
-// import * as fs from 'expo-file-system';
+import {S3} from 'aws-sdk'
+import {decode} from 'base64-arraybuffer'
+import * as fs from 'expo-file-system';
 import LottieView from 'lottie-react-native';
 
 export const AuthContext = createContext()
@@ -21,12 +21,12 @@ export const UserConsumer = UserContext.Consumer
 export const s3URL = "https://"+ bucketname+ ".s3.amazonaws.com/"
 export const s3BucketName = bucketname
 
-// export const s3bucket = new S3({
-//   accessKeyId: "AKIAZRIYYTUVCCS2QIEJ",
-//   secretAccessKey: "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",
-//   Bucket: bucketname,
-//   signatureVersion: 'v4',
-// });
+export const s3bucket = new S3({
+  accessKeyId: "AKIAZRIYYTUVCCS2QIEJ",
+  secretAccessKey: "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",
+  Bucket: bucketname,
+  signatureVersion: 'v4',
+});
 
 // export const URL = "https://5k8l5ao5b5.execute-api.ap-south-1.amazonaws.com/prod2";
 // export const schema = 'https://www.getcandid.app/'
@@ -35,28 +35,28 @@ export const schema = 'exp://192.168.43.31:19000/'
      
 
 
-// export const uploadImageOnS3 = async (name,uri) => {
-//  //   console.log("Reached S3 function")
-//     let contentType = 'image/jpeg';
-//     let contentDeposition = 'inline;filename="' + name + '"';
-//     const base641 = await fs.readAsStringAsync(uri, {encoding : fs.EncodingType.Base64});
-//     const arrayBuffer = decode(base641)
-//     s3bucket.createBucket(() => {
-//   //      console.log("Reached create bucket S3 function")
-//         const params = {
-//             Bucket: s3BucketName,
-//             Key: name,
-//             Body: arrayBuffer,
-//             ContentDisposition: contentDeposition,
-//             ContentType: contentType,
-//     };
-//     s3bucket.upload(params, (err, data) => {
-//         if (err) {
-//          //   console.log('error in callback');
-//         }
-//         });
-//     });
-// };
+export const uploadImageOnS3 = async (name,uri) => {
+ //   console.log("Reached S3 function")
+    let contentType = 'image/jpeg';
+    let contentDeposition = 'inline;filename="' + name + '"';
+    const base641 = await fs.readAsStringAsync(uri, {encoding : fs.EncodingType.Base64});
+    const arrayBuffer = decode(base641)
+    s3bucket.createBucket(() => {
+  //      console.log("Reached create bucket S3 function")
+        const params = {
+            Bucket: s3BucketName,
+            Key: name,
+            Body: arrayBuffer,
+            ContentDisposition: contentDeposition,
+            ContentType: contentType,
+    };
+    s3bucket.upload(params, (err, data) => {
+        if (err) {
+         //   console.log('error in callback');
+        }
+        });
+    });
+};
 
 export const width = Dimensions.get('screen').width
 export const height = Dimensions.get('screen').height

@@ -105,7 +105,7 @@ export const home = StyleSheet.create({
         fontFamily : 'Roboto',
     },
     userDetailsElementContainer : {
-        flexDirection : 'row',
+        flexDirection : 'column',
         borderRadius : 5,
         borderWidth : 1,
         borderColor : 'black',
@@ -115,7 +115,6 @@ export const home = StyleSheet.create({
     userDetailsElementText : {
         margin : 10,
         flex : 1, 
-        textAlign : 'center',
         fontFamily : 'Roboto',
     },
     userDetailsElementTextInput : {
@@ -124,8 +123,9 @@ export const home = StyleSheet.create({
         borderBottomWidth : 1,
         borderColor : '#AAA',
         textAlign : 'center',
-        width :width*0.5,
+        width :width,
         fontFamily : 'Roboto',
+        paddingRight : 5,
     },
     userDetailsGenderView : {
 
@@ -315,9 +315,8 @@ export const user = StyleSheet.create({
     },
     //main view display picture
     mainViewDisplayContainer : {
-        position : 'absolute',
-        top : 140,
-        left : 20,
+        marginTop : 10,
+        marginLeft : 10,
         marginBottom : 10,
     },
     mainViewDisplayImage : {
@@ -326,15 +325,17 @@ export const user = StyleSheet.create({
     },
     //main View Details
     mainViewDetailsContainer : {
-        flexDirection : 'row',
-        marginTop : 40,
-        justifyContent : 'center'},
+        flex : 1,
+        flexDirection : 'column',
+        marginTop : 10,
+        justifyContent : 'center',
+        alignItems :'center'
+    },
     mainViewDetailsUserNameContainer : {
         alignItems : 'center',
+        justifyContent : 'center',
         padding : 5,
         marginLeft : 0,
-        marginTop : 10,
-        width : 120,
         
     },
     mainViewDetailsUserNameText : {
@@ -480,9 +481,8 @@ export const user = StyleSheet.create({
 
     // Edit User Details
     editUserDetailsDisplayContainer : {
-        position : 'absolute',
-        top : 150,
-        left : 20,
+       marginTop : 10,
+       alignSelf : 'center'
     },
     editUserDetailsDisplayImageButton : {
         width : 100,
@@ -495,8 +495,30 @@ export const user = StyleSheet.create({
         width : 100,
         height : 100,
     },
+    
     editUserDetailsInputContainer : {
-        marginTop : 50 ,
+        marginTop : 20 ,
+        marginLeft : 20,
+        marginRight : 20,
+        flex : 1,
+    },
+    editUserProfileHeader: {
+       fontWeight : 'bold' ,
+       fontSize : 16,
+    },
+    editUserDetailsElementContainer : {
+        marginTop : 20,
+
+    },
+    editUserDetailsElementText : {
+        color : '#888'
+    },
+    editUserDetailsElementTextInput : {
+        borderBottomWidth : 1 ,
+        borderBottomColor : "#CCC",
+        fontSize : 15,
+        marginTop : 5,
+        marginLeft : 0,
 
     },
     datepicker : {
@@ -511,6 +533,28 @@ export const user = StyleSheet.create({
         alignItems : 'center', 
         margin : 5, 
         marginLeft : 10
+    },
+    editUserDetailsSubmitContainer: {
+        marginTop : 20, 
+        alignItems : 'flex-end'
+    },
+    editUserDetailsSubmitButton : {
+        backgroundColor : 'white',
+        width : width*0.5,
+        marginTop : 20,
+        alignItems : 'center',
+        padding : 5,
+        borderRadius : 5,
+        marginRight : 10,
+        borderWidth : 1,
+        borderColor : theme,
+        
+    },
+    editUserDetailsSubmitText : {
+        color : theme,
+        textAlign : 'center',
+        fontSize : 16,
+        fontFamily : 'Roboto',
     },
     
 

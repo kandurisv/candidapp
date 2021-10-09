@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ReviewComponenet from './reviewComponent';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
-import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from '../Screens/exports'
+import { AuthContext , theme , background, ErrorPage, URL, borderColor, width, height} from '../Screens/exports'
 
 import axios from 'axios';
 

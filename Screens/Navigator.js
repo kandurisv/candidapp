@@ -180,7 +180,7 @@ const TabNavigator = () => {
         <Tab.Screen name="Discuss" component={DiscussionScreen} options = {tab2Options} />
         <Tab.Screen name="Post" component={AddPost} options = {tab3Options} />
         <Tab.Screen name="Explore" component={Feed} options = {tab4Options} />
-        <Tab.Screen name="Activity" component={ActivityNotification} options = {tab5Options} />
+        <Tab.Screen name="Activity" component={ProductList} options = {tab5Options} />
       </Tab.Navigator>
     )
   }

@@ -459,14 +459,18 @@ return (
                           source={require('../assets/LogoTransparentSolidColorLine.png')}
               />          
             </View>
+            
+            <View style = {{flexDirection : 'row', marginRight : 15}}></View>   
+
            
+
 
         </View>
 
 
 
 
-        {(infoLoading || homeLoading) ? <LoadingPage /> : 
+        {(infoLoading || homeLoading ) ? <LoadingPage /> : 
         !userDetailsAvailable ? (
             <View style = {home.userDetailsContainer}>
                 <View style = {home.userDetailsUserNameContainer}>
