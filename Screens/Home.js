@@ -24,6 +24,7 @@ import Swiper from 'react-native-swiper'
 //Amplitude.initializeAsync("af380775c59ead50c4c02536befef5e5");
 
 import * as firebase from "firebase";
+import NewUserOnboarding from './NewUserOnboarding';
 try {
     firebase.initializeApp(firebaseConfig);
   } catch (err) {
@@ -245,7 +246,7 @@ const Home = () => {
                 const getData =  () => {
                     axios.get(URL + "/user/info", {params:{user_id : user.phoneNumber.slice(1,13) }} , {timeout:5000})
                     .then(res => res.data).then(async (responseData) => {
-                        console.log("HOME USER RESPONSE",responseData)
+             //           console.log("HOME USER RESPONSE",responseData)
                         setUserResponse(responseData[0])
                         setInfoLoading(false)
                         if(responseData.length && responseData[0].username) {
@@ -253,6 +254,9 @@ const Home = () => {
                             await AsyncStorage.setItem('isLogin', "TRUE")
                             await AsyncStorage.setItem('phoneNumber', user.phoneNumber)
                             await AsyncStorage.setItem('userName', responseData[0].username )
+                        }
+                        else {
+                          navigation.navigate("NewUserOnboarding",{user_id : user.phoneNumber.slice(1,13)})
                         }
                         setRefresh(false)
                     })
@@ -444,7 +448,7 @@ return (
               style = {{ justifyContent : 'center' , alignItems : 'center' , marginLeft : 10 , marginRight : 5 , borderColor : theme, borderWidth : 1, borderRadius : 30}}>
                 { userResponse  && userResponse.profile_image && userResponse.profile_image != "None" && userResponse.profile_image != "" ?
                         <Image source = {{uri : userResponse.profile_image + "?" + new Date()}} style = {{width : 30, height : 30 , borderRadius : 30 , }}/> :
-                        userResponse.length && userResponse.username ? 
+                        userResponse && userResponse.username ? 
                                 <Avatar.Image 
                                 source={{
                                 uri: 'https://ui-avatars.com/api/?rounded=true&name='+ userResponse.username.replace(' ','+') + '&size=512&background=D7354A&color=fff&bold=true'
@@ -471,56 +475,64 @@ return (
 
 
         {(infoLoading || homeLoading ) ? <LoadingPage /> : 
-        !userDetailsAvailable ? (
-            <View style = {home.userDetailsContainer}>
-                <View style = {home.userDetailsUserNameContainer}>
-                    <Text style = {home.userDetailsUserNameText}>Select your username</Text>
-                    <TextInput 
-                        placeholder = "username"
-                        style = {home.userDetailsUserNameTextInput}
-                        onChangeText = {(text)=>setUserName(text)}
-                        value = {userName}
-                        autoFocus
-                    />
-                </View>
-                <View style = {home.userDetailsUserNameContainer}>
-                    <Text style = {home.userDetailsUserNameText}>Instagram UserName (Optional)</Text>
-                    <TextInput 
-                        placeholder = "Instagram username"
-                        style = {[home.userDetailsUserNameTextInput,{fontSize : 14}]}
-                        onChangeText = {(text)=>setInstagram(text )}
-                        value = {instagram}
-                    />
-                </View>
-                <View style = {home.userDetailsUserNameContainer}>
-                    <Text style = {home.userDetailsUserNameText}>Coupon Code (Optional)</Text>
-                    <View style = {{flexDirection : 'row', justifyContent : 'center', alignItems:'center', padding:0}}>
-                    <TextInput 
-                        placeholder = "ABCD"
-                        style = {[home.userDetailsUserNameTextInput,{fontSize : 16 , flex : 1, marginTop : 0}]}
-                        onChangeText = {(text)=>setCoupon(text)}
-                        value = {coupon}
-                    />
-                    <TouchableOpacity 
-                      onPress = {onCouponValid}
-                      style = {[home.userDetailsUserNameCouponValid,{elevation : 1,}]}>
-                      <Ionicons name = "checkmark-sharp" size = {couponValid ? 30 : 26} color = {couponValid ? "green" : "black"} />
-                    </TouchableOpacity>
-                    </View>
-                </View>
+        !userDetailsAvailable ? 
+         (
+           <View>
+             <Text>Error</Text>
+            </View>
+         )
+        // (
+        //     <View style = {home.userDetailsContainer}>
+        //         <View style = {home.userDetailsUserNameContainer}>
+        //             <Text style = {home.userDetailsUserNameText}>Select your username</Text>
+        //             <TextInput 
+        //                 placeholder = "username"
+        //                 style = {home.userDetailsUserNameTextInput}
+        //                 onChangeText = {(text)=>setUserName(text)}
+        //                 value = {userName}
+        //                 autoFocus
+        //             />
+        //         </View>
+        //         <View style = {home.userDetailsUserNameContainer}>
+        //             <Text style = {home.userDetailsUserNameText}>Instagram UserName (Optional)</Text>
+        //             <TextInput 
+        //                 placeholder = "Instagram username"
+        //                 style = {[home.userDetailsUserNameTextInput,{fontSize : 14}]}
+        //                 onChangeText = {(text)=>setInstagram(text )}
+        //                 value = {instagram}
+        //             />
+        //         </View>
+        //         <View style = {home.userDetailsUserNameContainer}>
+        //             <Text style = {home.userDetailsUserNameText}>Coupon Code (Optional)</Text>
+        //             <View style = {{flexDirection : 'row', justifyContent : 'center', alignItems:'center', padding:0}}>
+        //             <TextInput 
+        //                 placeholder = "ABCD"
+        //                 style = {[home.userDetailsUserNameTextInput,{fontSize : 16 , flex : 1, marginTop : 0}]}
+        //                 onChangeText = {(text)=>setCoupon(text)}
+        //                 value = {coupon}
+        //             />
+        //             <TouchableOpacity 
+        //               onPress = {onCouponValid}
+        //               style = {[home.userDetailsUserNameCouponValid,{elevation : 1,}]}>
+        //               <Ionicons name = "checkmark-sharp" size = {couponValid ? 30 : 26} color = {couponValid ? "green" : "black"} />
+        //             </TouchableOpacity>
+        //             </View>
+        //         </View>
                  
-                <View style = {home.userDetailsSubmitContainer}>
-                    <TouchableOpacity
-                        disabled = {userName === "" ? true : false} 
-                        onPress = {submitUserDetails}
-                        style = {userName === "" ? home.userDetailsDisabledSubmitButton : home.userDetailsSubmitButton}>
-                        <Text style = {home.userDetailsSubmitText}>Submit</Text>
-                    </TouchableOpacity>
-                </View>
+        //         <View style = {home.userDetailsSubmitContainer}>
+        //             <TouchableOpacity
+        //                 disabled = {userName === "" ? true : false} 
+        //                 onPress = {submitUserDetails}
+        //                 style = {userName === "" ? home.userDetailsDisabledSubmitButton : home.userDetailsSubmitButton}>
+        //                 <Text style = {home.userDetailsSubmitText}>Submit</Text>
+        //             </TouchableOpacity>
+        //         </View>
 
                 
-            </View>
-        ) : (
+        //     </View>
+        // )
+        
+        : (
         <ScrollView 
             contentContainerStyle = {home.mainViewScrollableContentContainer}
             style = {home.mainViewScrollableContainer}

@@ -105,7 +105,7 @@ const Feed = (props) => {
     })
   .then(res => res.data)
   .then(function (responseData) {
-      console.log(responseData)
+    //  console.log(responseData)
       if(responseData.length > 0) {
         setPageNumber(pageNumber + 1)
         setItemsForFeed([...itemsForFeed,...responseData])
@@ -113,17 +113,17 @@ const Feed = (props) => {
       else {
         setReachedEnd(true)
       }
-      console.log("*****************LOAD MORE***************")
-      console.log(pageNumber)
+     // console.log("*****************LOAD MORE***************")
+     // console.log(pageNumber)
       setLoadingMore(false)})
   .catch(function (error) {
-    console.log(error);
+  //  console.log(error);
     setError(true);      
   });
   }
 
   const loadMoreItems = () => {
-    console.log(pageNumber)
+  //  console.log(pageNumber)
 
     if(!reachedEnd)
     {
@@ -146,7 +146,7 @@ const Feed = (props) => {
   .then(res => res.data)
   .then(function (responseData) {
     // Amplitude.logEventWithPropertiesAsync('FEED_PAGE_VISIT',{"fromPage" : varValue , "onKey" : requestId })
-       console.log("response",responseData)
+    //   console.log("response",responseData)
     // console.log(responseData.length)
     setItemsForFeed(responseData)
     setRefreshing(false);

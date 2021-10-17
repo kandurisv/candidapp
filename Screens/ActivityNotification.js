@@ -22,11 +22,11 @@ const ActivityNotification = () => {
 
     React.useEffect(() => {
         setLoading(true)
-        console.log("Reached here")
+    //    console.log("Reached here")
         const getNotifications = () => {
             axios.get(URL + "/notifications/allnotifications",{params:{user_id : userId.slice(1,13) }} , {timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-                    console.log("ALL NOTIFICATIONS",responseData)
+    //                console.log("ALL NOTIFICATIONS",responseData)
                     setLoading(false)
                     setNotificationsData(responseData)
                 })
@@ -48,7 +48,7 @@ const ActivityNotification = () => {
                 data: body
               })
             .then(res => {
-                console.log("I am happy")
+        //        console.log("I am happy")
             }).catch((e) => console.log(e))
            
             }

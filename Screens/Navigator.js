@@ -31,8 +31,24 @@ import Input from "./input";
 import ProductList from "./productList"
 import ProductDetails from "./productDetails"
 import Tabs from "../components/tabs";
+import Onboarding from "./SkinOnboarding"
+import BottomSheetScreen from "./bottomSheetScreen";
+import NewPostModal from "./NewPostModal";
+import NavBottomSheet from "../components/NavBottomSheet";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { Portal, PortalHost } from '@gorhom/portal';
+import BottomSheet from '@gorhom/bottom-sheet';
+import NewUserOnboarding from "./NewUserOnboarding";
+import QuestionsOnboarding from "./SkinOnboarding";
+import FinalOnboarding from "./SkinOnboardingTags";
+import SecondaryOnboarding from "./SkinOnboardingSecondary";
+import SkinOnboarding from "./SkinOnboarding";
+import SkinOnboardingSecondary from "./SkinOnboardingSecondary";
+import SkinOnboardingTags from "./SkinOnboardingTags";
 
-
+import HairOnboarding from "./HairOnboarding";
+import HairOnboardingSecondary from "./HairOnboardingSecondary";
+import HairOnboardingTags from "./HairOnboardingTags";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -47,8 +63,9 @@ const TAB_SLIDER_COLOR = "#FFFFFF"
 const TAB_ACTIVE_COLOR = theme
 const TAB_INACTIVE_COLOR = "#888888"
 
-const BottomMenu = ({ iconName, isCurrent , label}) => {
-  return (
+const BottomMenu = ({ iconName, isCurrent , label, value, index}) => {
+  
+    return(
     <View
       style={{
         height: "100%",
@@ -59,9 +76,19 @@ const BottomMenu = ({ iconName, isCurrent , label}) => {
         padding : 0,
       }}
     >
+     
       <View 
-        style = {{position : 'absolute' , top : 5, right : 10 , borderRadius : 20 , width : 15 , height : 15 , backgroundColor : 'red'}}>
-          <Text style = {{fontSize : 8, textAlign : 'center' , color : 'white'}}>10</Text>
+        style = {{
+          position : 'absolute' , top : 5, right : 10 , 
+          borderRadius : 20 , 
+          width : 15 , height : 15 , 
+          justifyContent : 'center', alignItems: 'center',
+          backgroundColor : isCurrent ? 'white' : value ? theme : 'white'}}>
+          <Text style = {{
+            fontSize : 8, textAlign : 'center' , 
+            justifyContent: 'center' , alignSelf: 'center', color : 'white'}}>
+              {value}
+          </Text>
       </View>
       <FontAwesome5
         name={iconName}
@@ -71,11 +98,16 @@ const BottomMenu = ({ iconName, isCurrent , label}) => {
       <Text 
       style = {{ color:  isCurrent ? TAB_ACTIVE_COLOR : TAB_INACTIVE_COLOR }}
       >{label}</Text>
-    </View>
-  );
-};
+    </View>)
+  }
+
+
+
 
 const TabBar = ({state,descriptors,navigation}) => {
+    //Badge Value
+    const [badgeValue,setBadgeValue] = React.useState([0,10,20,30,40])
+
     const [translateValue] = useState(new Animated.Value(0));
     const tabWidth = totalWidth / state.routes.length;
     return (
@@ -107,6 +139,10 @@ const TabBar = ({state,descriptors,navigation}) => {
             });
             if (!isFocused && !event.defaultPrevented) {
               navigation.navigate(route.name);
+              //Badge Value Change
+              let newArr = [...badgeValue]; // copying the old datas array
+              newArr[index] = 0; // replace e.target.value with whatever you want to change it to
+              setBadgeValue(newArr);
             }
             Animated.spring(translateValue, {
                 toValue: index * tabWidth,
@@ -120,7 +156,12 @@ const TabBar = ({state,descriptors,navigation}) => {
               target: route.key,
             });
           };
+
+       
+
+
         return (
+         
             <TouchableOpacity
               accessibilityRole="button"
               accessibilityStates={isFocused ? ["selected"] : []}
@@ -130,14 +171,17 @@ const TabBar = ({state,descriptors,navigation}) => {
               onLongPress={onLongPress}
               style={{ flex: 1 }}
               key={index}
-            >
-              <BottomMenu
+            >   
+                <BottomMenu
                 iconName={label.toString()}
                 isCurrent={isFocused}
                 label = {options.title}
+                value = {badgeValue[index]}
+                index = {index}
               />
             </TouchableOpacity>
-          );
+           
+          )
         })}
       </View>
     </View>
@@ -163,8 +207,14 @@ const AuthStack = ({navigation}) => {
   );
 }
 
+const AddScreenComponent = () => {
+  return null;
+}
 
 const TabNavigator = () => {
+
+
+
     return (
       <Tab.Navigator 
         screenOptions = {{
@@ -178,7 +228,16 @@ const TabNavigator = () => {
       >
         <Tab.Screen name="Home" component={Home} options = {tab1Options} />
         <Tab.Screen name="Discuss" component={DiscussionScreen} options = {tab2Options} />
-        <Tab.Screen name="Post" component={AddPost} options = {tab3Options} />
+        <Tab.Screen 
+          name="Add" 
+          component={AddScreenComponent}
+          options={{
+            tabBarLabel: 'calendar-plus',
+            title : "Post",
+            tabBarColor: 'purple',
+          }}
+         
+          />
         <Tab.Screen name="Explore" component={Feed} options = {tab4Options} />
         <Tab.Screen name="Activity" component={ProductList} options = {tab5Options} />
       </Tab.Navigator>
@@ -211,8 +270,14 @@ const TabNavigator = () => {
         <Stack.Screen name="DiscussionPost" component ={DiscussionPost} />
         <Stack.Screen name="Input" component ={Input} />
         <Stack.Screen name="ProductDetails" component ={ProductDetails} />
-        
-        
+        <Stack.Screen name="NewPostModal" component ={NewPostModal} />
+        <Stack.Screen name="NewUserOnboarding" component ={NewUserOnboarding} />
+        <Stack.Screen name="SkinOnboarding" component ={SkinOnboarding} />
+        <Stack.Screen name="SkinOnboardingSecondary" component ={SkinOnboardingSecondary} />
+        <Stack.Screen name="SkinOnboardingTags" component ={SkinOnboardingTags} />
+        <Stack.Screen name="HairOnboarding" component ={HairOnboarding} />
+        <Stack.Screen name="HairOnboardingSecondary" component ={HairOnboardingSecondary} />
+        <Stack.Screen name="HairOnboardingTags" component ={HairOnboardingTags} />
       </Stack.Navigator>
     );
   }
@@ -259,6 +324,21 @@ export default Navigator;
       borderRadius: 10,
       width: 50
   },
+  
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: 'grey',
+     },
+     contentContainer: {
+        flex: 1,
+        paddingLeft: 50
+     },
+     bottomSheetTitle: {
+         fontSize: 24,
+         fontWeight: '500'
+     }
+
   });
   
 

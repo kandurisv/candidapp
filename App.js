@@ -7,6 +7,8 @@ import {URL , AuthProvider , firebaseConfig, LoadingPage} from './Screens/export
 import Navigator from './Screens/Navigator'
 import { MenuProvider } from 'react-native-popup-menu';
 import * as Linking from 'expo-linking';
+import { PortalProvider } from '@gorhom/portal'
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 try {
   firebase.initializeApp(firebaseConfig);
@@ -99,13 +101,17 @@ return (
   </View> : 
   loadingTimeWait ?
   (
-    <MenuProvider>
-      <AuthProvider value = {[userId , userDetails, isLoggedIn]}>
-        <NavigationContainer linking={linking} fallback={<LoadingPage />}>
-            <Navigator />
-        </NavigationContainer>
-      </AuthProvider>
-  </MenuProvider>
+    <SafeAreaProvider>
+      <PortalProvider>
+        <MenuProvider>
+          <AuthProvider value = {[userId , userDetails, isLoggedIn]}>
+            <NavigationContainer linking={linking} fallback={<LoadingPage />}>
+              <Navigator />
+            </NavigationContainer>
+          </AuthProvider>
+        </MenuProvider>
+      </PortalProvider>
+    </SafeAreaProvider>
   ) : (
     <View style = {{flex:1 , justifyContent : 'center', alignItems : 'center' , marginTop : 50}}>
         <LoadingPage />

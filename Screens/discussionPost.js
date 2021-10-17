@@ -41,13 +41,13 @@ React.useEffect(() => {
       }, {timeout : 5000})
     .then(res => res.data)
     .then(function (responseData) {
-       console.log( "headerData : ", responseData)
+   //    console.log( "headerData : ", responseData)
         setHeaderData(responseData)
         setLoading(false)
         // setFirstLoaded(true)
     })
     .catch(function (error) {
-       console.log("error: ",error);
+   //    console.log("error: ",error);
       setError(true);      
     })
   }
@@ -67,13 +67,13 @@ React.useEffect(() => {
       }, {timeout : 5000})
     .then(res => res.data)
     .then(function (responseData) {
-       console.log( "headerData : ", responseData)
+    //   console.log( "headerData : ", responseData)
         setAnswerData(responseData)
         setLoading(false)
         // setFirstLoaded(true)
     })
     .catch(function (error) {
-       console.log("error: ",error);
+   //    console.log("error: ",error);
       setError(true);      
     })
   }

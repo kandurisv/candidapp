@@ -23,12 +23,12 @@ export default function DrawerContent(props) {
         const fetchData = async () => {
             axios.get(URL + "/drawer/brandstories" , {timeout : 5000})
             .then(res => res.data).then(function(responseData) {
-                console.log("Brand Stories", responseData)
+            //    console.log("Brand Stories", responseData)
                 setBrandStories(responseData)
                 setFirstLoad(true)
             })
             .catch(function(error) {
-                console.log(error)
+            //    console.log(error)
                 setError(true)
             });
         }
@@ -39,17 +39,17 @@ export default function DrawerContent(props) {
         const fetchUser = async () => {
             axios.get(URL + "/user/info" , {params : {user_id : userId.slice(1,13)}}, {timeout : 5000})
             .then(res => res.data).then(function(responseData) {
-                console.log("user id ", userId)
-                console.log("Name" , userName)
+            //    console.log("user id ", userId)
+            //    console.log("Name" , userName)
               
                 setUserName(responseData[0].username)
                 setUserImage(responseData[0].profile_image)
                 
                
-                console.log("responseData",responseData)
+            //    console.log("responseData",responseData)
             })
             .catch(function(error) {
-                console.log(error)
+            //    console.log(error)
                 setUserName("Error getting name")
             });
         }

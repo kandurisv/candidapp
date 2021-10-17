@@ -289,15 +289,19 @@ export const home = StyleSheet.create({
 
 export const user = StyleSheet.create({
     container : {
-        flex : 1
+        flex : 1,
+        backgroundColor: background
     },
     //mainView
     mainViewContentContainer : {
-        marginBottom : 5
+        marginBottom : 5,
+        backgroundColor : background,
+       
     },
     mainViewContainer : {
-        flex: 1,
-        marginBottom : 5
+        
+        marginBottom : 5,
+        backgroundColor: background
     },
     //main view cover picture
     mainViewCoverContainer : {

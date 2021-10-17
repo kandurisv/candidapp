@@ -13,45 +13,34 @@ import {Picker} from '@react-native-picker/picker';
 import { useNavigation , useRoute } from '@react-navigation/native';
 import { AuthContext, background, borderColor, theme, uploadImageOnS3, URL , s3URL } from './exports';
 import { editUserDetails, home, user ,header } from './styles';
-import { AntDesign, Entypo, EvilIcons } from '@expo/vector-icons';
+import { AntDesign, Entypo, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 
 
-const EditUserProfile = () => {
+const NewUserOnboarding = () => {
 
   const navigation = useNavigation()
   const route = useRoute()
 
-  const radioGroupList = [{
-    label: 'Male',
-    value: 'Male'
-  }, {
-    label: 'Female',
-    value: 'Female'
-  }, {
-    label: 'Others',
-    value: 'Others'
-  }];
 
   const [selectedItem, setSelectedItem ] = useState(0);
 
 
     const [date, setDate] = useState(new Date())
-    const [image, setImage] = useState(route?.params?.userInfo.profile_image ? route.params.userInfo.profile_image : "");
-    const [coverImage,setCoverImage] = useState(route?.params?.userInfo.cover_image ? route.params.userInfo.cover_image : "")
-    const [gender, setGender] = useState(route?.params?.userInfo.gender ? route.params.userInfo.gender : "")
-    const [instagram, setInstagram] = useState(route?.params?.userInfo.instagram_username ? route.params.userInfo.instagram_username : "")
+    const [image, setImage] = useState("");
+    const [gender, setGender] = useState("")
+    const [instagram, setInstagram] = useState("")
     const [imageUrl,setImageUrl] = useState("")
     const [profileImageChange,setProfileImageChange] = useState(false)
     const [coverImageChange,setCoverImageChange] = useState(false)
     const [age,setAge] = useState("")
-    const [userName,setUserName] = React.useState(route.params.userInfo.username)
+    const [userName,setUserName] = React.useState()
     const [userId, userDetails, isLoggedIn] = React.useContext(AuthContext)
-    const [user_id,setuser_id] = React.useState(route.params.userInfo.user_id)
+    const [user_id,setuser_id] = React.useState(route.params.user_id)
     const [userInfo,setUserInfo] = React.useState([])
     const [submitted,setSubmitted] = React.useState(false)
 
-    const [userDob,setUserDob] = useState(route?.params?.userInfo.dob ? route.params.userInfo.dob :"")
+    const [userDob,setUserDob] = useState("")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     
     const showDatePicker = () => {setDatePickerVisibility(true);};
@@ -81,41 +70,42 @@ const EditUserProfile = () => {
 
 
 
-    const submit = () => {
+    const next = () => {
       setSubmitted(true)
-      var expoToken = AsyncStorage.getItem('expoToken')
-      var deviceToken = AsyncStorage.getItem('deviceToken')
-      const body = {
-        "var" : "edit user",
-        "user_id": user_id,
-        "username": userName,
-        "gender": gender,
-        "dob": userDob,
-        "email": "",
-        "phone_number": userId,
-        "location": "",
-        "expo_token" : expoToken,
-        "device_token" : deviceToken,
-        "instagram_username" : instagram
+      navigation.navigate("SkinOnboarding")
+//       var expoToken = AsyncStorage.getItem('expoToken')
+//       var deviceToken = AsyncStorage.getItem('deviceToken')
+//       const body = {
+//         "var" : "edit user",
+//         "user_id": user_id,
+//         "username": userName,
+//         "gender": gender,
+//         "dob": userDob,
+//         "email": "",
+//         "phone_number": userId,
+//         "location": "",
+//         "expo_token" : expoToken,
+//         "device_token" : deviceToken,
+//         "instagram_username" : instagram
         
-      }
+//       }
 
-    //  console.log(body)
+//     //  console.log(body)
 
-    axios({
-      method: 'post',
-      url: URL + '/user/info',
-      data: body
-    })
-  .then(res => {
-      ToastAndroid.show("Thanks for updating your details", ToastAndroid.SHORT)
-      setTimeout(function(){
-        navigation.navigate("UserDetails")
-      }, 500);
-    }).catch((e) => {
-      ToastAndroid.show("Error updating details. Please try later")
-      setSubmitted(false)
-    })
+//     axios({
+//       method: 'post',
+//       url: URL + '/user/info',
+//       data: body
+//     })
+//   .then(res => {
+//       ToastAndroid.show("Thanks for updating your details", ToastAndroid.SHORT)
+//       setTimeout(function(){
+//         navigation.navigate("UserDetails")
+//       }, 500);
+//     }).catch((e) => {
+//       ToastAndroid.show("Error updating details. Please try later")
+//       setSubmitted(false)
+//     })
 
     }
 
@@ -223,24 +213,18 @@ const EditUserProfile = () => {
           style = {user.mainViewContainer} >
           <View style = {header.headerView}>
             <ModernHeader 
-              title="Details"
+              title="My Info"
               titleStyle = {header.headerText}
               backgroundColor= {background}
-              leftIconColor = {borderColor}
-              leftIconOnPress={() => navigation.goBack()}
-              rightIconComponent = {<AntDesign name = "logout" size = {20} color = "black"/>}
-              rightIconOnPress = {()=> {
-                  Amplitude.logEventAsync('SIGNOUT_FROM_USER')
-                  navigation.navigate("Signout")
-                  }
-              }
+              leftDisable
+              rightDisable
             />
           </View>
 
           <View style = {{}}>
             <View style = {user.editUserDetailsDisplayContainer}>
               <TouchableOpacity style = {user.editUserDetailsDisplayImageButton} onPress = {pickProfilePhoto}>
-                <ImageBackground source = {image && image != "None"? {uri : image + "?" + new Date()} : {uri : 'https://ui-avatars.com/api/?rounded=true&name='+ userName.replace(' ','+') + '&size=512'}} 
+                <ImageBackground source = {image && image != "None"? {uri : image + "?" + new Date()} : {uri : 'https://ui-avatars.com/api/?rounded=true&name&size=512'}} 
                         style = {user.editUserDetailsDisplayImage} >
                 </ImageBackground>
                 <View style = {{position: 'absolute' , backgroundColor : 'white' , padding : 3, borderRadius : 20 , bottom : 0 , right : 0 , margin : 15 , zIndex : 150}}>
@@ -249,6 +233,10 @@ const EditUserProfile = () => {
               </TouchableOpacity>
             </View>
             
+            {!image ? 
+            <View style = {{justifyContent : 'center' , alignItems : 'center'}}><Text>Pick a profile image</Text></View>
+            : null
+            }
             
 
             <View style = {user.editUserDetailsInputContainer}>
@@ -310,12 +298,14 @@ const EditUserProfile = () => {
                   </Picker>
                 </View> 
               </View>
-              <View style = {user.editUserDetailsSubmitContainer}>
+              <View style = {{ marginTop : 30, width : Dimensions.get('screen').width*0.9,
+                 alignItems:'flex-end'}}>
                 <TouchableOpacity 
-                        onPress = {submit}
+                        onPress = {next}
                         disabled = {submitted}
-                        style = {user.editUserDetailsSubmitButton}>
-                  <Text style = {user.editUserDetailsSubmitText}>Submit</Text>
+                        style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
+                        flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
+                    <MaterialIcons name = "navigate-next" size= {40} color = "white" />
                 </TouchableOpacity>
               </View>                  
             </View>
@@ -324,4 +314,4 @@ const EditUserProfile = () => {
     )
 }
 
-export default EditUserProfile
+export default NewUserOnboarding
