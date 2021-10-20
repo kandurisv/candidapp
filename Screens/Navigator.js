@@ -49,6 +49,19 @@ import SkinOnboardingTags from "./SkinOnboardingTags";
 import HairOnboarding from "./HairOnboarding";
 import HairOnboardingSecondary from "./HairOnboardingSecondary";
 import HairOnboardingTags from "./HairOnboardingTags";
+import RecommendationOnboarding from "./RecommendationOnboarding";
+import WriteReview from "./WriteReview";
+import AddJourney from "./AddJourney";
+import GiveRecommendation from "./GiveRecommendation"
+import StartDiscussion from "./StartDiscussion"
+import AskQuestion from "./AskQuestion";
+import MyDiscussions from "./MyDiscussions";
+import MyQNA from "./MyQNA";
+import MyJourneys from "./MyJourneys";
+import MyReviews from "./MyReviews";
+import MyRecommendations from "./MyRecommendations";
+
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -222,6 +235,7 @@ const TabNavigator = () => {
         "tabBarStyle": [{"display": "flex"},null],
         "headerShown" : false,
       }}
+        sceneContainerStyle={{backgroundColor: 'transparent'}}
         options = {{unmountOnBlur : true , tabBarHideOnKeyboard : false }}
         tabBar={props => <TabBar {...props} />}
         initialRouteName = "Home"  
@@ -230,16 +244,17 @@ const TabNavigator = () => {
         <Tab.Screen name="Discuss" component={DiscussionScreen} options = {tab2Options} />
         <Tab.Screen 
           name="Add" 
-          component={AddScreenComponent}
+          component={AddPost}
           options={{
             tabBarLabel: 'calendar-plus',
             title : "Post",
             tabBarColor: 'purple',
+            tabBarActiveBackgroundColor : 'transparent'
           }}
          
           />
         <Tab.Screen name="Explore" component={Feed} options = {tab4Options} />
-        <Tab.Screen name="Activity" component={ProductList} options = {tab5Options} />
+        <Tab.Screen name="Activity" component={ActivityNotification} options = {tab5Options} />
       </Tab.Navigator>
     )
   }
@@ -278,6 +293,17 @@ const TabNavigator = () => {
         <Stack.Screen name="HairOnboarding" component ={HairOnboarding} />
         <Stack.Screen name="HairOnboardingSecondary" component ={HairOnboardingSecondary} />
         <Stack.Screen name="HairOnboardingTags" component ={HairOnboardingTags} />
+        <Stack.Screen name="RecommendationOnboarding" component ={RecommendationOnboarding} />
+        <Stack.Screen name="StartDiscussion" component ={StartDiscussion} />
+        <Stack.Screen name="WriteReview" component ={WriteReview} />
+        <Stack.Screen name="AddJourney" component ={AddJourney} />
+        <Stack.Screen name="GiveRecommendation" component ={GiveRecommendation} />
+        <Stack.Screen name="AskQuestion" component ={AskQuestion} />
+        <Stack.Screen name="MyDiscussions" component ={MyDiscussions} />
+        <Stack.Screen name="MyQNA" component ={MyQNA} />
+        <Stack.Screen name="MyJourneys" component ={MyJourneys} />
+        <Stack.Screen name="MyReviews" component ={MyReviews} />
+        <Stack.Screen name="MyRecommendations" component ={MyRecommendations} />
       </Stack.Navigator>
     );
   }

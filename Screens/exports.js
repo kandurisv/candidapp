@@ -132,6 +132,12 @@ export const LoadingPage = ({duration}) => {
 
 export const background = "#fafbf5"
 export const theme = "#D7354A"
+export const lightTheme ="#E86D7D"
+export const neutralTheme = "#E8DE61"
+export const contrastTheme ="#328D9C"
+export const contrastLightTheme ="#56D4E8"
+
+
 export const borderColor = "#222222"
 
 export const firebaseConfig = {

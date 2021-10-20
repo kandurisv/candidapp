@@ -15,12 +15,12 @@ import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderCo
 import axios from 'axios';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
-import ProductDeatilsHeader from '../components/productDetailsHeader';
+import ProductDetailsHeader from '../components/productDetailsHeader';
 
 // const Tab = createMaterialTopTabNavigator();
 
 
-const ProductDeatils = () =>{
+const ProductDetails = () =>{
 
     const navigation  = useNavigation();
     const route = useRoute();
@@ -29,7 +29,7 @@ const ProductDeatils = () =>{
     // console.log(productData)
     return(
         <>
-            <ProductDeatilsHeader
+            <ProductDetailsHeader
                 id = {productData.product_id}
                 product_name = {productData.product_name}
                 image = {productData.image}
@@ -93,4 +93,4 @@ const styles = StyleSheet.create({
 
 })
 
-export default ProductDeatils;
+export default ProductDetails;

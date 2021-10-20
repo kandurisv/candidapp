@@ -2,163 +2,95 @@ import React from 'react';
 import { StyleSheet, Text, View , Image , FlatList , TouchableOpacity } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
 
 const Comments = (props) => {
 
     const navigation = useNavigation();
 
-    // const [parentId , setPartentId] = React.useState()
-    // const [questionId , SetQuestionId] = React.useState()
-
-    // setPartentId(props.id)
-    // SetQuestionId(props.question_id)
-
     const questionData = {
         "parent_id": props.item_id,
         "question_id": props.question_id
-        
+    }
+
+    const onClickReply = (questionData) => {
+        props.replyFunction(questionData)
     }
 
     return(
-        <View style ={styles.container} >
-            <View style ={styles.answer}>
-                <View style ={styles.header}>
+        <View style ={{backgroundColor : 'rgba(255,255,255,0.6)', margin : 10,marginTop : 0,borderRadius : 20, padding : 10, borderWidth : 1 , borderColor : '#EEE'}} >
+            <View style ={{borderBottomWidth : 1 , borderBottomColor : "#EEE" , paddingBottom : 10,marginBottom : 10 }}>
+                <View style ={{flexDirection : 'row'}}>
                     <View style = {styles.profile}>
                         <Image
                         source={require('../img/52.png')}
-                        style = {{height: 30 , width:  30 , borderRadius: 15} }
+                        style = {{height: 30 , width:  30 , borderRadius: 50} }
                         />
                     </View>
-                    <View style = {styles.postinfo}>
-                        <View>
-                            <Text>
-                                {props.username}
-                            </Text>
-                        </View>
-                        <View>
-                            <Text>
-                                6h ago
-                            </Text>
-                        </View>
+                    <View style = {{flex : 1,flexDirection : 'row', marginLeft : 10, marginRight : 10, justifyContent : 'space-between', alignItems:'center'}}>
+                        <Text style = {{fontWeight : 'bold'}}>{props.username}</Text>
+                        <Text style = {{fontStyle : 'italic'}}> 6h ago</Text>
                     </View>
-                    
                 </View>
-                <View style = {styles.content}>
-                    <Text>
-                    {props.content}
+                
+                <View style ={{marginTop : 10,}}>
+                    <Text style = {{fontWeight : '100'}}>
+                        {props.content}
                     </Text>
                 </View>
-                <View style = {styles.like}>
-                    <Text >
-                        like
-                    </Text>
-                    <Text>
-                        2
-                    </Text>
+                <View style = {{flexDirection : 'row-reverse' , justifyContent : 'space-between', marginTop : 10,marginHorizontal : 10}}>
+                    <TouchableOpacity
+                      //  onPress = {() => navigation.navigate('Input' , {level: 3 , parent_id: questionData.parent_id , question_id:  questionData.question_id } )}
+                      onPress = {()=>onClickReply(questionData)}  
+                      style = {{flexDirection : 'row', paddingHorizontal : 5, justifyContent : 'center', alignItems: 'center'}}
+                    >
+                        <View style = {{justifyContent : 'center', alignItems: 'center', marginLeft : 5}}>
+                            <MaterialCommunityIcons name = "comment-processing-outline" color = "#888" size = {18} />
+                        </View>
+                        <View style = {{justifyContent : 'center', alignItems: 'center', marginLeft : 5}}>
+                            <Text style = {{color : "#888"}}>Reply</Text>
+                        </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity style ={{flexDirection : 'row', marginRight : 20, justifyContent : 'flex-end'}}>
+                        <AntDesign name = "like2" color = {"#888"} size = {15} />
+                        <Text>{props.number_of_upvote}</Text>
+                    </TouchableOpacity>
                 </View>
+                
             </View>
 
             <FlatList 
             keyExtractor = {(item) => item.item_id}
             data = {props.reply}
             renderItem = {({item})=> (
-                <View style ={styles.reply}>
-                <View style ={styles.header}>
-                    <View style = {styles.profile}>
-                        <Image
-                        source={require('../img/52.png')}
-                        style = {{height: 30 , width:  30 , borderRadius: 15 } }
-                        />
-                    </View>
-                    <View style = {styles.postinfo}>
-                        <View>
-                            <Text>
-                                {item.username}
-                            </Text>
+                <View style ={{borderBottomColor : '#EEE', borderBottomWidth : 1, marginLeft : 10, }}>
+                    <View style ={{flexDirection : 'row', paddingLeft : 10,}}>
+                        <View style = {styles.profile}>
+                            <Image
+                            source={require('../img/52.png')}
+                            style = {{height: 30 , width:  30 , borderRadius: 50} }
+                            />
                         </View>
-                        <View>
-                            <Text>
-                                6h ago
-                            </Text>
+                        <View style = {{flex : 1,flexDirection : 'row', marginLeft : 10, marginRight : 10, justifyContent : 'space-between', alignItems:'center'}}>
+                            <Text style = {{fontWeight : 'bold'}}>{props.username}</Text>
+                            <Text style = {{fontStyle : 'italic'}}> 6h ago</Text>
                         </View>
                     </View>
-                    
+                    <View style ={{marginTop : 10, paddingLeft : 10,borderLeftColor : '#EEE', borderLeftWidth : 1, borderStyle : 'dotted' }}>
+                        <Text style = {{fontWeight : '100'}}>
+                            {props.content}
+                        </Text>
+                    </View>
+                    <TouchableOpacity style ={{flexDirection : 'row', paddingLeft : 10,marginRight : 20, justifyContent : 'flex-start', marginTop : 10,}}>
+                            <AntDesign name = "like2" color = {"#888"} size = {15} />
+                            <Text>{props.number_of_upvote}</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style = {styles.content}>
-                    <Text>
-                        {item.content}
-                    </Text>
-                </View>
-                <View style = {styles.like}>
-                    <Text >
-                        like
-                    </Text>
-                    <Text>
-                        {item.number_of_upvote}
-                    </Text>
-                </View>
-            </View>
             ) }
             />
 
-            
-            <View style ={styles.engagement}>
-                <View style ={styles.buttonCount}>
-                    <View>
-                        <Text>
-                            +
-                        </Text>
-                    </View>
-                    <View>
-                        <Text>
-                            {props.number_of_upvote}
-                        </Text>
-                    </View>
-                </View>
-
-                <View style ={styles.buttonCount}>
-                    <View>
-                        <Text>
-                            -
-                        </Text>
-                    </View>
-                    <View>
-                        <Text>
-                            {props.number_of_downvote}
-                        </Text>
-                    </View>
-                </View>
-
-                <View style ={styles.buttonCount}>
-                    <TouchableOpacity
-                        onPress = {() => navigation.navigate('Input' , {level: 3 , parent_id: questionData.parent_id , question_id:  questionData.question_id } )}
-                    
-                    >
-                        <Text>
-                            reply
-                        </Text>
-                    </TouchableOpacity>
-                    {/* <View>
-                        <Text>
-                            4
-                        </Text>
-                    </View> */}
-                </View>
-
-                <View style ={styles.buttonCount}> 
-                    <View>
-                        <Text>
-                            share
-                        </Text>
-                    </View>
-                    <View>
-                        <Text>
-                            4
-                        </Text>
-                    </View>
-                </View>
-            </View>
+          
             
         </View>
     )

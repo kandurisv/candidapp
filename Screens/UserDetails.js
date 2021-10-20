@@ -5,10 +5,10 @@ import {Avatar,Text} from 'react-native-paper';
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import { FlatGrid } from 'react-native-super-grid';
 import axios from 'axios';
-import {URL, LoadingPage, ErrorPage,  background,  borderColor, AuthContext, theme} from './exports'
+import {URL, LoadingPage, ErrorPage,  background,  borderColor, AuthContext, theme, lightTheme, contrastLightTheme, neutralTheme, contrastTheme} from './exports'
 import {ImageLoader} from 'react-native-image-fallback';
 import { useIsFocused, useNavigation , useRoute } from '@react-navigation/native';
-import { AntDesign, Entypo } from '@expo/vector-icons';
+import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('screen')
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Menu,MenuOptions,MenuOption,MenuTrigger,} from 'react-native-popup-menu';
@@ -177,7 +177,7 @@ const UserDetails = () => {
                     <ModernHeader 
                         title="User"
                         titleStyle = {header1.headerText}
-                        backgroundColor= {'white'}
+                        backgroundColor= {background}
                         height = {50}
                         leftIconColor = {borderColor}
                         leftIconOnPress={() => navigation.navigate("Home")}
@@ -240,52 +240,53 @@ const UserDetails = () => {
                     <TouchableOpacity style = {user.mainViewEditProfileButton} onPress={onEdit}>
                         <Text style = {user.mainViewEditProfileText}> Edit Profile </Text>
                     </TouchableOpacity>
-                    <View style = {user.myPostedReviewsContainer}>
-                        <Text style={user.myPostedReviewsHeading}>My Reviews</Text>
-                        {myPostsEmpty ? 
-                        <View style = {user.myPostedReviewsEmptyContainer}>
-                            <Text style = {user.myPostedReviewsEmptyText}>Please start posting reviews</Text>
-                        </View> :
-                        <FlatGrid itemDimension={width*0.45} data={userPosts} renderItem={({item}, index) => {
-                            var review = ""
-                            item.content.map((reviewItem,index) => {
-                                if(reviewItem.length > 0) {
-                                    review = review + "Day " + item.day_product_used_content[index] + ": " + reviewItem + "\n"
-                                }
-                            })
-                            var context = ""
-                            item.category_ques.map((contextItem,index)=>{
-                                context = context + item.category_ques[index] + " : " + item.category_ans[index] + "\n" + "\n"
-                            })
-
-                            return(
-                                <View>
-                                    <TouchableOpacity 
-                                        style = {user.myPostedReviewsItemContainer}
-                                        onPress = {()=>onMyReviewClick(item,review,context)}    
-                                    >
-                                        <ImageBackground source = {{uri : item.image_list[0] ? item.image_list[0] : "No Image" }} style = {user.myPostedReviewsItemImageBackground} blurRadius = {2}></ImageBackground>
-                                            <View style = {user.myPostedReviewsItemTextView}>
-                                                <Text style={user.myPostedReviewsItemText}>{item.product_name}</Text>
-                                            </View>
-                                    </TouchableOpacity>
-                                    <Menu style = {user.updateReviewView}>
-                                        <MenuTrigger>
-                                            <Entypo name = "dots-three-vertical" size = {20} color = 'white'/>
-                                        </MenuTrigger>
-                                        <MenuOptions style = {{}}>
-                                            <MenuOption onSelect = {()=>editPost(item)}>
-                                                <Text>Edit</Text>
-                                            </MenuOption>
-                                            <MenuOption onSelect = {()=>deletePost(item.review_sum_id)}>
-                                                <Text>Delete</Text>
-                                            </MenuOption>
-                                        </MenuOptions>
-                                    </Menu>
-                                </View>
-                                )}
-                            }
-                        />}
+                    <View style = {user.listContainer}>
+                        
+                        <TouchableOpacity style = {user.listOptionButton}
+                        onPress = {()=>navigation.navigate("MyDiscussions")}
+                        >
+                            <MaterialIcons name = 'groups' color = {theme} size = {20} />
+                            <View style = {user.listOptionButtonTextView}>
+                                <Text style = {user.listOptionButtonText}>My Discussion</Text>
+                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {user.listOptionButton}
+                        onPress = {()=>navigation.navigate("MyQNA")}
+                        >
+                            <MaterialIcons name = 'loupe' color = {contrastLightTheme} size = {20} />
+                            <View style = {user.listOptionButtonTextView}>
+                                <Text style = {user.listOptionButtonText}>My Questions and Answers</Text>
+                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {user.listOptionButton}
+                        onPress = {()=>navigation.navigate("MyReviews")}
+                        >
+                            <MaterialIcons name = 'notes' color = {neutralTheme} size = {20} />
+                            <View style = {user.listOptionButtonTextView}>
+                                <Text style = {user.listOptionButtonText}>My Reviews</Text>
+                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {user.listOptionButton}
+                        onPress = {()=>navigation.navigate("MyJourneys")}
+                        >
+                            <MaterialIcons name = 'directions-transit' color = {lightTheme} size = {20} />
+                            <View style = {user.listOptionButtonTextView}>
+                                <Text style = {user.listOptionButtonText}>My Journeys</Text>
+                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                            </View>
+                        </TouchableOpacity>
+                        <TouchableOpacity style = {user.listOptionButton}
+                        onPress = {()=>navigation.navigate("MyRecommendations")}
+                        >
+                            <MaterialIcons name = 'favorite' color = {contrastTheme} size = {20} />
+                            <View style = {user.listOptionButtonTextView}>
+                                <Text style = {user.listOptionButtonText}>My Recommendations</Text>
+                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                            </View>
+                        </TouchableOpacity>
                     </View>
                 </ScrollView>
             </View>

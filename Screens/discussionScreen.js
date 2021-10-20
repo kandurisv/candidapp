@@ -54,13 +54,13 @@ React.useEffect(() => {
 
 
     return(
-      <View>
+      <View style = {{backgroundColor: background}}>
         <View style = {header1.headerView}>
             <ModernHeader
                 title="Discuss"
                 height = {50}
                 titleStyle = {header1.headerText}
-                backgroundColor= {'white'}
+                backgroundColor= {background}
                 leftIconColor = {borderColor}
                 leftIconOnPress={() => navigation.goBack()}
                 leftIconComponent = {
@@ -72,12 +72,10 @@ React.useEffect(() => {
                 }
                 rightDisable
                 />
-            </View>
-      
-        <ScrollView>
-            
-            
+            </View>      
             <FlatList 
+            style = {{}}
+            contentContainerStyle = {{}}
             keyExtractor = {(item) => item.item_id}
             data = {discussionFeedData}
             renderItem = {({item,index})=> (
@@ -97,7 +95,7 @@ React.useEffect(() => {
             />
 
             
-        </ScrollView>
+      
         </View>
     );  
 }

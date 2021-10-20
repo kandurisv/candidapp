@@ -441,7 +441,7 @@ const submitUserDetails = () => {
 return (
     <View style = {home.container}>  
         <StatusBar style="dark" />
-        <View style = {[header1.headerView,{backgroundColor : 'white'}]}>
+        <View style = {[header1.headerView,{backgroundColor : 'white', marginTop:30,}]}>
            
             <TouchableOpacity 
               onPress = {()=>navigation.openDrawer()}
@@ -477,8 +477,8 @@ return (
         {(infoLoading || homeLoading ) ? <LoadingPage /> : 
         !userDetailsAvailable ? 
          (
-           <View>
-             <Text>Error</Text>
+           <View style = {{flex: 1 , justifyContent : 'center', alignItems : 'center'}}>
+             <Text>Network Error. Please restart the app</Text>
             </View>
          )
         // (
@@ -587,6 +587,10 @@ return (
                 
               </View>
               : null }
+
+        
+
+        
 
         {response.length > 0 && response.map((item,index) =>{
             return (

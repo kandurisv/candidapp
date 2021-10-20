@@ -4,7 +4,7 @@ import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
 
-const ProductDeatilsHeader = (props) => {
+const ProductDetailsHeader = (props) => {
     return(
         <View style = {styles.container} >
             <View style = {styles.imageContainer} >
@@ -46,4 +46,4 @@ const styles = StyleSheet.create({
     }
 })
 
-export default ProductDeatilsHeader;
+export default ProductDetailsHeader;

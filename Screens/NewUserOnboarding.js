@@ -34,7 +34,7 @@ const NewUserOnboarding = () => {
     const [profileImageChange,setProfileImageChange] = useState(false)
     const [coverImageChange,setCoverImageChange] = useState(false)
     const [age,setAge] = useState("")
-    const [userName,setUserName] = React.useState()
+    const [userName,setUserName] = React.useState("")
     const [userId, userDetails, isLoggedIn] = React.useContext(AuthContext)
     const [user_id,setuser_id] = React.useState(route.params.user_id)
     const [userInfo,setUserInfo] = React.useState([])
@@ -72,7 +72,7 @@ const NewUserOnboarding = () => {
 
     const next = () => {
       setSubmitted(true)
-      navigation.navigate("SkinOnboarding")
+      navigation.navigate("SkinOnboarding",{userName : userName, gender : gender, instagram : instagram, userDob : userDob})
 //       var expoToken = AsyncStorage.getItem('expoToken')
 //       var deviceToken = AsyncStorage.getItem('deviceToken')
 //       const body = {
@@ -242,7 +242,7 @@ const NewUserOnboarding = () => {
             <View style = {user.editUserDetailsInputContainer}>
               <Text style = {user.editUserProfileHeader}>Profile Info</Text>
               <View style = {user.editUserDetailsElementContainer}>
-                <Text style = {user.editUserDetailsElementText}>UserName</Text>
+                <Text style = {user.editUserDetailsElementText}>UserName *</Text>
                 <TextInput 
                         placeholder = {userName ? userName : "username"}
                         style = {user.editUserDetailsElementTextInput}
@@ -302,8 +302,9 @@ const NewUserOnboarding = () => {
                  alignItems:'flex-end'}}>
                 <TouchableOpacity 
                         onPress = {next}
-                        disabled = {submitted}
-                        style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
+                        disabled = {userName == ""}
+                        style = {{
+                          backgroundColor : userName == "" ? "#888" :theme , width : 40, height : 40 , borderRadius : 50, 
                         flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
                     <MaterialIcons name = "navigate-next" size= {40} color = "white" />
                 </TouchableOpacity>

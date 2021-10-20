@@ -5,7 +5,6 @@ import { StyleSheet, Text, View , Image, TouchableOpacity } from 'react-native';
 
 const ProductDescription = (props) => {
 
-    
 // console.log("data: " ,props.product_name)
     const navigation = useNavigation();
     

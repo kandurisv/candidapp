@@ -52,16 +52,28 @@ const PrimaryQuestions = (props) => {
     )
 }
 
-
-
 const SkinOnboarding = () => {
 
-    const [indicator , setIndicator] = React.useState(0)
-    const [ questionData , setQuestionData] = React.useState([])
-    const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
-    const [ tagsQuestion , setTagsQuestion] = React.useState([])
-    const [ skinTags, setSkinTags] = React.useState([])
-    const [submitted,setSubmitted] = React.useState(false)
+    const [ indicator , setIndicator ] = React.useState(0)
+    const [ questionData , setQuestionData ] = React.useState([])
+    const [ skinHairTypeQuestion , setSkinHairTypeQuestion ] = React.useState([])
+    const [ tagsQuestion , setTagsQuestion ] = React.useState([])
+    const [ skinTags, setSkinTags ] = React.useState([])
+    const [ submitted,setSubmitted ] = React.useState(false)
+    const route = useRoute()
+    const [ body,setBody ] = React.useState({
+        userName : route?.params?.userName,
+        instagram : route?.params?.instagram,
+        userDob : route?.params?.userDob,
+        gender : route?.params?.gender,
+        skinPrimaryQuestionAnswers : [],
+        skinSecondaryQuestionAnswers : [],
+        skinTags : [],
+        hairPrimaryQuestionAnswers : [],
+        hairSecondaryQuestionAnswers : [],
+        hairTags : [],
+    })
+
 
     const navigation  = useNavigation();
 
@@ -70,7 +82,7 @@ const SkinOnboarding = () => {
         // console.log("item_id" , 1)
         setIndicator(0)
         console.log("indicator", indicator)
-
+        console.log("Body" , body)
       
         const getSkinHairTypeQuestions = () => {
             axios.get(URL + "/onboarding", {
@@ -100,6 +112,7 @@ const SkinOnboarding = () => {
          let answerArray = [...answer]
          answerArray[id] = ans
          setAnswer(answerArray)
+         setBody({...body, skinPrimaryQuestionAnswers : answerArray })
         //  console.log(answer)
     }
 
@@ -113,13 +126,13 @@ const SkinOnboarding = () => {
 
 const detailedQuestionnaire = () => {
     setIndicator(1)
-    navigation.navigate("SkinOnboardingSecondary")
+    navigation.navigate("SkinOnboardingSecondary" , {body: body})
 }
 
 const goToTags = () => {
-    setIndicator(2)
+    console.log(body)
     setSubmitted(true)
-    navigation.navigate("SkinOnboardingTags")
+    navigation.navigate("SkinOnboardingTags", {body : body})
 }
 
 
@@ -140,16 +153,16 @@ const goToTags = () => {
             {skinHairTypeQuestion.length ?
                 <View>
                     <FlatList
-                        keyExtractor = {(item) => item.id}
+                        keyExtractor = {(item,index) => index}
                         data = {skinHairTypeQuestion}
                         renderItem = {({item,index}) =>(
                             <PrimaryQuestions
-                                selctedAnswerFunc = {(id , ans) => getSelectedAnswer(id , ans) }
-                                question_id = {item.id}
+                                selctedAnswerFunc = {(index , ans) => getSelectedAnswer(index , ans) }
+                                question_id = {index}
                                 questionNo = {index}
                                 question = {item.question}
                                 option = {item.option}
-                                clickedAnswer = {answer[item.id]}
+                                clickedAnswer = {answer[index]}
                             />
                         )
                     }
@@ -166,7 +179,6 @@ const goToTags = () => {
                         alignItems:'flex-end'}}>
                         <TouchableOpacity 
                                 onPress = {goToTags}
-                                disabled = {submitted}
                                 style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
                                 flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
                             <MaterialIcons name = "navigate-next" size= {40} color = "white" />

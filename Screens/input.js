@@ -11,7 +11,8 @@ import { ScrollView, TextInput  , TouchableWithoutFeedback } from 'react-native-
 import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from './exports'
 
 import axios from 'axios';
-
+import { ModernHeader } from "@freakycoder/react-native-header-view";
+import { header } from './styles';
 
 
 
@@ -62,23 +63,30 @@ const Input = () => {
 
 
     return(
-        <View style = {styles.container}>
-            
+        <View style = {{backgroundColor : background, flex : 1,}}>
+              <View style = {header.headerView}>
+                  <ModernHeader 
+                  title={route.params?.level == 2 ? "Comment" : "Reply"}
+                  titleStyle = {header.headerText}
+                  backgroundColor= {background}
+                  leftIconColor = {borderColor}
+                  leftIconOnPress={() => navigation.goBack()}
+                  rightDisable
+                  />
+              </View>
               <TextInput
-                style={styles.textInput}
-                multiline={true}
-                numberOfLines={6}
-                scrollEnabled={true} 
-                placeholder = 'Your Comment'
+                style={{margin : 10,}}
+                multiline
+                scrollEnabled
+                placeholder = {route.params?.level == 2 ? "Your Comment" : "Your Reply"}
                 onChangeText = {(val) => setContent(val) }
                 />
 
-                <View>
-                  <Button
-                    title = "Submit"
-                    onPress = {onSubmitComment}
-                  />
-                </View>
+                <TouchableOpacity 
+                style = {{}}
+                onPress = {onSubmitComment}>
+                  <Text>Post</Text>
+                </TouchableOpacity>
         </View>
     );  
 }

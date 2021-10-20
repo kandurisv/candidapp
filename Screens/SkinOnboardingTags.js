@@ -24,7 +24,8 @@ const OnboardingTags = (props) => {
 
     const [selectedAnswer , setSelectedAnswer] = React.useState([])
     const [questionId , setQuestionId] = React.useState()
-   
+    const route = useRoute()
+    
 
     
 
@@ -35,12 +36,14 @@ const OnboardingTags = (props) => {
             const index = selectedItemArray.indexOf(item);
             selectedItemArray.splice(index , 1)
             setSelectedAnswer([...selectedItemArray])
+           
             props.selctedAnswerFunc(id ,  selectedItemArray )
         }
         else {
             // selectedItemArray.push(item)
 
             setSelectedAnswer([...selectedItemArray , item])
+           
             props.selctedAnswerFunc(id ,  [...selectedItemArray , item] )
         }
         
@@ -97,7 +100,8 @@ const SkinOnboardingTags = () => {
     const [ skinTags, setSkinTags] = React.useState([])
     const [submitted,setSubmitted] = React.useState(false)
     const navigation  = useNavigation();
-
+    const route = useRoute()
+    const [body,setBody] = React.useState(route.params.body)
 
     React.useEffect(() => {
           const getTagsQuestion = () => {
@@ -169,6 +173,7 @@ const SkinOnboardingTags = () => {
 
     const getTagAnswer = (id , ans) => {
         setSkinTags(ans)
+        setBody({...body, skinTags : ans })
        //  console.log(answer)
    }
     // const [skinHairTypeANswer , setSkinHairTypeANswer] = React.useState([]);
@@ -188,7 +193,8 @@ const detailedQuestionnaire = () => {
 
 const goToHairOnboarding = () => {
     setSubmitted(true)
-    navigation.navigate("HairOnboarding")
+    console.log("body",body)
+    navigation.navigate("HairOnboarding", {body : body})
 }
 
 

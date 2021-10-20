@@ -408,6 +408,41 @@ export const user = StyleSheet.create({
         fontFamily : 'Roboto',
         shadowOpacity : 2
     },
+    // list container
+    listContainer : {
+        marginTop : 20,
+        marginLeft : 10,
+        marginRight : 10,
+    },
+    listHeaderView : {
+        marginBottom  : 10
+    },
+    listHeaderText : { 
+        fontSize : 18, 
+        fontWeight : 'bold',
+        fontStyle : 'italic'
+    },
+    listOptionButton : {
+        borderBottomWidth : 1,
+        borderBottomColor : '#DDD',
+        paddingBottom : 5,
+        marginTop : 10,
+        marginBottom : 10,
+        flexDirection : 'row'
+    },
+    listOptionButtonText : {
+        fontSize : 14,
+        marginLeft : 10,
+        fontStyle : 'italic',
+       
+    },
+    listOptionButtonTextView : {
+        flex : 1,
+        flexDirection : 'row',
+        justifyContent : 'space-between',
+       
+    },
+
     // my posted reviews view
     myPostedReviewsContainer : {
 
@@ -1617,6 +1652,23 @@ export const addPost = StyleSheet.create({
     },
 
     carouselStyle : {},
+
+
+
+    //Start Discussion
+
+    sdImageSize : {
+        width : width,
+        height : width * 0.75
+    },
+    sdIndividualComponent : {
+        marginBottom : 20,
+    },
+    sdIndividualComponentHeader : {
+        fontWeight : 'bold',
+        fontSize : 15,
+        marginBottom : 5,
+    },
 
 })
 
