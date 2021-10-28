@@ -38,7 +38,7 @@ const FeedItem = ({item}) => {
 
     return(
         <TouchableWithoutFeedback style = {feed.scrollableFeedContainer} onPress = {onItemClick} >
-            <View style ={[feed.scrollableFeedItemUserNameHeaderView,{borderRadius:5}]}>
+            <View style ={[feed.scrollableFeedItemUserNameHeaderView,{borderRadius:10}]}>
             {  item.profile_image && item.profile_image != "None" && item.profile_image != "" ?
                         <Image source = {{uri : item.profile_image}} style = {{width : 28, height : 28 , borderRadius : 28 , marginTop : 5 , marginLeft : 5  }}/> :
               <Avatar.Image
@@ -55,18 +55,18 @@ const FeedItem = ({item}) => {
               horizontal 
               showsHorizontalScrollIndicator = {false} 
               contentContainerStyle = {{}}
-              snapToInterval = {width}
+              snapToInterval = {width-40}
             >
             {item.image_list.map((image , index) => (
               <View key = {index}>
-                <Image key = {index} style = {[feed.scrollableFeedItemHorizontalScrollImage,{borderRadius:5 , width : Dimensions.get('screen').width*0.965}]} source = {{uri: image ? image : "No Image"}}/>
+                <Image key = {index} style = {feed.scrollableFeedItemHorizontalScrollImage} source = {{uri: image ? image : "No Image"}}/>
                 <View style = {feed.scrollableFeedItemImagesCount}>
-                  <Text style = {{fontSize:14, color : theme}} >{index+1}/{item.image_list.length}</Text>
+                  <Text style = {{fontSize:10, color : background}} >{index+1}/{item.image_list.length}</Text>
                 </View>
               </View>  
             ))} 
             </ScrollView>
-            <View style ={[feed.scrollableFeedItemProductView,,{borderRadius:5}]}>
+            <View style ={[feed.scrollableFeedItemProductView,,{borderRadius:10}]}>
               <Text style ={feed.scrollableFeedItemProductName} >{item.product_name}</Text>
               <Text style ={feed.scrollableFeedItemProductReview} > {review.length > 40 ? review.substring(0,40) + "..." : review} </Text>
             </View>
@@ -222,7 +222,7 @@ const Feed = (props) => {
                 title="Explore"
                 height = {50}
                 titleStyle = {header1.headerText}
-                backgroundColor= {'white'}
+                backgroundColor= {background}
                 leftIconColor = {borderColor}
                 leftIconOnPress={() => navigation.goBack()}
                 leftIconComponent = {

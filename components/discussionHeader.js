@@ -1,22 +1,57 @@
 import { AntDesign, Fontisto } from '@expo/vector-icons';
+import moment from 'moment';
 import React from 'react';
-import { StyleSheet, Text, View , Image } from 'react-native';
+import { StyleSheet, Text, View , Image , TouchableOpacity, ImageBackground} from 'react-native';
+import { Avatar } from 'react-native-paper';
+import { theme, width } from '../Screens/exports';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
+
+const TagsView = ({data}) => {
+
+    React.useEffect(() =>{
+        console.log("Data", data)
+    },[])
+
+    return(
+    <View style = {{flexDirection : 'row', flexWrap : 'wrap', flex:1 }}>
+        {data.map((item,index)=>{
+            return(
+            <TouchableOpacity 
+                key={index}
+                style = {{flexDirection : 'row', alignItems : 'center', marginVertical : 5, marginRight : 10, borderRadius : 5 ,paddingHorizontal : 5, paddingVertical : 5, backgroundColor : '#EEE',}}
+                onPress = {()=>console.log("clicked on tag")}>
+                <Text style = {{ }}>{item}</Text>
+            </TouchableOpacity>)
+        })}
+    </View>
+)}
+
 
 const DiscussionHeader = (props) => {
     return(
         <View  style ={{backgroundColor : 'rgba(255,255,255,0.4)', padding : 10, margin : 10,borderRadius : 20, borderColor : "#EEE" , borderWidth : 1, }}  >
             <View style ={{flexDirection : 'row'}}>
                 <View style = {styles.profile}>
-                    <Image
-                    source={require('../img/52.png')}
-                    style = {{height: 30 , width:  30 , borderRadius: 50} }
-                    />
+                {  props.profile_image && props.profile_image != "None" && props.profile_image != "" && props.profile_image != null ?
+                        <Image source = {{uri : props.profile_image }} style = {{width : 30, height : 30 , borderRadius : 50 , }}/> :
+                        props.username ? 
+                                <Avatar.Image 
+                                source={{
+                                uri: 'https://ui-avatars.com/api/?rounded=true&name='+ props.username.replace(' ','+') + '&size=512'
+                                }} size={30}/> :
+                                <Avatar.Image 
+                                source={{
+                                uri: 'https://ui-avatars.com/api/?rounded=true&background=random&size=512'
+                    }} size={30}/>}
                 </View>
                 <View style = {{flex : 1,flexDirection : 'row', marginLeft : 10, marginRight : 10, justifyContent : 'space-between', alignItems:'center'}}>
                     <Text style = {{fontWeight : 'bold'}}>{props.username}</Text>
-                    <Text style = {{fontStyle : 'italic'}}> 6h ago</Text>
+                    <Text style = {{fontStyle : 'italic'}}>{moment(props.created_at,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
                 </View>
+            </View>
+
+            <View>
+                <TagsView data = {props.tags} />
             </View>
             
             <View style ={{marginTop : 10,}}>
@@ -25,15 +60,12 @@ const DiscussionHeader = (props) => {
                 </Text>
             </View>
 
-            <View>
-                <Text>Image</Text>
-            </View>
-
-            <View style ={{marginTop : 5,}}>
-                <Text>
-                    {props.answer}
-                </Text>
-            </View>   
+            <View style = {{justifyContent : 'center', alignItems : 'center' , marginVertical : 10,}}>
+            { props.discussion_image && props.discussion_image != "None" && props.discussion_image != "" && props.discussion_image != null?
+                <ImageBackground source = {{uri : props.discussion_image + "?" + new Date()}} style = {{width : width*0.8, height : width*0.6 }} ></ImageBackground> : null
+            }
+             
+            </View> 
             <View style = {{flexDirection : 'row' , marginTop:10, justifyContent : 'space-evenly'}}>
                 <View style ={{flexDirection : 'row', marginRight : 20,}}>
                     <AntDesign name = "like2" color = {"#888"} size = {20} />

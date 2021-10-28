@@ -69,6 +69,8 @@ const HairOnboardingSecondary = () => {
     const [ skinTags, setSkinTags] = React.useState([])
     const [submitted,setSubmitted] = React.useState(false)
     const navigation  = useNavigation();
+    const route = useRoute()
+    const [body,setBody] = React.useState(route?.params?.body)
 
 
     React.useEffect(() => {
@@ -78,7 +80,7 @@ const HairOnboardingSecondary = () => {
       const getOnboardingQuestions = () => {
         axios.get(URL + "/onboarding", {
             params: {
-             question_type: "quiz"
+             question_type: "hairquiz"
             }
           }, {timeout : 5000})
         .then(res => res.data)
@@ -141,9 +143,9 @@ const HairOnboardingSecondary = () => {
     const [answer , setAnswer] = React.useState([]);
 
     const getSelectedAnswer = (id , ans) => {
-         let answerArray = [...answer]
-         answerArray[id] = ans
-         setAnswer(answerArray)
+         let answerObject = {...answer}
+         answerObject[id] = ans
+         setAnswer(answerObject)
         //  console.log(answer)
     }
 
@@ -170,7 +172,7 @@ const detailedQuestionnaire = () => {
 const goToTags = () => {
     setSubmitted(true)
     setIndicator(2)
-    navigation.navigate("HairOnboardingTags")
+    navigation.navigate("HairOnboardingTags",{body:body})
 }
 
 

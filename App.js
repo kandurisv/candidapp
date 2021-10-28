@@ -2,19 +2,52 @@ import { NavigationContainer } from '@react-navigation/native'
 import React from 'react'
 import {View} from 'react-native'
 import axios from 'axios'
-import * as firebase from "firebase";
-import {URL , AuthProvider , firebaseConfig, LoadingPage} from './Screens/exports'
+
+import {URL , AuthProvider , firebaseConfig, LoadingPage , segmentWriteKey} from './Screens/exports'
 import Navigator from './Screens/Navigator'
 import { MenuProvider } from 'react-native-popup-menu';
 import * as Linking from 'expo-linking';
 import { PortalProvider } from '@gorhom/portal'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
+//Integrations
+import * as firebase from "firebase";
+import * as Segment from 'expo-analytics-segment';
+import * as Amplitude from 'expo-analytics-amplitude';
+import * as Sentry from 'sentry-expo';
+// import Branch, { BranchEvent } from 'expo-branch'; This will work only in standalone app .. So test while release
+
+
 try {
   firebase.initializeApp(firebaseConfig);
 } catch (err) {
   // ignore app already initialized error in snack
 }
+
+try {
+  Segment.initialize("Rk0HZzDHpNTkxphsyVjgBvNhvroHdX1a");
+} catch (err) {
+  // ignore app already initialized error in snack
+}
+
+try {
+  Amplitude.initializeAsync("af380775c59ead50c4c02536befef5e5");
+} catch(err) {
+  // ignore app already initialized error in snack
+}
+
+try {
+  Sentry.init({
+    dsn: 'https://85b5a621eecd41cd871370cb96dec267@o878788.ingest.sentry.io/5830918',
+    enableInExpoDevelopment: true,
+    debug: false, // Sentry will try to print out useful debugging information if something goes wrong with sending an event. Set this to `false` in production.
+  });
+} catch(err) {
+  // ignore app already initialized error in snack
+}
+
+
+
 
 const prefix = Linking.createURL('/')
 

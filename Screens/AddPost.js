@@ -446,86 +446,63 @@ return (
         position : 'absolute', 
         backgroundColor : 'white', 
         width : Dimensions.get('screen').width*0.9,
-        height : 360,
+        height : 300,
         borderTopLeftRadius : 20,
         borderTopRightRadius : 20,
         zIndex : 101,
         bottom : 60,
         left : Dimensions.get('screen').width*0.05,
-
       }}>
         <View style = {{height : 4 , 
           width : Dimensions.get('screen').width * 0.2 , marginLeft : Dimensions.get('screen').width * 0.35,
           marginTop : 10 , justifyContent : 'center', backgroundColor : '#AAA'}}
           onPress = {()=>navigation.navigate("Home")}
-          
          >
            <Pressable onPress = {()=>navigation.navigate("Home")} />
-           </View>
-        <View style = {{margin : 10 , backgroundColor : 'white', flex : 1, marginBottom : 120}}>
-          
-          
+        </View>
+        <View style = {{margin : 10 , backgroundColor : 'white', flex : 1, marginBottom : 0}}>
           <TouchableOpacity style = {{flexDirection :  'row-reverse', justifyContent : 'flex-start',
             alignItems : 'center' , padding : 10,marginTop : 20 , borderBottomWidth : 1, borderBottomColor : "#DDD"
-        }}
-          onPress = {()=>navigation.navigate("StartDiscussion")}
-        >
+          }}
+            onPress = {()=>navigation.navigate("StartDiscussion")}
+          >
             <MaterialIcons name = 'groups' color = {theme} size = {25} />
             <View style = {{flex : 1 }}>
               <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Start Discussion</Text>
             </View>
           </TouchableOpacity>
-
-          <TouchableOpacity style = {{flexDirection :  'row-reverse', justifyContent : 'flex-start',
-            alignItems : 'center' , padding : 10,marginTop : 20 , borderBottomWidth : 1, borderBottomColor : "#DDD"
-        }}
-          onPress = {()=>navigation.navigate("AskQuestion")}
-        >
-            <MaterialIcons name = 'loupe' color = {contrastLightTheme} size = {25} />
-            <View style = {{flex : 1 }}>
-              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Ask Question</Text>
-            </View>
-          </TouchableOpacity>
-          
-          
           
           <TouchableOpacity style = {{flexDirection :  'row-reverse' , justifyContent : 'flex-start',
             alignItems : 'center' , padding : 10, marginTop : 20 , borderBottomWidth : 1, borderBottomColor : "#DDD"
-        }}
-        onPress = {()=>navigation.navigate("WriteReview")}
-        >
+          }}
+            onPress = {()=>navigation.navigate("WriteReview")}
+          >
             <MaterialIcons name = 'notes' color = {neutralTheme} size = {25} />
             <View style = {{flex : 1 }}>
-              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Write Review</Text>
+              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Post Review</Text>
             </View>
           </TouchableOpacity>
-
+          
           <TouchableOpacity style = {{flexDirection :  'row-reverse', justifyContent : 'flex-start',
             alignItems : 'center' , padding : 10,marginTop : 20 , borderBottomWidth : 1, borderBottomColor : "#DDD"
-        }}
-        onPress = {()=>navigation.navigate("AddJourney")}
-        >
+            }}
+            onPress = {()=>navigation.navigate("AddJourney")}>
             <MaterialIcons name = 'directions-transit' color = {lightTheme} size = {25} />
             <View style = {{flex : 1 }}>
-              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Add Journey</Text>
+              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Add Private Journey</Text>
             </View>
           </TouchableOpacity>
-
           <TouchableOpacity style = {{flexDirection : 'row-reverse' , justifyContent : 'flex-start',
             alignItems : 'center' , padding : 10,marginTop : 20, marginBottom : 20,  borderBottomWidth : 1, borderBottomColor : "#DDD"
-        }}
-        onPress = {()=>navigation.navigate("GiveRecommendation")}
-        >
+            }}
+            onPress = {()=>navigation.navigate("GiveRecommendation")}>
             <MaterialIcons name = 'favorite' color = {contrastTheme} size = {25} />
             <View style = {{flex : 1 }}>
               <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Give Recommendation</Text>
             </View>
           </TouchableOpacity>
         </View>
-
-
       </View>
-
   </View>
 )}
 

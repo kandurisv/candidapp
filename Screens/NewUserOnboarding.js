@@ -15,6 +15,7 @@ import { AuthContext, background, borderColor, theme, uploadImageOnS3, URL , s3U
 import { editUserDetails, home, user ,header } from './styles';
 import { AntDesign, Entypo, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
+import * as Contacts from 'expo-contacts';
 
 
 const NewUserOnboarding = () => {
@@ -24,24 +25,27 @@ const NewUserOnboarding = () => {
 
 
   const [selectedItem, setSelectedItem ] = useState(0);
-
+ 
 
     const [date, setDate] = useState(new Date())
-    const [image, setImage] = useState("");
-    const [gender, setGender] = useState("")
-    const [instagram, setInstagram] = useState("")
+    const [image, setImage] = React.useState(route.params?.image ? route.params?.image  : "");
+    const [gender, setGender] = useState(route.params?.gender ? route.params?.gender  : "")
+    const [instagram, setInstagram] = useState(route.params?.instagram ? route.params?.instagram  :"")
     const [imageUrl,setImageUrl] = useState("")
     const [profileImageChange,setProfileImageChange] = useState(false)
     const [coverImageChange,setCoverImageChange] = useState(false)
     const [age,setAge] = useState("")
-    const [userName,setUserName] = React.useState("")
+    const [userName,setUserName] = React.useState(route.params?.username ? route.params?.username  : "")
     const [userId, userDetails, isLoggedIn] = React.useContext(AuthContext)
     const [user_id,setuser_id] = React.useState(route.params.user_id)
     const [userInfo,setUserInfo] = React.useState([])
     const [submitted,setSubmitted] = React.useState(false)
 
-    const [userDob,setUserDob] = useState("")
+    const [userDob,setUserDob] = useState(route.params?.dob ? route.params?.dob  :"")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+   
+    const [variable,setVariable] = React.useState(route.params?.variable ?  route.params?.variable : "new user")
     
     const showDatePicker = () => {setDatePickerVisibility(true);};
     const hideDatePicker = () => {setDatePickerVisibility(false);};
@@ -49,6 +53,9 @@ const NewUserOnboarding = () => {
         setUserDob(moment(date).format("YYYY-MM-DD"))
         hideDatePicker();
     };
+
+
+    const [contactsAlreadyExist,setContactsAlreadyExist] = React.useState(true)
 
 
     useEffect(() => {
@@ -66,13 +73,35 @@ const NewUserOnboarding = () => {
        }
        getUserInfo()
        
+       const contactsUpdateReq = () => {
+        axios.get(URL + "/contacts/ifexists", {params:{user_id : user_id }} , {timeout:5000})
+        .then(res => res.data).then(function(responseData) {
+        //    console.log("USER INFO",responseData)
+           if(!responseData.length) {
+             console.log("Data doesnt exist . New Update. Hence New API")
+             setContactsAlreadyExist(false)
+           }
+           else {
+            if(moment(responseData[0].created_at,"YYYY-MM-DD hh:mm:ss").add(1,'months').isBefore(moment())) {
+              console.log("data exists but More than a month difference , hence renew API")
+            }
+           }
+        })
+        .catch(function(error) {
+            //
+        });
+       }
+
+
+
+
     }, [])
 
 
 
     const next = () => {
       setSubmitted(true)
-      navigation.navigate("SkinOnboarding",{userName : userName, gender : gender, instagram : instagram, userDob : userDob})
+      navigation.navigate("SkinOnboarding",{var : variable, userName : userName, gender : gender, instagram : instagram, userDob : userDob, userProfileImage : image ? s3URL + user_id + "/profile" : "" })
 //       var expoToken = AsyncStorage.getItem('expoToken')
 //       var deviceToken = AsyncStorage.getItem('deviceToken')
 //       const body = {

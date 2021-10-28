@@ -160,3 +160,4 @@ export const headerStyle = StyleSheet.create({
 
 
 
+export const segmentWriteKey = "Rk0HZzDHpNTkxphsyVjgBvNhvroHdX1a"

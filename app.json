@@ -22,7 +22,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode" : 5,
+      "versionCode": 5,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
@@ -32,11 +32,26 @@
       "config": {
         "googleSignIn": {
           "apiKey": "AIzaSyCelzKVnbYY07aLtswA4EE9pF9mNeXJtRs"
+        },
+        "branch" : {
+          "apiKey" : "key_live_bd2DrI8CnWoeOmLVOSSipgmgABiVkE2f"
         }
-      }
+      },
+      "intentFilters" : [{
+        "autoVerify": true,
+        "action": "VIEW",
+        "data": {
+          "scheme": "https",
+          "host": "*.getcandid.app.link"
+        },
+        "category": ["BROWSABLE", "DEFAULT"]
+        }]
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "plugins": [
+      "sentry-expo"
+    ]
   }
 }

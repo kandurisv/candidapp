@@ -60,6 +60,7 @@ import MyQNA from "./MyQNA";
 import MyJourneys from "./MyJourneys";
 import MyReviews from "./MyReviews";
 import MyRecommendations from "./MyRecommendations";
+import AppendJourney from "./AppendJourney";
 
 
 
@@ -297,6 +298,7 @@ const TabNavigator = () => {
         <Stack.Screen name="StartDiscussion" component ={StartDiscussion} />
         <Stack.Screen name="WriteReview" component ={WriteReview} />
         <Stack.Screen name="AddJourney" component ={AddJourney} />
+        <Stack.Screen name="AppendJourney" component ={AppendJourney} />
         <Stack.Screen name="GiveRecommendation" component ={GiveRecommendation} />
         <Stack.Screen name="AskQuestion" component ={AskQuestion} />
         <Stack.Screen name="MyDiscussions" component ={MyDiscussions} />

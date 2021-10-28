@@ -10,7 +10,7 @@ import OnboardingTags from '../components/onboardingTags';
 import { header, user } from './styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const PrimaryQuestions = (props) => {
+const HairPrimaryQuestions = (props) => {
     const [selectedAnswer , setSelectedAnswer] = React.useState()
     const [questionId , setQuestionId] = React.useState()
     const getSelectedAnswer = (item , id) =>{
@@ -28,11 +28,12 @@ const PrimaryQuestions = (props) => {
             </View>
             <View>
                 <FlatList 
-                keyExtractor = {(item,index)=> index}
+                keyExtractor = {(item,index)=> index.toString()}
                 data = {props.option} 
                 style = {{flexWrap: 'wrap', flexDirection : 'row',}} 
                 renderItem = {({item, index})=> (
                     <TouchableOpacity
+                    key = {index.toString()}
                     style = {{
                         borderRadius : 20, width : Dimensions.get('screen').width* 0.4,
                         borderWidth : 1, borderColor : "#DDD",
@@ -58,29 +59,33 @@ const HairOnboarding = () => {
 
     const [indicator , setIndicator] = React.useState(0)
     const [ questionData , setQuestionData] = React.useState([])
-    const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
+    const [ hairTypeQuestion , setHairTypeQuestion] = React.useState([])
     const [ tagsQuestion , setTagsQuestion] = React.useState([])
     const [ skinTags, setSkinTags] = React.useState([])
     const [submitted,setSubmitted] = React.useState(false)
 
     const navigation  = useNavigation();
+    const route = useRoute()
+    const [body,setBody] = React.useState(route?.params?.body)
 
 
     React.useEffect(() => {
         // console.log("item_id" , 1)
         setIndicator(0)
-        console.log("indicator", indicator)
-
+        console.log("Jair Onboarding indicator", indicator)
+        
+        setHairTypeQuestion([])
       
-        const getSkinHairTypeQuestions = () => {
+        const getHairTypeQuestions = () => {
             axios.get(URL + "/onboarding", {
                 params: {
-                 question_type: "primary"
+                 question_type: "hairprimary"
                 }
               }, {timeout : 5000})
             .then(res => res.data)
             .then(function (responseData) {
-                setSkinHairTypeQuestion(responseData)
+                console.log("Hair primary",responseData)
+                setHairTypeQuestion(responseData)
             })
             .catch(function (error) {
                console.log("error: ",error);
@@ -88,38 +93,37 @@ const HairOnboarding = () => {
             })
           }
 
-            getSkinHairTypeQuestions()
+            getHairTypeQuestions()
 
           
     },[])
 
 
-    const [answer , setAnswer] = React.useState([]);
+    const [answer , setAnswer] = React.useState({});
 
     const getSelectedAnswer = (id , ans) => {
-         let answerArray = [...answer]
-         answerArray[id] = ans
-         setAnswer(answerArray)
-        //  console.log(answer)
+        let answerObject = {...answer}
+        answerObject[id] = ans
+        setAnswer(answerObject)
+        console.log(answer)
     }
 
 
     const getTagAnswer = (id , ans) => {
         setSkinTags(ans)
-       //  console.log(answer)
+         console.log(answer)
    }
  
 
 
+
 const detailedQuestionnaire = () => {
-    setIndicator(1)
-    navigation.navigate("HairOnboardingSecondary")
+    navigation.navigate("HairOnboardingSecondary",{body: body})
 }
 
 const goToTags = () => {
-    setIndicator(2)
-    setSubmitted(true)
-    navigation.navigate("HairOnboardingTags")
+    console.log("Clicke on next")
+    navigation.navigate("HairOnboardingTags", { body: body})
 }
 
 
@@ -137,13 +141,14 @@ const goToTags = () => {
                 />
             </View>
             <ScrollView style = {{backgroundColor : background}}>
-            {skinHairTypeQuestion.length ?
+            {hairTypeQuestion.length ?
                 <View>
                     <FlatList
-                        keyExtractor = {(item) => item.id}
-                        data = {skinHairTypeQuestion}
+                        keyExtractor = {(item) => item.id.toString()}
+                        data = {hairTypeQuestion}
                         renderItem = {({item,index}) =>(
-                            <PrimaryQuestions
+                            <HairPrimaryQuestions
+                                key = {index.toString()}
                                 selctedAnswerFunc = {(id , ans) => getSelectedAnswer(id , ans) }
                                 question_id = {item.id}
                                 questionNo = {index}
@@ -162,20 +167,23 @@ const goToTags = () => {
                         <Text style = {{fontSize : 14, fontStyle:'italic', textShadowRadius : 0, color : '#0E76A8'}} > Not sure ? Take this simple quiz </Text>
                     </TouchableOpacity>
                     </View>
+                    
+
+
+                </View> : 
+                <View style = {{margin : 20 ,}}>
+                    <Text style = {{fontWeight : 'bold'}}>No Hair Onboarding Questions</Text>
+                </View>
+            }
                     <View style = {{ marginTop : 20, width : Dimensions.get('screen').width*0.95,
                         alignItems:'flex-end'}}>
                         <TouchableOpacity 
                                 onPress = {goToTags}
-                                disabled = {submitted}
                                 style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
                                 flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
                             <MaterialIcons name = "navigate-next" size= {40} color = "white" />
                         </TouchableOpacity>
                     </View>
-
-
-                </View> : null
-            }
             </ScrollView>
         </View>
     );

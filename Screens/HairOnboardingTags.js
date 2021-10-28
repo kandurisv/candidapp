@@ -15,6 +15,7 @@ import axios from 'axios';
 
 import { header, user } from './styles';
 import { MaterialIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -90,20 +91,22 @@ const OnboardingTags = (props) => {
 
 
 const HairOnboardingTags = () => {
-    const [indicator , setIndicator] = React.useState(0)
+    const [ indicator , setIndicator] = React.useState(0)
     const [ questionData , setQuestionData] = React.useState([])
     const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
     const [ tagsQuestion , setTagsQuestion] = React.useState([])
     const [ skinTags, setSkinTags] = React.useState([])
-    const [submitted,setSubmitted] = React.useState(false)
+    const [ submitted,setSubmitted] = React.useState(false)
     const navigation  = useNavigation();
-
+    const route = useRoute()
+    const [body,setBody] = React.useState(route.params?.body ? route.params?.body : {})
+    const [userId, userDetails, isLoggedIn] = React.useContext(AuthContext)
 
     React.useEffect(() => {
           const getTagsQuestion = () => {
             axios.get(URL + "/onboarding", {
                 params: {
-                 question_type: "tags"
+                 question_type: "hairtags"
                 }
               }, {timeout : 5000})
             .then(res => res.data)
@@ -122,40 +125,47 @@ const HairOnboardingTags = () => {
 
 
     const onSubmitOnboarding = () =>{
-        const body = {
-          "user_id": 917060947155,
-          "question_1": answer[1],
-          "question_2": answer[2],
-          "question_3": answer[3],
-          "question_4": answer[4],
-          "question_5": answer[5] , 
-          "question_6": answer[6] , 
-          "question_7": answer[7] , 
-          "question_8": answer[8] ,
-          "question_9": answer[9] ,
-          "question_10": answer[10] ,
-          "question_11": answer[11] ,
-          "question_12": skinTags ,
-        }
-    
-    //    console.log("body : " , body)
-    
-        axios({
-          method: 'post',
-          url: URL + '/onboarding',
-          data: body
-        })
-      .then(res => {
-       //   console.log("reached to post feed")
-          ToastAndroid.show("Thanks for adding comment", ToastAndroid.LONG)
-        //   refresh()
-          setTimeout(function(){
-            navigation.navigate("ProductList")
-          }, 300);
-         
-    }).catch((e) => console.log(e))
-    
+        var expoToken = AsyncStorage.getItem('expoToken')
+        var deviceToken = AsyncStorage.getItem('deviceToken')
+        const userbody = {
+            "var" : body.var,
+            "user_id": userId.slice(1,13),
+            "username": body.userName,
+            "gender": body.gender,
+            "dob": body.userDob,
+            "email": "",
+            "phone_number": userId,
+            "location": "",
+            "expo_token" : expoToken,
+            "device_token" : deviceToken,
+            "instagram_username" : body.instagram
       }
+
+      console.log(userbody)
+
+    axios({
+    method: 'post',
+    url: URL + '/user/info',
+    data: userbody
+    })
+    .then(res => {
+        ToastAndroid.show("Hi", ToastAndroid.SHORT)
+        axios({
+            method: 'post',
+            url: URL + '/onboarding',
+            data: body
+          })
+            .then(res => {
+                ToastAndroid.show("Thanks for adding comment", ToastAndroid.LONG)
+                setTimeout(function(){
+                navigation.navigate("Home")
+                }, 300);      
+            }).catch((e) => console.log(e))
+        }).catch((e) => {
+            ToastAndroid.show("Error updating details. Please try later")
+            setSubmitted(false)
+        })
+    }
 
     const [answer , setAnswer] = React.useState([]);
 
@@ -221,12 +231,15 @@ const goToHairOnboarding = () => {
             />
                 )
             }
-            /> :null
+            /> :
+                <View style = {{margin : 20 ,}}>
+                    <Text style = {{fontWeight : 'bold'}}>No Hair Onboarding Tags</Text>
+                </View>
             }
              <View style = {{ marginTop : 30, width : Dimensions.get('screen').width*0.9,
                     alignItems:'flex-end'}}>
                     <TouchableOpacity 
-                            onPress = {goToHairOnboarding}
+                            onPress = {onSubmitOnboarding}
                             disabled = {submitted}
                             style = {{
                                 backgroundColor : submitted ? "#888" : theme , width : Dimensions.get('screen').width*0.3, height : 40 , borderRadius : 50, 

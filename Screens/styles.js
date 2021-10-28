@@ -868,10 +868,12 @@ export const feed = StyleSheet.create({
         height : height - 180
         },
     scrollableFeedContainer : {
-        marginBottom : 2,
-        marginLeft : 3,
-        marginRight : 3,
-        marginTop : 2,
+        marginBottom : 10,
+        marginLeft : 10,
+        marginRight : 10,
+        marginTop : 5,
+        borderRadius : 20,
+        backgroundColor : background
     },
     scrollableFeedItemContainer : {
         marginBottom: 5,
@@ -880,23 +882,23 @@ export const feed = StyleSheet.create({
     },
     scrollableFeedItemUserNameHeaderView : {
         position:'absolute',
-        width : width*0.965,
+        width : width-40,
         top:0,
       //  backgroundColor : 'rgba(52, 52, 52, 0.5)',
         backgroundColor : "#666",
         zIndex : 102,
         height : 38,
-        borderRadius : 5 ,
+        borderRadius : 10 ,
     },
 
     scrollableFeedItemUserName : {
         position:'absolute',
         top:0,
         color : 'white',
-        marginTop: 6,
+        marginTop: 8,
         
         marginLeft: 40,
-        fontSize:18,
+        fontSize:15,
         fontFamily : 'Roboto',
         zIndex: 100
     },
@@ -907,57 +909,66 @@ export const feed = StyleSheet.create({
         color : 'white',
         marginTop: 10,
         marginRight: 10,
-        fontSize:14,
+        fontSize:12,
+        fontStyle : 'italic',
         fontFamily : 'Roboto',
         zIndex: 100
     },
     scrollableFeedItemImagesCount : {
-        backgroundColor : 'transparent' , 
+        backgroundColor : 'rgba(52, 52, 52, 0.4)' , 
         position:'absolute', 
         top: 20, 
         right : 10 ,
-        marginTop: 25, 
-        marginRight: 10, 
+        marginTop: 35, 
+        marginRight: 0, 
+        borderRadius : 2,
+        padding : 2,
+        paddingTop : 1,
+        paddingBottom : 1,
+        zIndex: 100,
         borderRadius : 10,
-        zIndex: 100
+        paddingHorizontal : 5,
     },
     scrollableFeedItemProductView : {
         position:'absolute',
-        width : width * 0.965 ,
+        width : width - 40 ,
         bottom:0,
+        paddingBottom : 5,
         backgroundColor : 'rgba(52, 52, 52, 0.5)',
         zIndex : 102,
+        borderRadius:10,
     },
     scrollableFeedItemProductName : {
         // position:'absolute',
         // bottom:0,
-        marginTop : 5,
+        marginTop : 10,
         marginLeft: 10,
         marginRight : 10,
+        marginBottom : 5,
         color : 'white',
-        fontSize:16,
+        fontSize:15,
         fontFamily : 'Roboto',
         fontWeight:'bold'
     },
     scrollableFeedItemProductReview  : {
         // position:'absolute',
         // bottom:0,
-         marginBottom : 10,
-         marginLeft : 10 ,
-         marginRight : 10,
-        color : 'white',
-        fontSize:15,
-        fontFamily : 'Roboto',
+        marginBottom : 5,
+        marginLeft : 8 ,
+        marginRight : 10,
+       color : 'white',
+       fontSize:12,
+       fontFamily : 'Roboto',
     },
     scrollableFeedItemHorizontalScrollContainer : {
 
     },
     scrollableFeedItemHorizontalScrollImage : {
-        width,
-        height : width * 1.2,
-        aspectRatio:2.5/3,
-        resizeMode: 'cover',
-        borderRadius: 10,
+        width : width - 40,
+        height : width - 40 ,
+        marginTop : 30,
+        borderBottomLeftRadius : 10,
+        borderBottomRightRadius : 10,
     },
 })
 
@@ -1243,6 +1254,10 @@ export const postDetails = StyleSheet.create({
     reviewCommentContainerSubmitText : {},
     reviewCommentContainerReadCommentContainer : {
         margin : 10,
+        paddingTop : 5,
+        backgroundColor : 'rgba(255,255,255,0.3)',
+        borderTopWidth : 1,
+        borderTopColor : '#EEE',
     },
     reviewCommentContainerReadCommentItem : {
         padding : 5 ,
@@ -1256,10 +1271,12 @@ export const postDetails = StyleSheet.create({
     },
     reviewCommentContainerReadCommentUserImage : {},
     reviewCommentContainerReadCommentUserName : {
-        fontWeight : 'bold',
         fontFamily : 'Roboto',
         marginLeft : 10,
-        flex : 1
+        flex : 1,
+
+        marginTop : 10,
+        marginBottom : 5, 
     },
     reviewCommentContainerReadCommentTime : {
         fontSize : 10,

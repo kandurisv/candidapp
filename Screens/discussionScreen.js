@@ -74,10 +74,11 @@ React.useEffect(() => {
                 />
             </View>      
             <FlatList 
-            style = {{}}
+            style = {{marginBottom : 120,}}
             contentContainerStyle = {{}}
             keyExtractor = {(item) => item.item_id}
             data = {discussionFeedData}
+            showsVerticalScrollIndicator = {false}
             renderItem = {({item,index})=> (
                 <DiscussionFeed 
                 key={index}
@@ -90,6 +91,9 @@ React.useEffect(() => {
                 number_of_upvote = {item.number_of_upvote}
                 number_of_downvote = {item.number_of_downvote}
                 answer = {item.answer}
+                tags = {item.tags}
+                discussion_image = {item.discussion_image}
+                profile_image = {item.profile_image}
                 />
             ) }
             />

@@ -3,6 +3,8 @@ import { StyleSheet, Text, View , Image , FlatList , TouchableOpacity } from 're
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
+import moment from 'moment';
+import { Avatar } from 'react-native-paper';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
 
 const Comments = (props) => {
@@ -23,14 +25,21 @@ const Comments = (props) => {
             <View style ={{borderBottomWidth : 1 , borderBottomColor : "#EEE" , paddingBottom : 10,marginBottom : 10 }}>
                 <View style ={{flexDirection : 'row'}}>
                     <View style = {styles.profile}>
-                        <Image
-                        source={require('../img/52.png')}
-                        style = {{height: 30 , width:  30 , borderRadius: 50} }
-                        />
+                    {  props.profile_image && props.profile_image != "None" && props.profile_image != "" && props.profile_image != null ?
+                        <Image source = {{uri : props.profile_image + "?" + new Date()}} style = {{width : 30, height : 30 , borderRadius : 50 , }}/> :
+                        props.username ? 
+                                <Avatar.Image 
+                                source={{
+                                uri: 'https://ui-avatars.com/api/?rounded=true&name='+ props.username.replace(' ','+') + '&size=512'
+                                }} size={30}/> :
+                                <Avatar.Image 
+                                source={{
+                                uri: 'https://ui-avatars.com/api/?rounded=true&background=random&size=512'
+                    }} size={30}/>}
                     </View>
                     <View style = {{flex : 1,flexDirection : 'row', marginLeft : 10, marginRight : 10, justifyContent : 'space-between', alignItems:'center'}}>
                         <Text style = {{fontWeight : 'bold'}}>{props.username}</Text>
-                        <Text style = {{fontStyle : 'italic'}}> 6h ago</Text>
+                        <Text style = {{fontStyle : 'italic'}}>{moment(props.created_at,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
                     </View>
                 </View>
                 
@@ -64,27 +73,34 @@ const Comments = (props) => {
             keyExtractor = {(item) => item.item_id}
             data = {props.reply}
             renderItem = {({item})=> (
-                <View style ={{borderBottomColor : '#EEE', borderBottomWidth : 1, marginLeft : 10, }}>
+                <View style ={{borderBottomColor : '#EEE', borderBottomWidth : 1, marginLeft : 10, marginTop : 10 }}>
                     <View style ={{flexDirection : 'row', paddingLeft : 10,}}>
                         <View style = {styles.profile}>
-                            <Image
-                            source={require('../img/52.png')}
-                            style = {{height: 30 , width:  30 , borderRadius: 50} }
-                            />
+                        {  item.profile_image && item.profile_image != "None" && item.profile_image != "" && item.profile_image != null ?
+                        <Image source = {{uri : item.profile_image + "?" + new Date()}} style = {{width : 30, height : 30 , borderRadius : 50 , }}/> :
+                        item.username ? 
+                                <Avatar.Image 
+                                source={{
+                                uri: 'https://ui-avatars.com/api/?rounded=true&name='+ item.username.replace(' ','+') + '&size=512'
+                                }} size={30}/> :
+                                <Avatar.Image 
+                                source={{
+                                uri: 'https://ui-avatars.com/api/?rounded=true&background=random&size=512'
+                    }} size={30}/>}
                         </View>
                         <View style = {{flex : 1,flexDirection : 'row', marginLeft : 10, marginRight : 10, justifyContent : 'space-between', alignItems:'center'}}>
-                            <Text style = {{fontWeight : 'bold'}}>{props.username}</Text>
-                            <Text style = {{fontStyle : 'italic'}}> 6h ago</Text>
+                            <Text style = {{fontWeight : 'bold'}}>{item.username}</Text>
+                            <Text style = {{fontStyle : 'italic'}}>{moment(item.created_at,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
                         </View>
                     </View>
                     <View style ={{marginTop : 10, paddingLeft : 10,borderLeftColor : '#EEE', borderLeftWidth : 1, borderStyle : 'dotted' }}>
                         <Text style = {{fontWeight : '100'}}>
-                            {props.content}
+                            {item.content}
                         </Text>
                     </View>
                     <TouchableOpacity style ={{flexDirection : 'row', paddingLeft : 10,marginRight : 20, justifyContent : 'flex-start', marginTop : 10,}}>
                             <AntDesign name = "like2" color = {"#888"} size = {15} />
-                            <Text>{props.number_of_upvote}</Text>
+                            <Text>{item.number_of_upvote}</Text>
                     </TouchableOpacity>
                 </View>
             ) }

@@ -20,7 +20,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 
 
 
-const OnboardingTags = (props) => {
+const SkinOnboardingTagsChild = (props) => {
 
     const [selectedAnswer , setSelectedAnswer] = React.useState([])
     const [questionId , setQuestionId] = React.useState()
@@ -65,6 +65,7 @@ const OnboardingTags = (props) => {
                 data = {props.option}
                 renderItem = {({item, index})=> (
                     <TouchableOpacity
+                    key = {index.toString()}
                     style = {{
                         borderRadius : 20,
                         borderWidth : 1, borderColor : "#DDD",
@@ -93,25 +94,26 @@ const OnboardingTags = (props) => {
 
 
 const SkinOnboardingTags = () => {
-    const [indicator , setIndicator] = React.useState(0)
+    const [ indicator , setIndicator] = React.useState(0)
     const [ questionData , setQuestionData] = React.useState([])
     const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
     const [ tagsQuestion , setTagsQuestion] = React.useState([])
     const [ skinTags, setSkinTags] = React.useState([])
-    const [submitted,setSubmitted] = React.useState(false)
+    const [ submitted,setSubmitted] = React.useState(false)
     const navigation  = useNavigation();
     const route = useRoute()
-    const [body,setBody] = React.useState(route.params.body)
+    const [body,setBody] = React.useState(route?.params?.body)
 
     React.useEffect(() => {
           const getTagsQuestion = () => {
             axios.get(URL + "/onboarding", {
                 params: {
-                 question_type: "tags"
+                 question_type: "skintags"
                 }
               }, {timeout : 5000})
             .then(res => res.data)
             .then(function (responseData) {
+                console.log("Skin tags",responseData)
                 setTagsQuestion(responseData)
             })
             .catch(function (error) {
@@ -125,42 +127,7 @@ const SkinOnboardingTags = () => {
 
 
 
-    const onSubmitOnboarding = () =>{
-        const body = {
-          "user_id": 917060947155,
-          "question_1": answer[1],
-          "question_2": answer[2],
-          "question_3": answer[3],
-          "question_4": answer[4],
-          "question_5": answer[5] , 
-          "question_6": answer[6] , 
-          "question_7": answer[7] , 
-          "question_8": answer[8] ,
-          "question_9": answer[9] ,
-          "question_10": answer[10] ,
-          "question_11": answer[11] ,
-          "question_12": skinTags ,
-        }
-    
-    //    console.log("body : " , body)
-    
-        axios({
-          method: 'post',
-          url: URL + '/onboarding',
-          data: body
-        })
-      .then(res => {
-       //   console.log("reached to post feed")
-          ToastAndroid.show("Thanks for adding comment", ToastAndroid.LONG)
-        //   refresh()
-          setTimeout(function(){
-            navigation.navigate("ProductList")
-          }, 300);
-         
-    }).catch((e) => console.log(e))
-    
-      }
-
+ 
     const [answer , setAnswer] = React.useState([]);
 
     const getSelectedAnswer = (id , ans) => {
@@ -215,10 +182,11 @@ const goToHairOnboarding = () => {
             <ScrollView>
             {tagsQuestion.length?
                 <FlatList
-                keyExtractor = {(item) => item.id}
+                keyExtractor = {(item) => item.id.toString()}
                 data = {tagsQuestion}
-                renderItem = {({item}) =>(
-                    <OnboardingTags
+                renderItem = {({item,index}) =>(
+                    <SkinOnboardingTagsChild
+                        key = {index.toString()}
                         selctedAnswerFunc = {(id , ans) => getTagAnswer(id , ans) }
                         question_id = {item.id}
                         question = {item.question}

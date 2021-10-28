@@ -441,7 +441,7 @@ const submitUserDetails = () => {
 return (
     <View style = {home.container}>  
         <StatusBar style="dark" />
-        <View style = {[header1.headerView,{backgroundColor : 'white', marginTop:30,}]}>
+        <View style = {[header1.headerView,{backgroundColor : background, marginTop:30,}]}>
            
             <TouchableOpacity 
               onPress = {()=>navigation.openDrawer()}
