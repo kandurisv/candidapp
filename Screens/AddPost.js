@@ -400,7 +400,7 @@ return (
                { heroImage.map((item,index)=>{
                     return(
                     <TouchableOpacity 
-                    
+                    key = {index.toString()}
                     disabled
                     onPress = {()=>heroBannerClick(heroLink[index])} 
                     >
@@ -422,10 +422,10 @@ return (
 
         {response.length > 0 && response.map((item,index) =>{
             return (
-            <View key = {index} style = {[home.mainViewCarouselContainer,{marginTop : 0, paddingRight : 10 , elevation:1 , shadowRadius : 2, shadowColor : theme  , backgroundColor : background  }]}>
+            <View key = {index.toString()} style = {[home.mainViewCarouselContainer,{marginTop : 0, paddingRight : 10 , elevation:1 , shadowRadius : 2, shadowColor : theme  , backgroundColor : background  }]}>
               <Text style = {[home.mainViewCarouselTitle,{marginTop : 5}]}>{item.header}</Text>
               <View style = {home.mainViewCarouselChild}>
-                <UpdatedCarousel DATA = {item.data} onClickItem = {goToProductFeed} varValue = {item.var}/>
+                <UpdatedCarousel key = {index.toString()} DATA = {item.data} onClickItem = {goToProductFeed} varValue = {item.var}/>
               </View>
             </View> )
         })}

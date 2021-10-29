@@ -50,9 +50,11 @@ const ProductList = () =>{
     
 
     return (
-        <View>
-            {productData.length? <FlatList
-            keyExtractor = {(item) => item.product_id}
+        <View style = {{backgroundColor : background , flex : 1,}}>
+            {productData.length? 
+            <FlatList
+           
+            keyExtractor = {(item) => item.product_id.toString()}
             data = {productData}
             renderItem = {({item})=> (
                 <ProductDescription 
@@ -68,6 +70,7 @@ const ProductList = () =>{
                     
                 /> 
             )}
+            showsVerticalScrollIndicator = {false}
             />: null}
 
         </View>

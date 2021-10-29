@@ -25,7 +25,7 @@ import BrandsPage from "./BrandsPage";
 import PostLink from "./PostLink";
 import FeedSearch from "./FeedSearch";
 import UserPostDetails from "./UserPostDetails";
-import DiscussionScreen from "./discussionScreen";
+import DiscussionScreen from "./DiscussionScreen";
 import DiscussionPost from "./discussionPost";
 import Input from "./input";
 import ProductList from "./productList"

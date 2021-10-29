@@ -219,7 +219,7 @@ const goToHairOnboarding = () => {
             <ScrollView>
             {tagsQuestion.length?
                 <FlatList
-                keyExtractor = {(item) => item.id}
+                keyExtractor = {(item) => item.id.toString()}
                 data = {tagsQuestion}
                 renderItem = {({item}) =>(
                     <OnboardingTags

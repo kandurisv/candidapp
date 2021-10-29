@@ -18,8 +18,8 @@ export default function DiscussionScreen({navigation}){
   const [discussionFeedData , setDiscussionFeedData] = React.useState([])
   
   const [loading,setLoading] = React.useState(false)
-    const [error,setError] = React.useState(false)
-    const [refreshing,setRefreshing] = React.useState(false)
+  const [error,setError] = React.useState(false)
+  const [refreshing,setRefreshing] = React.useState(false)
 
 
 
@@ -54,7 +54,7 @@ React.useEffect(() => {
 
 
     return(
-      <View style = {{backgroundColor: background}}>
+      <View style = {{backgroundColor: background, flex : 1}}>
         <View style = {header1.headerView}>
             <ModernHeader
                 title="Discuss"
@@ -76,12 +76,12 @@ React.useEffect(() => {
             <FlatList 
             style = {{marginBottom : 120,}}
             contentContainerStyle = {{}}
-            keyExtractor = {(item) => item.item_id}
+            keyExtractor = {(item) => item.item_id.toString()}
             data = {discussionFeedData}
             showsVerticalScrollIndicator = {false}
             renderItem = {({item,index})=> (
                 <DiscussionFeed 
-                key={index}
+                key={index.toString()}
                 item_id = {item.item_id}
                 user_id = {item.user_id}
                 level = {item.level}

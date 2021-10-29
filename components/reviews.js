@@ -52,7 +52,7 @@ const Reviews = (props) => {
     return(
         <View>
             {reviewData.length? <FlatList
-            keyExtractor = {(item) => item.review_sum_id}
+            keyExtractor = {(item) => item.review_sum_id.toString()}
             data = {reviewData}
             renderItem = {({item})=> (
                 <ReviewComponenet 

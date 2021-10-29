@@ -112,7 +112,7 @@ const FeedSearch = () =>{
             
             <FlatList
 
-            keyExtractor = {(item) => item.product_id}
+            keyExtractor = {(item) => item.product_id.toString()}
             data = {productData}
             renderItem = {({item})=> (
                 <ProductDescription 

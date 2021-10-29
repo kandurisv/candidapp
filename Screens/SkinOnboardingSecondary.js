@@ -34,7 +34,7 @@ const SecondaryQuestions = (props) => {
             </View>
             <View>
                 <FlatList 
-                keyExtractor = {(item,index)=> index}
+                keyExtractor = {(item,index)=> index.toString()}
                 data = {props.option} 
                 style = {{flexWrap: 'wrap', flexDirection : 'row',}} 
                 renderItem = {({item, index})=> (
@@ -193,7 +193,7 @@ const goToTags = () => {
            
             {questionData.length?
                 <FlatList
-                keyExtractor = {(item) => item.id}
+                keyExtractor = {(item) => item.id.toString()}
                 data = {questionData}
                 renderItem = {({item, index}) =>(
                     <SecondaryQuestions

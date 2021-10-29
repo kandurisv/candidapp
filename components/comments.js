@@ -70,7 +70,8 @@ const Comments = (props) => {
             </View>
 
             <FlatList 
-            keyExtractor = {(item) => item.item_id}
+            listKey = {(item,index)=>index.toString()}
+            keyExtractor = {(item,index)=>index.toString()}
             data = {props.reply}
             renderItem = {({item})=> (
                 <View style ={{borderBottomColor : '#EEE', borderBottomWidth : 1, marginLeft : 10, marginTop : 10 }}>

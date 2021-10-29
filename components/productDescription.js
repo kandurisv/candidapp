@@ -36,17 +36,10 @@ const ProductDescription = (props) => {
                     </Text>
                 </View>
                 <View style = {styles.reviewnumber}>
-                    <View>
-                        <Text>
-                            Reviews
-                        </Text>
-                    </View>
-                    <View>
-                        <Text style = {{marginLeft: 10}}>
-                            {props.number_of_reviews}
-                        </Text>
-                    </View>
-                    </View>
+                    <Text>
+                        {props.number_of_reviews} Reviews
+                    </Text>
+                </View>
             </View>
 
         </TouchableOpacity>

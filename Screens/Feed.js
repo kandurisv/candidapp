@@ -240,7 +240,7 @@ const Feed = (props) => {
         <View><Text>Error while loading data 😢</Text></View> : 
         firstLoad ? 
         <FlatList 
-        keyExtractor={item => item.review_sum_id} 
+        keyExtractor={item => item.review_sum_id.toString()} 
         style = {feed.scrollableFeedContainer}
         contentContainerStyle = {{}}
         showsVerticalScrollIndicator={false}

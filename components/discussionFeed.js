@@ -21,7 +21,7 @@ const TagsView = ({data}) => {
         {data.map((item,index)=>{
             return(
             <TouchableOpacity 
-                key={index}
+                key={index.toString()}
                 style = {{flexDirection : 'row', alignItems : 'center', marginVertical : 5, marginRight : 10, borderRadius : 5 ,paddingHorizontal : 5, paddingVertical : 5, backgroundColor : '#EEE',}}
                 onPress = {()=>console.log("clicked on tag")}>
                 <Text style = {{ }}>{item}</Text>
