@@ -193,7 +193,7 @@ const submit = () => {
                 <View>
                     {answerData.length ? 
                     <FlatList 
-                    keyExtractor = {(item) => item.item_id.toString()}
+                    keyExtractor = {(item) => item.id.toString()}
                     data = {answerData}
                     renderItem = {({item, index})=> (
                         <Comments 

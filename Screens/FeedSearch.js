@@ -9,6 +9,7 @@ import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderCo
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import axios from 'axios';
 import { header } from './styles';
+import { MaterialIcons } from '@expo/vector-icons';
 
 const ProductDescription = (props) => {
 
@@ -16,32 +17,40 @@ const ProductDescription = (props) => {
       
       return(
           <TouchableOpacity 
-          style = {styles.container}
-          onPress = {()=> navigation.navigate('ProductDetails' , {product_id: props.product_id , product_name: props.product_name ,image: props.image})}
+          style = {{flexDirection : 'row' , paddingBottom : 10, borderBottomWidth : 1 , borderBottomColor : '#EEE' , marginTop : 5, alignItems : 'center'}}
+          onPress = {()=> navigation.navigate('ProductDetails' , {body:props})}
           >
-              <View style = {styles.imageview}>
+              <View style = {{width : 100}}>
                 <Image source={{uri:props.image}}
-                style = {{height: 70 , width: 70  } }/>
+                style = {{height: 90 , width: 90 , borderRadius : 20 } }/>
               </View>
+              
               <View style = {{ flex : 1,   marginLeft:5  ,  marginRight : 5, marginTop:5, }}>
+                <View style = {{flexDirection : 'row' , justifyContent : 'space-between'}}>
+                  <View>
+                    <Text style = {{fontWeight : 'bold'}}>{props.brand}</Text>
+                  </View>
+                  <View style = {{backgroundColor : "#888", borderRadius : 5, paddingHorizontal : 5, justifyContent: 'center', alignItems : 'center'}}>
+                    <Text style = {{fontSize : 12,fontStyle : 'italic', color : 'white'}}>{props.category_name}</Text>
+                  </View>
+                </View>
                 <View style = {{flex : 1, flexShrink: 1,}}>
-                  <Text style = {{fontWeight: 'bold' , fontSize:15 , flexShrink : 1}}>
+                  <Text style = {{fontSize:13 , flexShrink : 1}}>
                     {props.product_name}
                   </Text>
                 </View>
-                <View>
-                  <Text>{props.brand}</Text>
-                </View>
-                <View>
-                  <Text>{props.category_name}</Text>
-                </View>
-                <View style = {styles.reviewnumber}>
-                  <View>
-                    <Text>Reviews</Text>
-                  </View>
-                  <View>
-                    <Text style = {{marginLeft: 10}}>{props.number_of_reviews}</Text>
-                  </View>
+                
+                <View style = {{flexDirection : 'row' , justifyContent : 'space-between'}}>
+                {props.number_of_reviews ?
+                  <View style = {{flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}}>
+                    <MaterialIcons name = "recommend" size = {15}/> 
+                    <Text style = {{marginLeft : 5, fontSize : 15, fontStyle : 'italic' , color : "#0E76A8"}}>{props.number_of_reviews}</Text>
+                  </View>: <View><Text></Text></View>}
+                  {props.number_of_reviews ?
+                  <View style = {{flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}}>
+                    <MaterialIcons name = "rate-review" size = {15}/> 
+                    <Text style = {{marginLeft : 5,color : '#006241' , fontSize : 15 , fontWeight : 'bold'}}>{props.number_of_reviews} </Text>  
+                  </View>  : <View><Text></Text></View>}            
                 </View>
               </View>
           </TouchableOpacity>
@@ -84,7 +93,7 @@ const FeedSearch = () =>{
     //   setLoading(true)
       getProductData()
       
-      console.log( "productData : ", productData)
+     
     
         // setLoading(false)
         // setError(false)
@@ -111,7 +120,9 @@ const FeedSearch = () =>{
             {productData.length? 
             
             <FlatList
-
+            style = {{margin : 10 }}
+            contentContainerStyle = {{}}
+            showsVerticalScrollIndicator = {false}
             keyExtractor = {(item) => item.product_id.toString()}
             data = {productData}
             renderItem = {({item})=> (
@@ -136,33 +147,33 @@ const FeedSearch = () =>{
 }
 
 const styles = StyleSheet.create({
-  container:{
-      // flex: 1
-      flexDirection:'row',
-      marginLeft : 10,
-      marginRight: 10,
-      backgroundColor:background,
-      marginTop: 10,
-      // marginRight: 5,
-      elevation : 5,
-  },
+  // container:{
+  //     // flex: 1
+  //     flexDirection:'row',
+  //     marginLeft : 10,
+  //     marginRight: 10,
+  //     backgroundColor:background,
+  //     marginTop: 10,
+  //     // marginRight: 5,
+  //     elevation : 5,
+  // },
 
-  imageview :{
-      width : '25%',
-      alignItems:'center',
-      justifyContent:'center',
-  },
+  // imageview :{
+  //     width : '25%',
+  //     alignItems:'center',
+  //     justifyContent:'center',
+  // },
 
-  contentview:{
-      marginLeft:5  , 
-      marginRight : 5,
-      marginTop:5,
+  // contentview:{
+  //     marginLeft:5  , 
+  //     marginRight : 5,
+  //     marginTop:5,
     
-  }, 
-  reviewnumber:{
-      flexDirection: 'row',
+  // }, 
+  // reviewnumber:{
+  //     flexDirection: 'row',
       
-  }
+  // }
 })
 
 

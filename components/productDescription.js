@@ -10,13 +10,13 @@ const ProductDescription = (props) => {
     
     return(
         <TouchableOpacity 
-        style = {styles.container}
-        onPress = {()=> navigation.navigate('ProductDetails' , {product_id: props.product_id , product_name: props.product_name ,image: props.image})}
+        style = {{borderRadius : 20,}}
+        onPress = {()=> navigation.navigate('ProductDetails' , {body : props })}
         >
-            <View style = {styles.imageview}>
+            <View style = {{borderRadius : 70 , backgroundColor : 'red'}}>
                 <Image
                     source={{uri:props.image}}
-                    style = {{height: 70 , width: 70  } }
+                    style = {{height: 70 , width: 70 , borderRadius : 70  } }
                     />
             </View>
             <View style = {styles.contentview}>
@@ -47,29 +47,7 @@ const ProductDescription = (props) => {
 }
 
 const styles = StyleSheet.create({
-    container:{
-        // flex: 1
-        flexDirection:'row',
-        width: '100%',
-        backgroundColor:'white',
-        marginTop: 2,
-        // marginRight: 5
-    },
-
-    imageview :{
-        width : '25%',
-        alignItems:'center',
-        justifyContent:'center',
-    },
-
-    contentview:{
-        marginLeft: 10 , 
-        marginTop:1,
-    }, 
-    reviewnumber:{
-        flexDirection: 'row',
-        
-    }
+    
 })
 
 export default ProductDescription;

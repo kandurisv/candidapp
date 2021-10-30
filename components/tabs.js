@@ -5,6 +5,7 @@ import { createMaterialTopTabNavigator } from '@react-navigation/material-top-ta
 import Overview from './overview';
 import Reviews from './reviews';
 import Journey from './Journey';
+import { background, theme } from '../Screens/exports';
 
 const Tab = createMaterialTopTabNavigator()
 
@@ -12,10 +13,16 @@ const Tabs = (props) =>{
   
 
   return (
-        <Tab.Navigator>
-            <Tab.Screen name = "Overview" children={()=><Overview product_id={props.product_id}/>} />
+        <Tab.Navigator
+        screenOptions={{
+          tabBarLabelStyle: { color : theme },
+          tabBarStyle: { backgroundColor: background },
+          tabBarIndicatorStyle : {backgroundColor : theme}
+        }}
+        >
+            {/* <Tab.Screen name = "Overview" children={()=><Overview product_id={props.product_id}/>} /> */}
             <Tab.Screen name = "Reviews" children={()=><Reviews product_id={props.product_id}/>} />
-            <Tab.Screen name = "Journey" children={()=><Journey product_id={props.product_id}/>} /> 
+            <Tab.Screen name = "Recommends" children={()=><Journey product_id={props.product_id}/>} /> 
             
         </Tab.Navigator>
         )

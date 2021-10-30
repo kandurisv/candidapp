@@ -16,6 +16,8 @@ import axios from 'axios';
 
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import ProductDetailsHeader from '../components/productDetailsHeader';
+import { header, user } from './styles';
+import ModernHeader from 'react-native-modern-header';
 
 // const Tab = createMaterialTopTabNavigator();
 
@@ -24,24 +26,42 @@ const ProductDetails = () =>{
 
     const navigation  = useNavigation();
     const route = useRoute();
-    const productData = route.params;
+    const body = route.params?.body;
     
+    React.useEffect(()=>{
+        console.log(body)
+    },[])
+
     // console.log(productData)
     return(
-        <>
-            <ProductDetailsHeader
-                id = {productData.product_id}
-                product_name = {productData.product_name}
-                image = {productData.image}
-            />
+        <View style = {[user.container,{marginBottom : 0}]}>
+            <View style = {header.headerView}>
+                    <ModernHeader
+                    title= {body.category_name}
+                    titleStyle = {header.headerText}
+                    backgroundColor= {background}
+                    leftIconColor = {borderColor}
+                    leftIconOnPress={() => navigation.navigate("UserDetails")}
+                    rightDisable
+                    />
+            </View> 
+            <View style = {{marginHorizontal : 10,}}>
+                <ProductDetailsHeader
+                    id = {body.product_id}
+                    product_name = {body.product_name}
+                    image = {body.image}
+                    brand = {body.brand}
+                />
+            </View>
+            
             <NavigationContainer
                 independent = {true}
             >
                 <Tabs
-                    product_id = {productData.product_id}
+                    product_id = {body.product_id}
                 />
             </NavigationContainer>
-        </>
+        </View>
     );
 };
 

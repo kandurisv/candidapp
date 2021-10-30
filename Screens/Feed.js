@@ -18,27 +18,31 @@ const height = width * 1.2
 
 const FeedItem = ({item}) => {
   const navigation = useNavigation()
+  const [images,setImages] = React.useState(JSON.parse(item.image))
+  const [productNames,setProductNames] = React.useState(JSON.parse(item.product_names))
   
-  
-    var review = ""
-    item.content.map((reviewItem,index) => {
-      if(reviewItem.length > 0) {
-        review = review + "Day " + item.day_product_used_content[index] + ": " + reviewItem + "\n"
-      }
-      })
-    
-    var context = ""
-    item.category_ques.map((contextItem,index)=>{
-      context = context + item.category_ques[index] + " : " + item.category_ans[index] + "\n" + "\n"
-    })
+  const onItemClick = () => {
+    //  navigation.navigate("PostDetails", {details : item , reviewDetails : review , contextDetails : context})
+  }
 
-    const onItemClick = () => {
-      navigation.navigate("PostDetails", {details : item , reviewDetails : review , contextDetails : context})
-    }
+  React.useEffect(()=>{
+    console.log(images, productNames)
+  },[])
 
     return(
-        <TouchableWithoutFeedback style = {feed.scrollableFeedContainer} onPress = {onItemClick} >
-            <View style ={[feed.scrollableFeedItemUserNameHeaderView,{borderRadius:10}]}>
+        <TouchableWithoutFeedback style = { images && images.length?
+          feed.scrollableFeedContainer :
+          {borderWidth : 1 , borderColor : '#BBB' , marginBottom : 10,marginLeft : 10, marginRight : 10,
+            marginTop : 5, borderRadius : 10, backgroundColor : background
+        } 
+          } onPress = {onItemClick} >
+            <View style ={ images && images.length?
+              [feed.scrollableFeedItemUserNameHeaderView,{borderRadius:10}] :
+              {width : width-42,
+                backgroundColor : "#666",
+                height : 38,
+                borderRadius : 9 ,}
+              }>
             {  item.profile_image && item.profile_image != "None" && item.profile_image != "" ?
                         <Image source = {{uri : item.profile_image}} style = {{width : 28, height : 28 , borderRadius : 28 , marginTop : 5 , marginLeft : 5  }}/> :
               <Avatar.Image
@@ -48,8 +52,9 @@ const FeedItem = ({item}) => {
                 size={28}
               /> }
               <Text style ={feed.scrollableFeedItemUserName} >{item.username}</Text>  
-              <Text style = {feed.scrollableFeedItemTime}>{moment(item.event_ts,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>  
+              <Text style = {feed.scrollableFeedItemTime}>{moment(item.last_updated,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>  
             </View>
+            {images && images.length?
             <ScrollView 
               // pagingEnabled 
               horizontal 
@@ -57,18 +62,40 @@ const FeedItem = ({item}) => {
               contentContainerStyle = {{}}
               snapToInterval = {width-40}
             >
-            {item.image_list.map((image , index) => (
+            {images.map((image , index) => (
               <View key = {index}>
                 <Image key = {index} style = {feed.scrollableFeedItemHorizontalScrollImage} source = {{uri: image ? image : "No Image"}}/>
                 <View style = {feed.scrollableFeedItemImagesCount}>
-                  <Text style = {{fontSize:10, color : background}} >{index+1}/{item.image_list.length}</Text>
+                  <Text style = {{fontSize:10, color : background}} >{index+1}/{images.length}</Text>
                 </View>
               </View>  
             ))} 
-            </ScrollView>
-            <View style ={[feed.scrollableFeedItemProductView,,{borderRadius:10}]}>
-              <Text style ={feed.scrollableFeedItemProductName} >{item.product_name}</Text>
-              <Text style ={feed.scrollableFeedItemProductReview} > {review.length > 40 ? review.substring(0,40) + "..." : review} </Text>
+            </ScrollView> : null }
+            <View style ={ images && images.length?
+              [feed.scrollableFeedItemProductView,{borderRadius:10}] :
+              [{borderRadius : 10 , marginTop : 10 ,  width : width - 45 ,  paddingBottom : 5, backgroundColor : background,} ]
+              }>
+              <Text style ={ images && images.length ?
+                feed.scrollableFeedItemProductName :
+                [{color : borderColor , fontWeight : 'bold', marginLeft : 10 , marginTop : 10, }]
+              } >{item.journey_title}</Text>
+              <View style = {{flexDirection : 'row' , flexWrap : 'wrap' , marginTop : 10 , }}>
+             { productNames && productNames.map((item,index)=>{
+                return(
+                  <View style = { images && images.length?
+                    {backgroundColor : background, marginLeft : 10 , borderRadius : 10,justifyContent : 'center', alignItems : 'center', paddingVertical : 2, paddingHorizontal : 5,} :
+                    {backgroundColor : '#888', marginLeft : 10 , borderRadius : 10,justifyContent : 'center', alignItems : 'center' , paddingVertical : 2, paddingHorizontal : 5,}
+                    }>
+                    <Text style ={ images && images.length?
+                      [feed.scrollableFeedItemProductReview,{color : borderColor}] :
+                      {color : background}
+                      } > {item} </Text>
+                  </View>
+                )
+              })
+
+              }
+              </View>
             </View>
         </TouchableWithoutFeedback>
     );
@@ -96,10 +123,8 @@ const Feed = (props) => {
 
 
   const fetchMoreItems = async() => {
-    axios.get(URL + "/post/feed", {
+    axios.get(URL + "/journey/feed", {
       params: {
-        var : varValue,
-        value : requestValue,
         page : pageNumber
       }
     })
@@ -136,10 +161,8 @@ const Feed = (props) => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     progress.setValue(0)
-    axios.get(URL + "/post/feed", {
+    axios.get(URL + "/journey/feed", {
       params: {
-         var : varValue,
-         value : requestId,
          page : 0
        }
    })
@@ -173,10 +196,8 @@ const Feed = (props) => {
 
    
 
-    axios.get(URL + "/post/feed", {
+    axios.get(URL + "/journey/feed", {
          params: {
-            var : varValue,
-            value : requestId ,
             page : 0
           }
       })
@@ -195,7 +216,7 @@ const Feed = (props) => {
   },[route.params, varValue,requestId,requestValue]);
 
   const items = ({item,index}) => (
-        (item.image_list && item.username) ?
+        (item.username) ?
           <View key = {index}>     
             <FeedItem key = {index} item = {item}/> 
           </View> : null
@@ -240,7 +261,7 @@ const Feed = (props) => {
         <View><Text>Error while loading data 😢</Text></View> : 
         firstLoad ? 
         <FlatList 
-        keyExtractor={item => item.review_sum_id.toString()} 
+        keyExtractor={item => item.journey_id.toString()} 
         style = {feed.scrollableFeedContainer}
         contentContainerStyle = {{}}
         showsVerticalScrollIndicator={false}

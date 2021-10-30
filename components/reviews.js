@@ -15,16 +15,14 @@ const Reviews = (props) => {
     React.useEffect(() => {
         
       const getReviewData = () => {
-        axios.get(URL + "/post/feed", {
+        axios.get(URL + "/reviews/getreview", {
             params: {
-             var: "product_id",
-             value: props.product_id,
-             page: 0
+             "product_id": 1
             }
           }, {timeout : 5000})
         .then(res => res.data)
         .then(function (responseData) {
-        //    console.log( "productData : ", responseData)
+            console.log( "productData : ", responseData)
            setReviewData(responseData)
             // setLoading(false)
             // setFirstLoaded(true)
@@ -50,7 +48,7 @@ const Reviews = (props) => {
     
 
     return(
-        <View>
+        <View style = {{backgroundColor : background, flex : 1,}}>
             {reviewData.length? <FlatList
             keyExtractor = {(item) => item.review_sum_id.toString()}
             data = {reviewData}
