@@ -112,7 +112,11 @@ const StartDiscussion = () => {
 
     const onClickSearchItem = (item) => {
         console.log("Item",item)
-        setTagsData([...tagsData, item])
+        if(item && item != "") 
+        {
+            setTagsData([...tagsData, item])
+        }
+       
         setInputFocus(false)
        
     }

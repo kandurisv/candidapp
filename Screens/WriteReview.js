@@ -1,9 +1,9 @@
 import React from 'react'
-import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, TextInput, FlatList,ScrollView, Dimensions } from 'react-native'
+import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, TextInput, FlatList,ScrollView, Dimensions, ToastAndroid } from 'react-native'
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import { header, addPost, user } from './styles';
 import { useNavigation } from '@react-navigation/native';
-import { AuthContext, background,borderColor,s3URL,theme,uploadImageOnS3 } from './exports';
+import { AuthContext, background,borderColor,s3URL,theme,uploadImageOnS3, URL } from './exports';
 import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import {Picker} from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -64,10 +64,24 @@ const WriteReview = () => {
 
     const [productAdded,setProductAdded] = React.useState(false)
     const [productName,setProductName] = React.useState("")
+
+    const [userName,setUserName] = React.useState("")
+    const [userImage,setUserImage] = React.useState("")
   
 
     React.useEffect(()=>{
-       
+        const fetchUser = async () => {
+            axios.get(URL + "/user/info" , {params : {user_id : userId.slice(1,13)}}, {timeout : 5000})
+            .then(res => res.data).then(function(responseData) {      
+                setUserName(responseData[0].username)
+                setUserImage(responseData[0].profile_image)
+            })
+            .catch(function(error) {
+                setUserName("Error getting name")
+                });
+            }
+        
+        fetchUser()
     },[])
 
     
@@ -106,7 +120,7 @@ const WriteReview = () => {
     
     
         if (!result.cancelled) {
-          setImage(result.uri);
+          setImage(s3URL + userId.slice(1,13) + "/review/" + imageLinkName);
           uploadImageOnS3(userId.slice(1,13) + "/review/" + imageLinkName,result.uri)
     
          }
@@ -160,13 +174,15 @@ const WriteReview = () => {
             "product_id": 1,
             "category_id": 1,
             "brand_id": 1,
-            "username": "",
+            "username": userName,
             "product_name": productName,
             "category_name": "category 1",
             "content_like": positiveReview,
             "content_dislike": negativeReview,
-            "image": image !== "" ? "" : s3URL + userId.slice(1,13) + "/review/" + imageLinkName
+            "image": image
           }
+
+          console.log(body)
 
           if(productName != "" && (positiveReview !== "" || negativeReview !== "") ) {
             axios({
@@ -175,10 +191,12 @@ const WriteReview = () => {
                 data: body
             })
             .then(res => {
+                setSubmitted(false)
                 setModalVisible(true)
                 refresh()
             })
             .catch((e) => {
+                console.log(e)
                 setSubmitted(false)
                 ToastAndroid.show("Sorry! Review not posted due to an error. Please try later", ToastAndroid.SHORT)
             })
@@ -296,7 +314,7 @@ const WriteReview = () => {
                 <Text style = {addPost.sdIndividualComponentHeader}>Attach Image </Text>
                 <TouchableOpacity onPress = {pickImage}>
                     { image && image != "None" && image != ""?
-                    <ImageBackground source = {{uri : image + "?" + new Date()}} style = {addPost.sdImageSize} ></ImageBackground> :
+                    <ImageBackground source = {{uri : image }} style = {addPost.sdImageSize} ></ImageBackground> :
                     <MaterialCommunityIcons name = "image-plus" size = {40} color = "#666"/>
                     }
               </TouchableOpacity>

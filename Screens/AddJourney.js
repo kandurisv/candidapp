@@ -137,8 +137,11 @@ const AddJourney = () => {
       
         setSearchTextProduct("")
         setInputFocus(false)
-
-        setTagsData([...tagsData, item])
+        if(item && item != "") 
+        {
+            setTagsData([...tagsData, item])
+        }
+      
        
       }
     

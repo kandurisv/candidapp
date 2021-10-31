@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity, ImageBackground, TextInput, F
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import { header, addPost, user } from './styles';
 import { useNavigation,useRoute } from '@react-navigation/native';
-import { AuthContext, background,borderColor,theme,uploadImageOnS3, URL, width } from './exports';
+import { AuthContext, background,borderColor,s3URL,theme,uploadImageOnS3, URL, width } from './exports';
 import { AntDesign, Entypo, MaterialCommunityIcons } from "@expo/vector-icons";
 import {Picker} from '@react-native-picker/picker';
 import * as ImagePicker from 'expo-image-picker';
@@ -51,11 +51,14 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
     const [category,setCategory] = React.useState("")
     const [title,setTitle] = React.useState("")
     const [firstComment, setFirstComment] = React.useState("")
+    
 
     const [currentDate,setCurrentDate] = React.useState(moment().format("YYYY-MM-DD"))
     
     const [userName,setUserName] = React.useState("")
     const [userImage,setUserImage] = React.useState("")
+
+    const [submitted,setSubmitted] = React.useState(false)
 
     React.useEffect(()=>{
         if(date[0] !== currentDate) {
@@ -63,6 +66,10 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
         } else {
             ToastAndroid.show("You already updated your journey for today. If you want to edit it, please submit a new entry",ToastAndroid.LONG)
         }
+
+        
+
+
         
 
 
@@ -91,20 +98,16 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
           quality: 1,
         });
     
-        console.log(image)
+       
     
         if (!result.cancelled) {
             setImageShown(result.uri)
-            if(date[0] !== currentDate.format("YYYY-MM-DD")) {
-                setImage1({[currentDate] : URL + "/journey/"+ userId + "/" + currentDate,...image1});
-            }
-           
-            
-           
-          
-        //   uploadImageOnS3(user_id + "/cover",result.uri)
+            console.log(result.uri)
+            setImage1({[currentDate] : s3URL + "journey/"+ userId.slice(1,13) + "/" + journeyTitle.replace(/\s/g,"x") + "/" + currentDate,...image});
+            uploadImageOnS3("journey/"+ userId.slice(1,13) + "/" + journeyTitle.replace(/\s/g,"x") + "/" + currentDate,result.uri)
     
          }
+        
       }; 
 
      
@@ -137,6 +140,9 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
       }
     
     const submit = () => {
+        setSubmitted(true)
+
+
         const body ={
             "journey_id" : journeyId ,
             "user_id": userId.slice(1,13),
@@ -160,12 +166,13 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
             })
             .then(res => {
                ToastAndroid.show("Added your journey",ToastAndroid.SHORT)
+               setSubmitted(false)
                setTimeout(function(){
                 navigation.navigate("Home")
                 }, 300);    
             })
             .catch((e) => {
-                
+                setSubmitted(false)
                 ToastAndroid.show("Sorry! Discussion not initiated due to an error. Please try later", ToastAndroid.SHORT)
             })
        } else {
@@ -211,7 +218,10 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
             </View>
             <View style = {{justifyContent : 'center', alignItems : 'center' , marginTop : 20}}>
                 <TouchableOpacity style = {{backgroundColor : theme, borderRadius : 20, padding : 10, paddingHorizontal : 20}} 
-                onPress = {submit}>
+                onPress = {submit}
+                disabled = {submitted}
+                >
+
                     <Text  style = {{color : background, fontSize : 16,}}>Add</Text>
                 </TouchableOpacity>
             </View>

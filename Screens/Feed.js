@@ -3,7 +3,7 @@ import { View, Text , ScrollView ,RefreshControl ,Animated, Easing, ToastAndroid
 import moment from 'moment';
 import { useNavigation , useRoute } from '@react-navigation/native';
 import axios from 'axios'
-import {URL,  background, borderColor , theme, fitem, LoadingPage} from './exports'
+import {URL,  background, borderColor , theme, fitem, LoadingPage, lightTheme} from './exports'
 import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native-gesture-handler'
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import {Avatar} from 'react-native-paper'
@@ -18,25 +18,32 @@ const height = width * 1.2
 
 const FeedItem = ({item}) => {
   const navigation = useNavigation()
-  const [images,setImages] = React.useState(JSON.parse(item.image))
-  const [productNames,setProductNames] = React.useState(JSON.parse(item.product_names))
+
+
+  const [imageCheck,setImageCheck] = React.useState(true)
+
+  
   
   const onItemClick = () => {
-    //  navigation.navigate("PostDetails", {details : item , reviewDetails : review , contextDetails : context})
+      navigation.navigate("JourneyDetails", {item : item})
   }
 
   React.useEffect(()=>{
-    console.log(images, productNames)
-  },[])
+    console.log(item.image[Object.keys(item.image)[0]].replace(" ", "%20"))
+    setImageCheck(Object.values(item.image).some(x => x !== null && x !== ''))
+    console.log(Object.values(item.image).some(x => x !== null && x !== ''))
+  },[item])
 
     return(
-        <TouchableWithoutFeedback style = { images && images.length?
-          feed.scrollableFeedContainer :
+        <TouchableWithoutFeedback style = { imageCheck ?
+          [feed.scrollableFeedContainer,{height : width*0.95}] :
           {borderWidth : 1 , borderColor : '#BBB' , marginBottom : 10,marginLeft : 10, marginRight : 10,
             marginTop : 5, borderRadius : 10, backgroundColor : background
         } 
-          } onPress = {onItemClick} >
-            <View style ={ images && images.length?
+          } onPress = {onItemClick}
+            key = {item.journey_id.toString()}
+          >
+            <View style ={ imageCheck ?
               [feed.scrollableFeedItemUserNameHeaderView,{borderRadius:10}] :
               {width : width-42,
                 backgroundColor : "#666",
@@ -54,7 +61,7 @@ const FeedItem = ({item}) => {
               <Text style ={feed.scrollableFeedItemUserName} >{item.username}</Text>  
               <Text style = {feed.scrollableFeedItemTime}>{moment(item.last_updated,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>  
             </View>
-            {images && images.length?
+            {imageCheck ?
             <ScrollView 
               // pagingEnabled 
               horizontal 
@@ -62,31 +69,35 @@ const FeedItem = ({item}) => {
               contentContainerStyle = {{}}
               snapToInterval = {width-40}
             >
-            {images.map((image , index) => (
-              <View key = {index}>
-                <Image key = {index} style = {feed.scrollableFeedItemHorizontalScrollImage} source = {{uri: image ? image : "No Image"}}/>
+            {imageCheck ? 
+            Object.keys(item.image).map((key , index) => {return(
+              <View key = {index.toString()}>
+                <Image key = {index.toString()} style = {[feed.scrollableFeedItemHorizontalScrollImage,{height : ((3*width)/4)-30}]} source = {{uri: item.image[key] ? item.image[key] : "No Image"}}/>
                 <View style = {feed.scrollableFeedItemImagesCount}>
-                  <Text style = {{fontSize:10, color : background}} >{index+1}/{images.length}</Text>
+                  <Text style = {{fontSize:10, color : background}} >{index+1}/{item.image.length}</Text>
                 </View>
               </View>  
-            ))} 
+            )}) : null } 
             </ScrollView> : null }
-            <View style ={ images && images.length?
+            <View style ={ imageCheck ?
               [feed.scrollableFeedItemProductView,{borderRadius:10}] :
               [{borderRadius : 10 , marginTop : 10 ,  width : width - 45 ,  paddingBottom : 5, backgroundColor : background,} ]
               }>
-              <Text style ={ images && images.length ?
+                <View style = {{flexDirection : 'row', justifyContent : 'space-between', marginRight : 10 , alignItems : 'center'}}>
+              <Text style ={ imageCheck ?
                 feed.scrollableFeedItemProductName :
                 [{color : borderColor , fontWeight : 'bold', marginLeft : 10 , marginTop : 10, }]
               } >{item.journey_title}</Text>
+              <Text style = {{color : imageCheck ? 'white' : theme, fontStyle : 'italic' , fontSize : 13, marginTop : 10,}}>{item.datetime_array.length} entries</Text>
+              </View>
               <View style = {{flexDirection : 'row' , flexWrap : 'wrap' , marginTop : 10 , }}>
-             { productNames && productNames.map((item,index)=>{
+             { item.product_names && item.product_names.map((item,index)=>{
                 return(
-                  <View style = { images && images.length?
-                    {backgroundColor : background, marginLeft : 10 , borderRadius : 10,justifyContent : 'center', alignItems : 'center', paddingVertical : 2, paddingHorizontal : 5,} :
-                    {backgroundColor : '#888', marginLeft : 10 , borderRadius : 10,justifyContent : 'center', alignItems : 'center' , paddingVertical : 2, paddingHorizontal : 5,}
+                  <View style = { imageCheck ?
+                    {backgroundColor : background, marginLeft : 10 , marginTop : 5, borderRadius : 10,justifyContent : 'center', alignItems : 'center', paddingVertical : 2, paddingHorizontal : 5,} :
+                    {backgroundColor : '#888', marginLeft : 10 , marginTop : 5, borderRadius : 10,justifyContent : 'center', alignItems : 'center' , paddingVertical : 2, paddingHorizontal : 5,}
                     }>
-                    <Text style ={ images && images.length?
+                    <Text style ={ imageCheck ?
                       [feed.scrollableFeedItemProductReview,{color : borderColor}] :
                       {color : background}
                       } > {item} </Text>
@@ -217,7 +228,7 @@ const Feed = (props) => {
 
   const items = ({item,index}) => (
         (item.username) ?
-          <View key = {index}>     
+          <View key = {index.toString()}>     
             <FeedItem key = {index} item = {item}/> 
           </View> : null
         )

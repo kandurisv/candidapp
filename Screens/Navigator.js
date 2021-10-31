@@ -13,7 +13,7 @@ import Pins from './Pins'
 import Signout from './Signout'
 import UserDetails from './UserDetails'
 import PostDetails from './PostDetails'
-import Brands from './Brands'
+
 
 import Search from './Search'
 import { AuthContext, background, borderColor, theme } from "./exports";
@@ -21,7 +21,7 @@ import HeroSearchFeed from "./HeroSearchFeed";
 import ActivityNotification from "./ActivityNotification";
 import UpdatePost from "./UpdatePost";
 import DrawerContent from "./DrawerContent";
-import BrandsPage from "./BrandsPage";
+
 import PostLink from "./PostLink";
 import FeedSearch from "./FeedSearch";
 import UserPostDetails from "./UserPostDetails";
@@ -61,6 +61,7 @@ import MyJourneys from "./MyJourneys";
 import MyReviews from "./MyReviews";
 import MyRecommendations from "./MyRecommendations";
 import AppendJourney from "./AppendJourney";
+import JourneyDetails from "./JourneyDetails";
 
 
 
@@ -281,8 +282,7 @@ const TabNavigator = () => {
         <Stack.Screen name="Search" component ={Search} />
         <Stack.Screen name="FeedSearch" component ={FeedSearch} />
         <Stack.Screen name="ActivityNotification" component ={ActivityNotification} />
-        <Stack.Screen name="Brands" component ={Brands} />
-        <Stack.Screen name="BrandsPage" component ={BrandsPage} />
+
         <Stack.Screen name="DiscussionPost" component ={DiscussionPost} />
         <Stack.Screen name="Input" component ={Input} />
         <Stack.Screen name="ProductDetails" component ={ProductDetails} />
@@ -306,6 +306,7 @@ const TabNavigator = () => {
         <Stack.Screen name="MyJourneys" component ={MyJourneys} />
         <Stack.Screen name="MyReviews" component ={MyReviews} />
         <Stack.Screen name="MyRecommendations" component ={MyRecommendations} />
+        <Stack.Screen name="JourneyDetails" component ={JourneyDetails} />
       </Stack.Navigator>
     );
   }

@@ -2,14 +2,69 @@ import React from 'react';
 import { StyleSheet, Text, View , Image , FlatList , TouchableOpacity } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import ReviewComponenet from './reviewComponent';
+
 // import fontawesome from 'react-native-vector-icons/fontawesome';
 import { AuthContext , theme , background, ErrorPage, URL, borderColor, width, height} from '../Screens/exports'
 
 import axios from 'axios';
+import moment from 'moment';
+import { AntDesign } from '@expo/vector-icons';
+
+const ReviewComponent = ({item}) => {
 
 
-const Reviews = (props) => {
+  return(
+      <View style = {{backgroundColor : background , margin : 10, borderBottomWidth : 1, borderBottomColor : "#EEE",}}>
+          <View style ={{flexDirection : 'row'}}>
+              <View style = {{margin:5}}>
+                  <Image
+                  source={{uri : item.profile_image}}
+                  style = {{height: 40 , width:  40 , borderRadius: 40} }
+                  />
+              </View>
+              <View style = {{flex : 1,justifyContent : 'center' , marginLeft : 10 ,marginRight : 10 }}>
+                  <View style = {{flexDirection : 'row' , justifyContent : 'space-between'}}>
+                      <View>
+                          <Text style = {{fontWeight : 'bold'}}>{item.username}</Text>
+                      </View>
+                      <View>
+                          <Text style = {{fontSize : 12, fontStyle: 'italic'}}>{moment(item.created_at,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
+                      </View>
+                  </View>
+              </View>
+              
+          </View>
+
+          <View style = {{}}>
+              <View style = {{}}>
+                  <Image
+                          source={{uri:item.image}}
+                          style = {{width : width*0.92 , height : width*0.69, marginHorizontal : width*0.02 } }
+                  />
+              </View>
+              <View>
+                  {item.content_like ?
+                  <View style = {{flexDirection : 'row', marginLeft : 5, marginBottom : 10,  marginTop : 10 , marginRight : 10, flexShrink : 1, paddingRight : 10,  }}>
+                    <AntDesign name = "like2" size = {20} color = "green"/>
+                    <Text style = {{marginLeft : 10, flexShrink : 1, }}>{item.content_like} dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaadddddddddddddddfasdasdaasdasfafasfasfsafsafsafasfsafsafasfsafsafasfasfasdcfcssssssssssssssssssssssscavasdfasdfasdfasfasfasdafcadcascascasfwafas</Text>
+                  </View>
+                  : null }
+                  {item.content_dislike ?
+                  <View style = {{flexDirection : 'row', marginLeft : 5, marginBottom : 10 ,  marginRight : 10, flexShrink : 1, paddingRight : 10,}}>
+                    <AntDesign name = "dislike2" size = {20} color = "red"/>
+                    <Text style = {{marginLeft : 10, flexShrink : 1,  }}>{item.content_dislike}</Text>
+                  </View>
+                  : null }
+              </View>  
+          </View>
+      </View>
+  );
+}
+
+
+
+
+const Reviews = () => {
 
     const [reviewData , setReviewData]  = React.useState([])
     React.useEffect(() => {
@@ -50,16 +105,12 @@ const Reviews = (props) => {
     return(
         <View style = {{backgroundColor : background, flex : 1,}}>
             {reviewData.length? <FlatList
-            keyExtractor = {(item) => item.review_sum_id.toString()}
+            keyExtractor = {(item) => item.review_id.toString()}
             data = {reviewData}
             renderItem = {({item})=> (
-                <ReviewComponenet 
-                    review_sum_id = {item.review_sum_id}
-                    user_id = {item.user_id}
-                    username = {item.username}
-                    event_ts = {item.event_ts}
-                    content = {item.content}
-                    
+                <ReviewComponent 
+                    review_sum_id = {item.review_id.toString()}
+                    item = {item}                   
                 /> 
             )}
             />: null}
