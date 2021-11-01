@@ -248,7 +248,13 @@ const Home = () => {
                 const getData =  () => {
                     axios.get(URL + "/user/info", {params:{user_id : user.phoneNumber.slice(1,13) }} , {timeout:5000})
                     .then(res => res.data).then(async (responseData) => {
-             //           console.log("HOME USER RESPONSE",responseData)
+                        axios({
+                          method: 'post',
+                          url: URL + '/visit/appvisit',
+                          data: {"user_id" : user.phoneNumber.slice(1,13) }
+                        })
+                        .then(res => { console.log("App visit recorded") })
+                        .catch((e) => { console.log("App visit not recorded")})
                         setUserResponse(responseData[0])
                         setInfoLoading(false)
                         if(responseData.length && responseData[0].username) {

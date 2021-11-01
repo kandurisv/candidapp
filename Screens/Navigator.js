@@ -16,7 +16,7 @@ import PostDetails from './PostDetails'
 
 
 import Search from './Search'
-import { AuthContext, background, borderColor, theme , contrastTheme, lightTheme , contrastLightTheme} from "./exports";
+import { AuthContext, background, borderColor, theme , contrastTheme, lightTheme , contrastLightTheme, URL} from "./exports";
 import HeroSearchFeed from "./HeroSearchFeed";
 import ActivityNotification from "./ActivityNotification";
 import UpdatePost from "./UpdatePost";
@@ -28,20 +28,13 @@ import UserPostDetails from "./UserPostDetails";
 import DiscussionScreen from "./DiscussionScreen";
 import DiscussionPost from "./discussionPost";
 import Input from "./input";
-import ProductList from "./productList"
+
 import ProductDetails from "./productDetails"
-import Tabs from "../components/tabs";
-import Onboarding from "./OnboardingScreens/SkinOnboarding"
-import BottomSheetScreen from "./bottomSheetScreen";
+
 import NewPostModal from "./NewPostModal";
-import NavBottomSheet from "../components/NavBottomSheet";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { Portal, PortalHost } from '@gorhom/portal';
-import BottomSheet from '@gorhom/bottom-sheet';
+
 import NewUserOnboarding from "./OnboardingScreens/NewUserOnboarding";
-import QuestionsOnboarding from "./OnboardingScreens/SkinOnboarding";
-import FinalOnboarding from "./OnboardingScreens/SkinOnboardingTags";
-import SecondaryOnboarding from "./OnboardingScreens/SkinOnboardingSecondary";
+
 import SkinOnboarding from "./OnboardingScreens/SkinOnboarding";
 import SkinOnboardingSecondary from "./OnboardingScreens/SkinOnboardingSecondary";
 import SkinOnboardingTags from "./OnboardingScreens/SkinOnboardingTags";
@@ -62,6 +55,7 @@ import MyReviews from "./MyReviews";
 import MyRecommendations from "./MyRecommendations";
 import AppendJourney from "./AppendJourney";
 import JourneyDetails from "./JourneyDetails";
+import axios from "axios";
 
 
 
@@ -124,8 +118,36 @@ const BottomMenu = ({ iconName, isCurrent , label, value, index}) => {
 
 
 const TabBar = ({state,descriptors,navigation}) => {
+    const [userId] = React.useContext(AuthContext)
+    const [badgeValue,setBadgeValue] = React.useState([0,10,0,30,40])
+    React.useEffect(() => {
+
+      axios.all([
+        axios.get(URL + "/discussion/new",{params:{user_id : userId.slice(1,13) }} , {timeout : 5000}),
+        axios.get(URL + "/journey/new",{params:{user_id : userId.slice(1,13) }} , {timeout : 5000}), 
+        axios.get(URL + "/notifications/newcount",{params:{user_id : userId.slice(1,13) }} , {timeout : 5000})])
+        .then(axios.spread((...responses) => {
+          console.log(responses[0].data[0].new_discussion_item)
+          const responseOne = responses[0].data[0].new_discussion_item
+          const responseTwo = responses[1].data[0].new_discussion_item
+          const responesThree = responses[2].data[0].new_notification_indicator
+          let newArr1 = [...badgeValue]
+          newArr1[1] = responseOne
+          newArr1[3] = responseTwo
+          newArr1[4] = responesThree
+          setBadgeValue(newArr1)
+        })).catch(errors => {
+          // react on errors.
+        })
+
+
+      
+      
+
+    },[])
+
     //Badge Value
-    const [badgeValue,setBadgeValue] = React.useState([0,10,20,30,40])
+   
 
     const [translateValue] = useState(new Animated.Value(0));
     const tabWidth = totalWidth / state.routes.length;
