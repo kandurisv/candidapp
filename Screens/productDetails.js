@@ -41,7 +41,7 @@ const ProductDetails = () =>{
                     titleStyle = {header.headerText}
                     backgroundColor= {background}
                     leftIconColor = {borderColor}
-                    leftIconOnPress={() => navigation.navigate("UserDetails")}
+                    leftIconOnPress={() => navigation.goBack()}
                     rightDisable
                     />
             </View> 

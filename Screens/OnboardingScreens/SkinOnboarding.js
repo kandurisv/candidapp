@@ -3,11 +3,10 @@ import { StyleSheet, Text, View  , TouchableOpacity , FlatList  , Image ,Keyboar
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { ScrollView, TextInput  , TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { ModernHeader } from "@freakycoder/react-native-header-view";
-import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from './exports'
+import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from '../exports'
 import axios from 'axios';
-// import OnboardingQuestions from '../components/onboardingQuestion';
-import OnboardingTags from '../components/onboardingTags';
-import { header, user } from './styles';
+
+import { header, user } from '../styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const SkinPrimaryQuestions = (props) => {
@@ -26,12 +25,9 @@ const SkinPrimaryQuestions = (props) => {
             <View style = {{ marginTop : 10, marginBottom : 10, marginLeft : 10}}>
                 <Text style = {user.editUserProfileHeader}>{props.questionNo+1}.{props.question}</Text>
             </View>
-            <View>
-                <FlatList 
-                keyExtractor = {(item,index)=> index.toString()}
-                data = {props.option} 
-                style = {{flexWrap: 'wrap', flexDirection : 'row',}} 
-                renderItem = {({item, index})=> (
+            <View style = {{flexDirection : 'row' , flexWrap : 'wrap'}}>
+            {props.option.map((item,index)=>{
+                return(
                     <TouchableOpacity
                     key = {index.toString()}
                     style = {{
@@ -46,9 +42,11 @@ const SkinPrimaryQuestions = (props) => {
                         backgroundColor : item == props.clickedAnswer  ? theme : background}}
                     onPress =  {() => getSelectedAnswer(item, props.question_id)}>
                         <Text style = {{color : item == props.clickedAnswer  ? background : borderColor}}> {item} </Text>
-                    </TouchableOpacity> 
-                )}/>
-            </View>
+                    </TouchableOpacity>
+                    
+                    )
+            })}
+            </View> 
         </View>
     )
 }
@@ -63,17 +61,19 @@ const SkinOnboarding = () => {
     const [ submitted,setSubmitted ] = React.useState(false)
     const route = useRoute()
     const [ body,setBody ] = React.useState({
-        userName : route?.params?.userName,
-        instagram : route?.params?.instagram,
-        userDob : route?.params?.userDob,
+        username : route?.params?.userName,
+        instagram_username : route?.params?.instagram,
+        dob : route?.params?.userDob,
         gender : route?.params?.gender,
-        profileImage : route?.params?.userProfileImage,
-        skinPrimaryQuestionAnswers : {},
-        skinSecondaryQuestionAnswers :{},
-        skinTags : [],
-        hairPrimaryQuestionAnswers : {},
-        hairSecondaryQuestionAnswers : {},
-        hairTags : [],
+        profile_image : route?.params?.userProfileImage,
+        expo_token : route?.params?.expoToken,
+        device_token : route?.params?.deviceToken,
+        skin_answer_primary : {},
+        skin_answer_quiz :{},
+        skin_tags : [],
+        hair_answer_primary : {},
+        hair_answer_quiz : {},
+        hair_tags : [],
         var : route?.params?.var
     })
 
@@ -116,7 +116,7 @@ const SkinOnboarding = () => {
          let answerObject = {...answer}
          answerObject[id] = ans
          setAnswer(answerObject)
-         setBody({...body, skinPrimaryQuestionAnswers : answerObject })
+         setBody({...body, skin_answer_primary : answerObject })
          console.log(body)
     }
 
@@ -154,46 +154,37 @@ const goToTags = () => {
                 />
             </View>
             <ScrollView style = {{backgroundColor : background}}>
-            {skinTypeQuestion.length ?
-                <View>
-                    <FlatList
-                        keyExtractor = {(item,index) => index.toString()}
-                        data = {skinTypeQuestion}
-                        renderItem = {({item,index}) =>(
-                            <SkinPrimaryQuestions
-                                key = {index.toString()}
-                                selctedAnswerFunc = {(index , ans) => getSkinSelectedAnswer(index , ans) }
-                                question_id = {index}
-                                questionNo = {index}
-                                question = {item.question}
-                                option = {item.option}
-                                clickedAnswer = {answer[index]}
-                            />
-                        )
-                    }
-                    />
-                    <View style = {{justifyContent : 'center',alignItems : 'center'}}>
-                    <TouchableOpacity 
-                    style = {{ elevation : 1,}}
-                    onPress = {detailedQuestionnaire}
-                    >
-                        <Text style = {{fontSize : 14, fontStyle:'italic', textShadowRadius : 0, color : '#0E76A8'}} > Not sure ? Take this simple quiz </Text>
-                    </TouchableOpacity>
-                    </View>
-                    
-
-
-                </View> : null
-            }
-                    <View style = {{ marginTop : 20, width : Dimensions.get('screen').width*0.95,
-                        alignItems:'flex-end'}}>
+            {skinTypeQuestion.length ? skinTypeQuestion.map((item,index)=>{
+                return(<SkinPrimaryQuestions
+                    key = {index.toString()}
+                    selctedAnswerFunc = {(index , ans) => getSkinSelectedAnswer(index , ans) }
+                    question_id = {index}
+                    questionNo = {index}
+                    question = {item.question}
+                    option = {item.option}
+                    clickedAnswer = {answer[index]}
+                />)
+            }) : null }
+                {skinTypeQuestion.length ? <View>
+                    <View style = {{justifyContent : 'center',alignItems : 'center', marginTop : 20}}>
                         <TouchableOpacity 
-                                onPress = {goToTags}
-                                style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
-                                flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
-                            <MaterialIcons name = "navigate-next" size= {40} color = "white" />
+                        style = {{ elevation : 1,}}
+                        onPress = {detailedQuestionnaire}
+                        >
+                            <Text style = {{fontSize : 14, fontStyle:'italic', textShadowRadius : 0, color : '#0E76A8'}} > Not sure ? Take this simple quiz </Text>
                         </TouchableOpacity>
                     </View>
+                </View>  : null}
+               
+                <View style = {{ marginTop : 20, width : Dimensions.get('screen').width*0.95,
+                    alignItems:'flex-end'}}>
+                    <TouchableOpacity 
+                            onPress = {goToTags}
+                            style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
+                            flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
+                        <MaterialIcons name = "navigate-next" size= {40} color = "white" />
+                    </TouchableOpacity>
+                </View>
             </ScrollView>
         </View>
     );

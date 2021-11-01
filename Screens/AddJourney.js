@@ -20,7 +20,7 @@ const TagsView = ({data,removeFunc}) => {
     }
 
     React.useEffect(() =>{
-        console.log("Data", data)
+      //  console.log("Data", data)
     },[])
 
     return(
@@ -66,11 +66,11 @@ const AddJourney = () => {
     const taginput = React.useRef(null);
 
     React.useEffect(()=>{
-        console.log(userId)
+      //  console.log(userId)
         const getNameReco = async () => {
             axios.get(URL + "/journey/namereco",{params:{user_id : userId.slice(1,13) }} ,{timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-                    console.log("Namereco", responseData)
+              //      console.log("Namereco", responseData)
                     setNameReco(responseData)
                 })
                 .catch(function(error) {   });
@@ -80,7 +80,7 @@ const AddJourney = () => {
         const getExistingJourneys = async () => {
             axios.get(URL + "/journey/existingjourneylist",{params:{user_id : userId.slice(1,13) }} ,{timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-                    console.log("journey list", responseData)
+                 //   console.log("journey list", responseData)
                     setJourneyList(responseData)
                 })
                 .catch(function(error) {   });
@@ -121,7 +121,7 @@ const AddJourney = () => {
     
 
     const onClickSearchItem = (item) => {
-        console.log(item)
+      //  console.log(item)
       
         setSearchText("")
         setInputFocus(false)
@@ -133,7 +133,7 @@ const AddJourney = () => {
       }
 
       const onClickSearchItemChild = (item) => {
-        console.log(item)
+      //  console.log(item)
       
         setSearchTextProduct("")
         setInputFocus(false)
@@ -162,7 +162,7 @@ const AddJourney = () => {
     }
 
     const newJourneyFunc = () => {
-        console.log("HI")
+     //   console.log("HI")
         setNewJourney(true)
         newJourneyRef.current.focus()
     }
@@ -177,14 +177,14 @@ const AddJourney = () => {
     }
 
     const onCreateJourney = (journey,tags) => {
-        console.log([{
-            "content": JSON.stringify({}),
-            "datetime_array": JSON.stringify([]),
-            "image": JSON.stringify({}),
-            "journey_title": journey,
-            "product_id": JSON.stringify([1, 2, 3]),
-            "product_names": JSON.stringify(tags),
-          },...journeyList])
+        // console.log([{
+        //     "content": JSON.stringify({}),
+        //     "datetime_array": JSON.stringify([]),
+        //     "image": JSON.stringify({}),
+        //     "journey_title": journey,
+        //     "product_id": JSON.stringify([1, 2, 3]),
+        //     "product_names": JSON.stringify(tags),
+        //   },...journeyList])
 
         setJourneyList([{
             "content": JSON.stringify({}),
@@ -199,7 +199,7 @@ const AddJourney = () => {
         setSearchTextProduct("")
         setSearchText("")
         setTagsData([])
-        console.log("JN", journey , "Tags" , tags)
+      //  console.log("JN", journey , "Tags" , tags)
     }
 
 

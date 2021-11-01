@@ -2,18 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View  , TouchableOpacity , FlatList  , Image ,Keyboard , KeyboardAvoidingView, Button , ToastAndroid, Dimensions} from 'react-native';
 
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DiscussionFeed from '../components/discussionFeed';
-import DiscussionHeader from '../components/discussionHeader';
-import Comments from '../components/comments';
+
 import { ScrollView, TextInput  , TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { ModernHeader } from "@freakycoder/react-native-header-view";
-import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from './exports'
+import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from '../exports'
 
 import axios from 'axios';
-// import OnboardingQuestions from '../components/onboardingQuestion';
-import OnboardingTags from '../components/onboardingTags';
-import { header, user } from './styles';
+import { header, user } from '../styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
 const SecondaryQuestions = (props) => {
@@ -61,7 +56,7 @@ const SecondaryQuestions = (props) => {
 
 
 
-const SkinOnboardingSecondary = () => {
+const HairOnboardingSecondary = () => {
     const [indicator , setIndicator] = React.useState(0)
     const [ questionData , setQuestionData] = React.useState([])
     const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
@@ -80,7 +75,7 @@ const SkinOnboardingSecondary = () => {
       const getOnboardingQuestions = () => {
         axios.get(URL + "/onboarding", {
             params: {
-             question_type: "skinquiz"
+             question_type: "hairquiz"
             }
           }, {timeout : 5000})
         .then(res => res.data)
@@ -140,7 +135,7 @@ const SkinOnboardingSecondary = () => {
     
       }
 
-    const [answer , setAnswer] = React.useState({});
+    const [answer , setAnswer] = React.useState([]);
 
     const getSelectedAnswer = (id , ans) => {
          let answerObject = {...answer}
@@ -172,7 +167,7 @@ const detailedQuestionnaire = () => {
 const goToTags = () => {
     setSubmitted(true)
     setIndicator(2)
-    navigation.navigate("SkinOnboardingTags", {body: body})
+    navigation.navigate("HairOnboardingTags",{body:body})
 }
 
 
@@ -181,7 +176,7 @@ const goToTags = () => {
           <View style = {{backgroundColor : background , flex : 1}}>
              <View style = {header.headerView}>
                 <ModernHeader 
-                title="Skin Profile Quiz"
+                title="Hair Profile Quiz"
                 titleStyle = {header.headerText}
                 backgroundColor= {background}
                 leftIconColor = {borderColor}
@@ -223,6 +218,6 @@ const goToTags = () => {
     )
 }
 
-export default SkinOnboardingSecondary
+export default HairOnboardingSecondary
 
 const styles = StyleSheet.create({})

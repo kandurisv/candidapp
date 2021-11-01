@@ -22,6 +22,56 @@ const JourneyDetails = () => {
 
     const [contentObject,setContentObject] = React.useState({})
     
+    const [liked ,setLiked] = React.useState(route.params.item.upvote ? route.params.item.upvote : false)
+    const [disliked ,setDisliked] = React.useState(route.params.item.downvote ? route.params.item.downvote : false)
+
+    const like = () => {
+        setLiked(!liked)
+
+
+        const body =
+        {
+            "journey_id": item.journey_id,
+            "engagement_user_id": userId.slice(1,13),
+            "upvote": !liked,
+            "downvote": disliked,
+            "comment" : ""
+        }
+
+        axios({
+            method: 'post',
+            url: URL + '/journey/engagement',
+            data: body
+          }, {timeout : 5000})
+        .then(res => {
+            console.log(res)
+        }).catch((e) => console.log(e))
+
+        
+    }
+
+    const dislike = () => {
+        setDisliked(!disliked)
+        const body =
+        {
+            "journey_id": item.journey_id,
+            "engagement_user_id": userId.slice(1,13),
+            "upvote": liked,
+            "downvote": !disliked,
+            "comment" : ""
+        }
+
+        console.log(body)
+
+        axios({
+            method: 'post',
+            url: URL + '/journey/engagement',
+            data: body
+        }, {timeout : 5000})
+        .then(res => {console.log(res)})
+        .catch((e) => console.log(e))
+
+        }
 
 
 
@@ -98,7 +148,7 @@ const JourneyDetails = () => {
                 {dataNotPulledError ? 
                 <View><Text>Error while loading data 😢</Text></View> : 
                 <View style = {{margin : 10}}>    
-                    <View style = {{flexDirection : 'row' , justifyContent : 'space-between',alignItems : 'center'}}>
+                    <View style = {{flexDirection : 'row' , justifyContent : 'space-between',alignItems : 'center', marginRight : 10,}}>
                         <View style = {{flexDirection : 'row', alignItems : 'center'}}>
                         {  item.profile_image && item.profile_image != "None" && item.profile_image != "" ?
                         <Image source = {{uri : item.profile_image}} style = {{width : 28, height : 28 , borderRadius : 28 , marginTop : 5 , marginLeft : 5  }}/> :
@@ -112,16 +162,36 @@ const JourneyDetails = () => {
                         </View>
                         <AntDesign name = "instagram" size = {20} color = {theme} />
                     </View>
-                    <View style = {{flexDirection : 'row' , flexWrap : 'wrap', marginTop : 10 , borderBottomColor : "#EEE" ,borderBottomWidth : 1 }}>
-                        {item.product_names.map((name,index)=>{
-                            return(
-                            <View style = {{borderWidth : 1, paddingVertical : 2, paddingHorizontal : 5, borderColor : "#EEE", borderRadius : 10 , marginRight : 10,marginTop : 5, marginBottom : 5, backgroundColor : contrastTheme }}>
-                                <Text style = {{fontStyle : 'italic', fontWeight : '500' , color : 'white'}}>{name}</Text>
-                            </View>
-                            )
-                            })
-                        }
-                    </View>    
+                    <View style = {{flexDirection : 'row-reverse'}}>
+                        <View style = {{flexDirection : 'row', marginLeft : 10, alignItems : 'flex-end'}}>
+                            <TouchableOpacity 
+                            disabled = {liked}
+                            onPress = {dislike}
+                            style ={{flexDirection : 'row', marginLeft : 10,marginRight : 10,}}>
+                                <AntDesign name = "dislike2" color = {liked ? "#DDD" : disliked ? "red" : "#888"} size = {20} />
+                                <Text>{item.number_of_downvote}</Text>
+                            </TouchableOpacity>
+                        </View> 
+                        <View style = {{flexDirection : 'row' ,flex : 1, flexWrap : 'wrap' , justifyContent : 'center', borderBottomColor : "#EEE" ,borderBottomWidth : 0 }}>
+                            {item.product_names.map((name,index)=>{
+                                return(
+                                <View style = {{borderWidth : 1, paddingVertical : 2, paddingHorizontal : 5, borderColor : "#EEE", borderRadius : 5 , marginRight : 5,marginTop : 5, marginBottom : 5, backgroundColor : contrastTheme }}>
+                                    <Text style = {{fontStyle : 'italic', fontWeight : '500' , fontSize : 12, color : 'white'}}>{name}</Text>
+                                </View>
+                                )
+                                })
+                            }
+                        </View>  
+                        <View style = {{flexDirection : 'row', marginLeft : 10, alignItems : 'flex-end'}}>
+                            <TouchableOpacity 
+                            disabled = {disliked}
+                            onPress = {like}
+                            style ={{flexDirection : 'row', marginRight : 10,}}>
+                                <AntDesign name = "like2" color = {disliked ? "#DDD" : liked ? "green" : "#888"} size = {20} />
+                                <Text>{item.number_of_upvote}</Text>
+                            </TouchableOpacity>
+                        </View>
+                    </View> 
                     <ScrollView>
                     {item.datetime_array.map((idate,index)=>{
 

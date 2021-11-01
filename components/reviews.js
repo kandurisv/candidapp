@@ -77,7 +77,7 @@ const Reviews = () => {
           }, {timeout : 5000})
         .then(res => res.data)
         .then(function (responseData) {
-            console.log( "productData : ", responseData)
+          //  console.log( "productData : ", responseData)
            setReviewData(responseData)
             // setLoading(false)
             // setFirstLoaded(true)
@@ -91,7 +91,7 @@ const Reviews = () => {
     //   setLoading(true)
       getReviewData()
       
-      console.log( "productData : ", reviewData)
+     // console.log( "productData : ", reviewData)
     
         // setLoading(false)
         // setError(false)

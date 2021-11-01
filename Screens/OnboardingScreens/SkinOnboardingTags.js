@@ -2,18 +2,15 @@ import React from 'react';
 import { StyleSheet, Text, View  , TouchableOpacity , FlatList  , Image ,Keyboard , KeyboardAvoidingView, Button , ToastAndroid, Dimensions} from 'react-native';
 
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DiscussionFeed from '../components/discussionFeed';
-import DiscussionHeader from '../components/discussionHeader';
-import Comments from '../components/comments';
+
 import { ScrollView, TextInput  , TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { ModernHeader } from "@freakycoder/react-native-header-view";
-import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from './exports'
+import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from '../exports'
 
 import axios from 'axios';
-// import OnboardingQuestions from '../components/onboardingQuestion';
 
-import { header, user } from './styles';
+
+import { header, user } from '../styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
 
@@ -58,12 +55,9 @@ const SkinOnboardingTagsChild = (props) => {
 
     return(
         <View style = {{backgroundColor : background, flex : 1}}>
-           
-            <View style = {{marginLeft : 10, marginRight : 10, marginTop : 10}}>
-                <FlatList
-                style = {{flexDirection : 'row', flexWrap : 'wrap'}}
-                data = {props.option}
-                renderItem = {({item, index})=> (
+            <View style = {{marginLeft : 10, marginRight : 10, marginTop : 10 , flexDirection : 'row', flexWrap : 'wrap'}}>
+                {props.option.map((item,index)=>{
+                    return (
                     <TouchableOpacity
                     key = {index.toString()}
                     style = {{
@@ -83,10 +77,9 @@ const SkinOnboardingTagsChild = (props) => {
                         <Text style = {{color : selectedAnswer.includes(item)  ?   background : 'black'}}>
                             {item}
                         </Text>
-                    </TouchableOpacity> 
-                )}
-
-                />
+                    </TouchableOpacity>
+                    )
+                })}
             </View>
         </View>
     )
@@ -140,17 +133,10 @@ const SkinOnboardingTags = () => {
 
     const getTagAnswer = (id , ans) => {
         setSkinTags(ans)
-        setBody({...body, skinTags : ans })
-       //  console.log(answer)
+        setBody({...body, skin_tags : ans })
+      
    }
-    // const [skinHairTypeANswer , setSkinHairTypeANswer] = React.useState([]);
-
-//     const getSkinHairTypeSelectedAnswer = (id , ans) => {
-//         let answerArray = [...answer]
-//         answerArray[id] = ans
-//         setSkinHairTypeANswer(answerArray)
-//        //  console.log(answer)
-//    }
+   
 
 
 const detailedQuestionnaire = () => {
@@ -180,23 +166,16 @@ const goToHairOnboarding = () => {
             </View>
         
             <ScrollView>
-            {tagsQuestion.length?
-                <FlatList
-                keyExtractor = {(item) => item.id.toString()}
-                data = {tagsQuestion}
-                renderItem = {({item,index}) =>(
-                    <SkinOnboardingTagsChild
+            {tagsQuestion.length? tagsQuestion.map((item,index)=>{
+                return(<SkinOnboardingTagsChild
                         key = {index.toString()}
                         selctedAnswerFunc = {(id , ans) => getTagAnswer(id , ans) }
                         question_id = {item.id}
                         question = {item.question}
                         option = {item.option}
                         clickedAnswer = {answer[item.id]}
-            />
-                )
-            }
-            /> :null
-            }
+            />)
+            }) : null}
              <View style = {{ marginTop : 30, width : Dimensions.get('screen').width*0.9,
                     alignItems:'flex-end'}}>
                     <TouchableOpacity 

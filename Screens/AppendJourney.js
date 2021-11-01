@@ -16,7 +16,7 @@ import axios from 'axios';
 const TagsView = ({data}) => {
 
     React.useEffect(() =>{
-        console.log("Data", data)
+    //    console.log("Data", data)
     },[])
 
     return(
@@ -102,7 +102,7 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
     
         if (!result.cancelled) {
             setImageShown(result.uri)
-            console.log(result.uri)
+        //    console.log(result.uri)
             setImage1({[currentDate] : s3URL + "journey/"+ userId.slice(1,13) + "/" + journeyTitle.replace(/\s/g,"x") + "/" + currentDate,...image});
             uploadImageOnS3("journey/"+ userId.slice(1,13) + "/" + journeyTitle.replace(/\s/g,"x") + "/" + currentDate,result.uri)
     
@@ -118,7 +118,7 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
         
         axios.get(URL + "/search/product", {params:{str2Match : text }} , {timeout : 3000})
           .then(res => res.data).then(function(responseData) {
-              console.log("SearchArray",responseData)
+            //  console.log("SearchArray",responseData)
               setSearchLoading(false)
               setSearchArray(responseData)
           //    console.log("Reached Here response")
@@ -132,7 +132,7 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
     
 
     const onClickSearchItem = (item) => {
-        console.log(item)
+    //    console.log(item)
       
         setSearchText("")
         setInputFocus(false)
@@ -155,7 +155,7 @@ const AppendTodayToJourney = ({journeyId, journeyTitle, productNames, content , 
             "datetime_array": date1
           }
 
-        console.log(body)
+      //  console.log(body)
         
 
           if(title != "" ) {
@@ -237,7 +237,7 @@ const ShowPreviousJourney = ({date,content, image, indexSelected, productNames, 
     
 
     React.useEffect(() =>{
-        console.log(date, content, image , indexSelected)
+     //   console.log(date, content, image , indexSelected)
     },[])
 
     return(
@@ -293,7 +293,7 @@ const AppendJourney = () => {
     const journeyTitle = route.params?.journeyTitle
 
     React.useEffect(()=>{
-        console.log(datetime , "This is append journey")
+     //   console.log(datetime , "This is append journey")
     },[])
 
     return (
@@ -318,7 +318,7 @@ const AppendJourney = () => {
                     selectedValue={dateSelected}
                     style={{ height: 30, width: 40 }}
                     onValueChange={(value) => {
-                        console.log(value)
+                     //   console.log(value)
                         setDateSelected(value == "Today" ? "Today" : value)
                         setDateShown(value == "Today" ? "Today" : value)
                     }}

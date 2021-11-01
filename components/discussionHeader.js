@@ -9,7 +9,7 @@ import { theme, width } from '../Screens/exports';
 const TagsView = ({data}) => {
 
     React.useEffect(() =>{
-        console.log("Data", data)
+  //   console.log("Data", data)
     },[])
 
     return(

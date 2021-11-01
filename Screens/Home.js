@@ -24,7 +24,8 @@ import Swiper from 'react-native-swiper'
 //Amplitude.initializeAsync("af380775c59ead50c4c02536befef5e5");
 
 import * as firebase from "firebase";
-import NewUserOnboarding from './NewUserOnboarding';
+
+
 try {
     firebase.initializeApp(firebaseConfig);
   } catch (err) {
@@ -110,6 +111,7 @@ const Home = () => {
 
     const navigation = useNavigation()
     const route = useRoute()
+    const source = route.params?.source
 
     const [response, setResponse] = React.useState([])
     const [userResponse, setUserResponse] = React.useState({})
@@ -267,7 +269,7 @@ const Home = () => {
                     });
                 axios.get(URL + "/home", {timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-                    console.log(responseData)
+                 //   console.log(responseData)
                     setResponse(responseData)
                     setHomeLoading(false)
                     setResult(true)
@@ -280,7 +282,7 @@ const Home = () => {
                 });
                 axios.get(URL + "/home/hero", {timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-                    console.log(responseData)
+                   // console.log(responseData)
                     setHeroImage(responseData[0].image)
                     setHeroLink(responseData[0].clickable_link)
                     setHeroLinkExists(responseData[0].clickable)
@@ -288,7 +290,7 @@ const Home = () => {
                 .catch(function(error) {   });
                 axios.get(URL + "/notifications/newcount",{params:{user_id : user.phoneNumber.slice(1,13) }} , {timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-                    console.log(responseData)
+                  //  console.log(responseData)
                     setActivityCount(responseData[0].new_notification_indicator)
                 })
                 .catch(function(error) {
@@ -320,11 +322,11 @@ const Home = () => {
     // });
 
 
-},[result])
+},[result, source])
 
 
 const heroBannerClick = (link) => {
-  console.log(link)
+//  console.log(link)
   if(link.slice(0,4) == "http") {
     WebBrowser.openBrowserAsync(link);
   }

@@ -3,7 +3,7 @@ import { View, Text , ScrollView ,RefreshControl ,Animated, Easing, ToastAndroid
 import moment from 'moment';
 import { useNavigation , useRoute } from '@react-navigation/native';
 import axios from 'axios'
-import {URL,  background, borderColor , theme, fitem, LoadingPage, lightTheme} from './exports'
+import {URL,  background, borderColor , theme, fitem, LoadingPage, lightTheme, AuthContext} from './exports'
 import {TouchableOpacity, TouchableWithoutFeedback} from 'react-native-gesture-handler'
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import {Avatar} from 'react-native-paper'
@@ -93,7 +93,9 @@ const FeedItem = ({item}) => {
               <View style = {{flexDirection : 'row' , flexWrap : 'wrap' , marginTop : 10 , }}>
              { item.product_names && item.product_names.map((item,index)=>{
                 return(
-                  <View style = { imageCheck ?
+                  <View 
+                  key = {index.toString()}
+                  style = { imageCheck ?
                     {backgroundColor : background, marginLeft : 10 , marginTop : 5, borderRadius : 10,justifyContent : 'center', alignItems : 'center', paddingVertical : 2, paddingHorizontal : 5,} :
                     {backgroundColor : '#888', marginLeft : 10 , marginTop : 5, borderRadius : 10,justifyContent : 'center', alignItems : 'center' , paddingVertical : 2, paddingHorizontal : 5,}
                     }>
@@ -132,10 +134,12 @@ const Feed = (props) => {
  // const [parameter, setParameter] = useState(route ? route.params ? route.params.varValue ? {var : varValue,value : requestId} : {var : "time"} : {var : "time"} : {var : "time"})
   const [reachedEnd,setReachedEnd] = React.useState(false) 
 
+  const [userId] = React.useContext(AuthContext)
 
   const fetchMoreItems = async() => {
     axios.get(URL + "/journey/feed", {
       params: {
+        user_id : userId.slice(1,13),
         page : pageNumber
       }
     })
@@ -174,7 +178,8 @@ const Feed = (props) => {
     progress.setValue(0)
     axios.get(URL + "/journey/feed", {
       params: {
-         page : 0
+          user_id : userId.slice(1,13),
+          page : 0
        }
    })
   .then(res => res.data)
@@ -209,6 +214,7 @@ const Feed = (props) => {
 
     axios.get(URL + "/journey/feed", {
          params: {
+            user_id : userId.slice(1,13),
             page : 0
           }
       })

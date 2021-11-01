@@ -11,11 +11,13 @@ import RadioGroup from 'react-native-custom-radio-group';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Picker} from '@react-native-picker/picker';
 import { useNavigation , useRoute } from '@react-navigation/native';
-import { AuthContext, background, borderColor, theme, uploadImageOnS3, URL , s3URL } from './exports';
-import { editUserDetails, home, user ,header } from './styles';
+import { AuthContext, background, borderColor, theme, uploadImageOnS3, URL , s3URL } from '../exports';
+import { editUserDetails, home, user ,header } from '../styles';
 import { AntDesign, Entypo, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import * as Contacts from 'expo-contacts';
+import * as Notifications from 'expo-notifications'
+import Constants from 'expo-constants';
 
 
 const NewUserOnboarding = () => {
@@ -44,6 +46,9 @@ const NewUserOnboarding = () => {
     const [userDob,setUserDob] = useState(route.params?.dob ? route.params?.dob  :"")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
+    const [expoToken,setExpoToken] = React.useState("")
+    const [deviceToken,setDeviceToken] = React.useState("")
+
    
     const [variable,setVariable] = React.useState(route.params?.variable ?  route.params?.variable : "new user")
     
@@ -57,8 +62,93 @@ const NewUserOnboarding = () => {
 
     const [contactsAlreadyExist,setContactsAlreadyExist] = React.useState(true)
 
+    
+    const registerForExpoPushNotificationsAsync= async() => {
+      let token;
+      
+      if (Constants.isDevice) {
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+          const { status } = await Notifications.requestPermissionsAsync();
+          finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+          ToastAndroid.show('Failed to get push token for push notification!',ToastAndroid.SHORT);
+          return;
+        }
+        try {
+          token = await Notifications.getExpoPushTokenAsync({
+            experienceId : '@kandurisv/candidapp'
+          })
+        }
+        catch(e) {
+        //  console.log(e)
+        }
+         } 
+      else {
+        alert('Must use physical device for Push Notifications');
+      }
+
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+    
+    return token.data;
+  }
+  
+  const registerForDevicePushNotificationsAsync = async() => {
+    let token;
+   
+    if (Constants.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+     
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+
+      token = (await Notifications.getDevicePushTokenAsync()).data;
+      
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+   // console.log("token", token)
+    return token;
+  }
+  
+
+  
+  
+
 
     useEffect(() => {
+      const registerNotification = async () => {
+        registerForExpoPushNotificationsAsync().then(token => {
+          console.log("expo token", token)
+          setExpoToken(token)
+          AsyncStorage.setItem('expoToken', token )
+        });
+        registerForDevicePushNotificationsAsync().then(token => {
+          console.log("device token", token)
+          setDeviceToken(token)
+          AsyncStorage.setItem('deviceToken', token )
+        });
+    }
+        registerNotification()
+
+
     //  console.log("USER DETAILS USE EFFECT" , route.params.userDetails)
        const getUserInfo = () => {
         axios.get(URL + "/user/info", {params:{user_id : user_id }} , {timeout:5000})
@@ -101,40 +191,8 @@ const NewUserOnboarding = () => {
 
     const next = () => {
       setSubmitted(true)
-      navigation.navigate("SkinOnboarding",{var : variable, userName : userName, gender : gender, instagram : instagram, userDob : userDob, userProfileImage : image ? s3URL + user_id + "/profile" : "" })
-//       var expoToken = AsyncStorage.getItem('expoToken')
-//       var deviceToken = AsyncStorage.getItem('deviceToken')
-//       const body = {
-//         "var" : "edit user",
-//         "user_id": user_id,
-//         "username": userName,
-//         "gender": gender,
-//         "dob": userDob,
-//         "email": "",
-//         "phone_number": userId,
-//         "location": "",
-//         "expo_token" : expoToken,
-//         "device_token" : deviceToken,
-//         "instagram_username" : instagram
-        
-//       }
+      navigation.navigate("SkinOnboarding",{var : variable, userName : userName, gender : gender, instagram : instagram, userDob : userDob, userProfileImage : image ? s3URL + user_id + "/profile" : "" , expoToken : expoToken, deviceToken : deviceToken})
 
-//     //  console.log(body)
-
-//     axios({
-//       method: 'post',
-//       url: URL + '/user/info',
-//       data: body
-//     })
-//   .then(res => {
-//       ToastAndroid.show("Thanks for updating your details", ToastAndroid.SHORT)
-//       setTimeout(function(){
-//         navigation.navigate("UserDetails")
-//       }, 500);
-//     }).catch((e) => {
-//       ToastAndroid.show("Error updating details. Please try later")
-//       setSubmitted(false)
-//     })
 
     }
 
@@ -153,7 +211,7 @@ const NewUserOnboarding = () => {
           setImage(result.uri);
           setProfileImageChange(true)
        //   console.log("I am reaching here")
-          uploadImageOnS3(user_id + "/profile",result.uri)
+          uploadImageOnS3(user_id.slice(1,13) + "/profile",result.uri)
 
           const body = {
             "var" : "edit user",
@@ -164,7 +222,7 @@ const NewUserOnboarding = () => {
             "email": "",
             "phone_number": userId,
             "location": "",
-            "profile_image" : s3URL + user_id + "/profile"
+            "profile_image" : s3URL + user_id.slice(1,13) + "/profile"
           }
     
         //  console.log(body)
@@ -253,7 +311,7 @@ const NewUserOnboarding = () => {
           <View style = {{}}>
             <View style = {user.editUserDetailsDisplayContainer}>
               <TouchableOpacity style = {user.editUserDetailsDisplayImageButton} onPress = {pickProfilePhoto}>
-                <ImageBackground source = {image && image != "None"? {uri : image + "?" + new Date()} : {uri : 'https://ui-avatars.com/api/?rounded=true&name&size=512'}} 
+                <ImageBackground source = {image && image != "None"? {uri : image } : {uri : 'https://ui-avatars.com/api/?rounded=true&name&size=512'}} 
                         style = {user.editUserDetailsDisplayImage} >
                 </ImageBackground>
                 <View style = {{position: 'absolute' , backgroundColor : 'white' , padding : 3, borderRadius : 20 , bottom : 0 , right : 0 , margin : 15 , zIndex : 150}}>

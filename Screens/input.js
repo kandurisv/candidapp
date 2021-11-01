@@ -41,7 +41,7 @@ const Input = () => {
       "content": content
     }
 
-    console.log("body : " , body)
+   // console.log("body : " , body)
 
     axios({
       method: 'post',

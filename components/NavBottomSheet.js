@@ -14,7 +14,7 @@ const NavBottomSheet = () => {
 
     // Callback function that gets called when the bottom sheet changes
     const handleSheetChanges = React.useCallback((index) => {
-        console.log('handleSheetChanges', index);
+     //   console.log('handleSheetChanges', index);
     }, []);
 
     // Expands the bottom sheet when our button is pressed

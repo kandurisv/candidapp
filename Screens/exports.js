@@ -136,6 +136,7 @@ export const lightTheme ="#E86D7D"
 export const neutralTheme = "#E8DE61"
 export const contrastTheme ="#328D9C"
 export const contrastLightTheme ="#56D4E8"
+export const blueText = "#0E76A8"
 
 
 export const borderColor = "#222222"

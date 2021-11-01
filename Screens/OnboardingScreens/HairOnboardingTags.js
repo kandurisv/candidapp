@@ -2,18 +2,14 @@ import React from 'react';
 import { StyleSheet, Text, View  , TouchableOpacity , FlatList  , Image ,Keyboard , KeyboardAvoidingView, Button , ToastAndroid, Dimensions} from 'react-native';
 
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import DiscussionFeed from '../components/discussionFeed';
-import DiscussionHeader from '../components/discussionHeader';
-import Comments from '../components/comments';
+
 import { ScrollView, TextInput  , TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { ModernHeader } from "@freakycoder/react-native-header-view";
-import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from './exports'
+import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from '../exports'
 
 import axios from 'axios';
-// import OnboardingQuestions from '../components/onboardingQuestion';
 
-import { header, user } from './styles';
+import { header, user } from '../styles';
 import { MaterialIcons } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
@@ -56,13 +52,11 @@ const OnboardingTags = (props) => {
 
     return(
         <View style = {{backgroundColor : background, flex : 1}}>
-           
-            <View style = {{marginLeft : 10, marginRight : 10, marginTop : 10}}>
-                <FlatList
-                style = {{flexDirection : 'row', flexWrap : 'wrap'}}
-                data = {props.option}
-                renderItem = {({item, index})=> (
+            <View style = {{marginLeft : 10, marginRight : 10, marginTop : 10 , flexDirection : 'row', flexWrap : 'wrap'}}>
+                {props.option.map((item,index)=>{
+                    return (
                     <TouchableOpacity
+                    key = {index.toString()}
                     style = {{
                         borderRadius : 20,
                         borderWidth : 1, borderColor : "#DDD",
@@ -80,10 +74,9 @@ const OnboardingTags = (props) => {
                         <Text style = {{color : selectedAnswer.includes(item)  ?   background : 'black'}}>
                             {item}
                         </Text>
-                    </TouchableOpacity> 
-                )}
-
-                />
+                    </TouchableOpacity>
+                    )
+                })}
             </View>
         </View>
     )
@@ -95,7 +88,7 @@ const HairOnboardingTags = () => {
     const [ questionData , setQuestionData] = React.useState([])
     const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
     const [ tagsQuestion , setTagsQuestion] = React.useState([])
-    const [ skinTags, setSkinTags] = React.useState([])
+    const [ hairTags, setHairTags] = React.useState([])
     const [ submitted,setSubmitted] = React.useState(false)
     const navigation  = useNavigation();
     const route = useRoute()
@@ -130,18 +123,30 @@ const HairOnboardingTags = () => {
         const userbody = {
             "var" : body.var,
             "user_id": userId.slice(1,13),
-            "username": body.userName,
+            "username": body.username,
             "gender": body.gender,
-            "dob": body.userDob,
+            "dob": body.dob,
             "email": "",
             "phone_number": userId,
             "location": "",
-            "expo_token" : expoToken,
-            "device_token" : deviceToken,
-            "instagram_username" : body.instagram
-      }
+            "expo_token" : body.expo_token,
+            "device_token" : body.device_token,
+            "instagram_username" : body.instagram_username
+        }
 
-      console.log(userbody)
+        const onboardingBody = {
+            "var" : body.var,
+            "user_id": userId.slice(1,13),
+            "skin_answer_quiz": body.skin_answer_quiz,
+            "skin_answer_primary": body.skin_answer_primary,
+            "hair_answer_quiz": body.hair_answer_quiz,
+            "hair_answer_primary": body.hair_answer_primary,
+            "skin_tags":body.skin_tags,
+            "hair_tags": body.hair_tags
+          }
+
+      console.log("USER BODY",userbody)
+      console.log("BODY",onboardingBody)
 
     axios({
     method: 'post',
@@ -149,16 +154,18 @@ const HairOnboardingTags = () => {
     data: userbody
     })
     .then(res => {
-        ToastAndroid.show("Hi", ToastAndroid.SHORT)
+        console.log("USER", res)
+        ToastAndroid.show("Hi " + body.username, ToastAndroid.SHORT)
         axios({
             method: 'post',
             url: URL + '/onboarding',
-            data: body
+            data: onboardingBody
           })
             .then(res => {
-                ToastAndroid.show("Thanks for adding comment", ToastAndroid.LONG)
+                console.log("ONBOARDING",res)
+                ToastAndroid.show("Thank you for onboarding", ToastAndroid.LONG)
                 setTimeout(function(){
-                navigation.navigate("Home")
+                navigation.navigate("Home", {source : "Onboarding"})
                 }, 300);      
             }).catch((e) => console.log(e))
         }).catch((e) => {
@@ -178,17 +185,9 @@ const HairOnboardingTags = () => {
 
 
     const getTagAnswer = (id , ans) => {
-        setSkinTags(ans)
-       //  console.log(answer)
+        setHairTags(ans)
+        setBody({...body, hair_tags : ans })
    }
-    // const [skinHairTypeANswer , setSkinHairTypeANswer] = React.useState([]);
-
-//     const getSkinHairTypeSelectedAnswer = (id , ans) => {
-//         let answerArray = [...answer]
-//         answerArray[id] = ans
-//         setSkinHairTypeANswer(answerArray)
-//        //  console.log(answer)
-//    }
 
 
 const detailedQuestionnaire = () => {
@@ -217,21 +216,16 @@ const goToHairOnboarding = () => {
             </View>
         
             <ScrollView>
-            {tagsQuestion.length?
-                <FlatList
-                keyExtractor = {(item) => item.id.toString()}
-                data = {tagsQuestion}
-                renderItem = {({item}) =>(
-                    <OnboardingTags
+            {tagsQuestion.length? tagsQuestion.map((item,index)=>{
+                return( <OnboardingTags
                         selctedAnswerFunc = {(id , ans) => getTagAnswer(id , ans) }
                         question_id = {item.id}
                         question = {item.question}
                         option = {item.option}
                         clickedAnswer = {answer[item.id]}
-            />
-                )
-            }
-            /> :
+            />)
+            })
+                :
                 <View style = {{margin : 20 ,}}>
                     <Text style = {{fontWeight : 'bold'}}>No Hair Onboarding Tags</Text>
                 </View>

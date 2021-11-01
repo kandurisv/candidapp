@@ -16,7 +16,7 @@ import PostDetails from './PostDetails'
 
 
 import Search from './Search'
-import { AuthContext, background, borderColor, theme } from "./exports";
+import { AuthContext, background, borderColor, theme , contrastTheme, lightTheme , contrastLightTheme} from "./exports";
 import HeroSearchFeed from "./HeroSearchFeed";
 import ActivityNotification from "./ActivityNotification";
 import UpdatePost from "./UpdatePost";
@@ -31,24 +31,24 @@ import Input from "./input";
 import ProductList from "./productList"
 import ProductDetails from "./productDetails"
 import Tabs from "../components/tabs";
-import Onboarding from "./SkinOnboarding"
+import Onboarding from "./OnboardingScreens/SkinOnboarding"
 import BottomSheetScreen from "./bottomSheetScreen";
 import NewPostModal from "./NewPostModal";
 import NavBottomSheet from "../components/NavBottomSheet";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import { Portal, PortalHost } from '@gorhom/portal';
 import BottomSheet from '@gorhom/bottom-sheet';
-import NewUserOnboarding from "./NewUserOnboarding";
-import QuestionsOnboarding from "./SkinOnboarding";
-import FinalOnboarding from "./SkinOnboardingTags";
-import SecondaryOnboarding from "./SkinOnboardingSecondary";
-import SkinOnboarding from "./SkinOnboarding";
-import SkinOnboardingSecondary from "./SkinOnboardingSecondary";
-import SkinOnboardingTags from "./SkinOnboardingTags";
+import NewUserOnboarding from "./OnboardingScreens/NewUserOnboarding";
+import QuestionsOnboarding from "./OnboardingScreens/SkinOnboarding";
+import FinalOnboarding from "./OnboardingScreens/SkinOnboardingTags";
+import SecondaryOnboarding from "./OnboardingScreens/SkinOnboardingSecondary";
+import SkinOnboarding from "./OnboardingScreens/SkinOnboarding";
+import SkinOnboardingSecondary from "./OnboardingScreens/SkinOnboardingSecondary";
+import SkinOnboardingTags from "./OnboardingScreens/SkinOnboardingTags";
 
-import HairOnboarding from "./HairOnboarding";
-import HairOnboardingSecondary from "./HairOnboardingSecondary";
-import HairOnboardingTags from "./HairOnboardingTags";
+import HairOnboarding from "./OnboardingScreens/HairOnboarding";
+import HairOnboardingSecondary from "./OnboardingScreens/HairOnboardingSecondary";
+import HairOnboardingTags from "./OnboardingScreens/HairOnboardingTags";
 import RecommendationOnboarding from "./RecommendationOnboarding";
 import WriteReview from "./WriteReview";
 import AddJourney from "./AddJourney";
@@ -79,6 +79,10 @@ const TAB_ACTIVE_COLOR = theme
 const TAB_INACTIVE_COLOR = "#888888"
 
 const BottomMenu = ({ iconName, isCurrent , label, value, index}) => {
+
+    
+
+    const [badgeColor, setBadgeColor] = React.useState(index == 1 ? lightTheme : index == 3 ? contrastTheme : index == 4 ? theme : 'white')
   
     return(
     <View
@@ -98,7 +102,7 @@ const BottomMenu = ({ iconName, isCurrent , label, value, index}) => {
           borderRadius : 20 , 
           width : 15 , height : 15 , 
           justifyContent : 'center', alignItems: 'center',
-          backgroundColor : isCurrent ? 'white' : value ? theme : 'white'}}>
+          backgroundColor : isCurrent ? 'white' : value ? badgeColor : 'white'}}>
           <Text style = {{
             fontSize : 8, textAlign : 'center' , 
             justifyContent: 'center' , alignSelf: 'center', color : 'white'}}>
