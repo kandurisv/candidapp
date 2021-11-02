@@ -89,7 +89,7 @@ const ActivityNotification = () => {
 
 
     const items = ({item,index}) => (
-        item && item.engagement_user_name && item.product_name ?
+        item && item.username && item.product_name ?
                 <TouchableOpacity 
                     style = {{
                         flexDirection : 'row' , 
@@ -150,7 +150,7 @@ const ActivityNotification = () => {
             </View>
             {error ? <ErrorPage /> : loading ? <LoadingPage /> :
             <FlatList 
-                keyExtractor={item => item.engagement_id.toString()} 
+                keyExtractor={item => item.id.toString()} 
                 style = {{paddingRight : 5}}
                 contentContainerStyle = {{paddingRight : 5}}
                 showsVerticalScrollIndicator={false}

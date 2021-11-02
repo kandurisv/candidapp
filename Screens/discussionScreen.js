@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View  , Image,TouchableOpacity , FlatList , ScrollView} from 'react-native';
+import { StyleSheet, Text, View  , RefreshControl, Image,TouchableOpacity , FlatList , ScrollView} from 'react-native';
 
 import { NavigationContainer , useNavigation} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -51,6 +51,30 @@ React.useEffect(() => {
   
 },[])
 
+const onRefresh = () => {
+  setRefreshing(true)
+  const getDiscussionFeed = () => {
+    axios.get(URL + "/discussion/feed", {
+        params: {
+          user_id : userId.slice(1,13)
+        }
+      }, {timeout : 5000})
+    .then(res => res.data)
+    .then(function (responseData) {
+        console.log(responseData)
+        setDiscussionFeedData(responseData)
+        setLoading(false)
+        setRefreshing(false)
+    })
+    .catch(function (error) {
+      setRefreshing(false)
+      setError(true);      
+    })
+  }
+
+  getDiscussionFeed()
+}
+
 
 
     return(
@@ -72,7 +96,13 @@ React.useEffect(() => {
                 }
                 rightDisable
                 />
-            </View>      
+            </View>   
+            {error ? 
+            <View style = {{flex : 1 , justifyContent : 'center' , alignItems : 'center'}}>
+              <Text>Error</Text>
+            </View> :
+            loading ? 
+            <LoadingPage /> : 
             <FlatList 
             style = {{marginBottom : 120,}}
             contentContainerStyle = {{}}
@@ -99,9 +129,10 @@ React.useEffect(() => {
                 engagement_user_id = {userId.slice(1,13)}
                 />
             ) }
+            refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
             />
 
-            
+          }
       
         </View>
     );  

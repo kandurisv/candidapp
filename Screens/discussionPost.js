@@ -13,7 +13,7 @@ import axios from 'axios';
 import { header } from './styles';
 import { FontAwesome } from '@expo/vector-icons';
 import { Avatar } from 'react-native-paper';
-import { setAutoLogAppEventsEnabledAsync } from 'expo-facebook';
+
 
 
   
@@ -45,12 +45,13 @@ const DiscussionPost = () => {
 
 
 React.useEffect(() => {
-    console.log("item_id" ,body)
+    console.log("Clicked Discusison Post" ,body)
     
     const getHeaderData = () => {
         axios.get(URL + "/discussion/get_post", {
             params: {
-                item_id:body.item_id
+                item_id:body.item_id,
+                user_id : userId.slice(1,13)
             }
         }, {timeout : 5000})
         .then(res => res.data)

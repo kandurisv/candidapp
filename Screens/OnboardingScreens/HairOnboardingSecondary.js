@@ -1,17 +1,14 @@
 import React from 'react';
 import { StyleSheet, Text, View  , TouchableOpacity , FlatList  , Image ,Keyboard , KeyboardAvoidingView, Button , ToastAndroid, Dimensions} from 'react-native';
-
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
-
 import { ScrollView, TextInput  , TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import { AuthContext , theme , background, LoadingPage, ErrorPage, URL, borderColor, width, height} from '../exports'
-
 import axios from 'axios';
 import { header, user } from '../styles';
 import { MaterialIcons } from '@expo/vector-icons';
 
-const SecondaryQuestions = (props) => {
+const HairPrimaryQuestions = (props) => {
     const [selectedAnswer , setSelectedAnswer] = React.useState()
     const [questionId , setQuestionId] = React.useState()
     const getSelectedAnswer = (item , id) =>{
@@ -27,13 +24,11 @@ const SecondaryQuestions = (props) => {
             <View style = {{ marginTop : 10, marginBottom : 10, marginLeft : 10}}>
                 <Text style = {user.editUserProfileHeader}>{props.questionNo+1}.{props.question}</Text>
             </View>
-            <View>
-                <FlatList 
-                keyExtractor = {(item,index)=> index.toString()}
-                data = {props.option} 
-                style = {{flexWrap: 'wrap', flexDirection : 'row',}} 
-                renderItem = {({item, index})=> (
+            <View style = {{flexDirection : 'row' , flexWrap : 'wrap'}}>
+            {props.option.map((item,index)=>{
+                return(
                     <TouchableOpacity
+                    key = {index.toString()}
                     style = {{
                         borderRadius : 20, width : Dimensions.get('screen').width* 0.4,
                         borderWidth : 1, borderColor : "#DDD",
@@ -46,23 +41,26 @@ const SecondaryQuestions = (props) => {
                         backgroundColor : item == props.clickedAnswer  ? theme : background}}
                     onPress =  {() => getSelectedAnswer(item, props.question_id)}>
                         <Text style = {{color : item == props.clickedAnswer  ? background : borderColor}}> {item} </Text>
-                    </TouchableOpacity> 
-                )}/>
-            </View>
+                    </TouchableOpacity>
+                    
+                    )
+            })}
+            </View> 
         </View>
     )
 }
 
 
 
-
 const HairOnboardingSecondary = () => {
+
     const [indicator , setIndicator] = React.useState(0)
     const [ questionData , setQuestionData] = React.useState([])
-    const [ skinHairTypeQuestion , setSkinHairTypeQuestion] = React.useState([])
+    const [ hairTypeQuestion , setHairTypeQuestion] = React.useState([])
     const [ tagsQuestion , setTagsQuestion] = React.useState([])
     const [ skinTags, setSkinTags] = React.useState([])
     const [submitted,setSubmitted] = React.useState(false)
+
     const navigation  = useNavigation();
     const route = useRoute()
     const [body,setBody] = React.useState(route?.params?.body)
@@ -71,112 +69,68 @@ const HairOnboardingSecondary = () => {
     React.useEffect(() => {
         // console.log("item_id" , 1)
         setIndicator(0)
-        console.log("indicator", indicator)
-      const getOnboardingQuestions = () => {
-        axios.get(URL + "/onboarding", {
-            params: {
-             question_type: "hairquiz"
-            }
-          }, {timeout : 5000})
-        .then(res => res.data)
-        .then(function (responseData) {
-        //    console.log( "productData : ", responseData)
-            setQuestionData(responseData)
-            // setLoading(false)
-            // setFirstLoaded(true)
-        })
-        .catch(function (error) {
-           console.log("error: ",error);
-        //   setError(true);      
-        })
-      }
-    
-
-      getOnboardingQuestions()
+        console.log("Hair Onboarding indicator", indicator)
+        
+        setHairTypeQuestion([])
       
-       
+        const getHairTypeQuestions = () => {
+            axios.get(URL + "/hairquiz", {
+                params: {
+                 question_type: "hairprimary"
+                }
+              }, {timeout : 5000})
+            .then(res => res.data)
+            .then(function (responseData) {
+                console.log("Hair primary",responseData)
+                setHairTypeQuestion(responseData)
+            })
+            .catch(function (error) {
+               console.log("error: ",error);
+            //   setError(true);      
+            })
+          }
+
+            getHairTypeQuestions()
+
+          
     },[])
 
 
-
-    const onSubmitOnboarding = () =>{
-        const body = {
-          "user_id": 917060947155,
-          "question_1": answer[1],
-          "question_2": answer[2],
-          "question_3": answer[3],
-          "question_4": answer[4],
-          "question_5": answer[5] , 
-          "question_6": answer[6] , 
-          "question_7": answer[7] , 
-          "question_8": answer[8] ,
-          "question_9": answer[9] ,
-          "question_10": answer[10] ,
-          "question_11": answer[11] ,
-          "question_12": skinTags ,
-        }
-    
-    //    console.log("body : " , body)
-    
-        axios({
-          method: 'post',
-          url: URL + '/onboarding',
-          data: body
-        })
-      .then(res => {
-       //   console.log("reached to post feed")
-          ToastAndroid.show("Thanks for adding comment", ToastAndroid.LONG)
-        //   refresh()
-          setTimeout(function(){
-            navigation.navigate("ProductList")
-          }, 300);
-         
-    }).catch((e) => console.log(e))
-    
-      }
-
-    const [answer , setAnswer] = React.useState([]);
+    const [answer , setAnswer] = React.useState({});
 
     const getSelectedAnswer = (id , ans) => {
-         let answerObject = {...answer}
+        let answerObject = {...answer}
          answerObject[id] = ans
          setAnswer(answerObject)
-        //  console.log(answer)
+         setBody({...body, hair_answer_quiz : answerObject })
+         console.log(body)
     }
 
 
     const getTagAnswer = (id , ans) => {
         setSkinTags(ans)
-       //  console.log(answer)
+         console.log(answer)
    }
-    // const [skinHairTypeANswer , setSkinHairTypeANswer] = React.useState([]);
+ 
 
-//     const getSkinHairTypeSelectedAnswer = (id , ans) => {
-//         let answerArray = [...answer]
-//         answerArray[id] = ans
-//         setSkinHairTypeANswer(answerArray)
-//        //  console.log(answer)
-//    }
 
 
 const detailedQuestionnaire = () => {
-    setIndicator(1)
-    
+    navigation.navigate("HairOnboardingSecondary",{body: body})
 }
 
 const goToTags = () => {
-    setSubmitted(true)
-    setIndicator(2)
-    navigation.navigate("HairOnboardingTags",{body:body})
+    console.log("Clicke on next")
+    navigation.navigate("HairOnboardingTags", { body: body})
 }
 
 
-    return (
-        <View style = {{marginBottom : 0, backgroundColor : background , flex : 1}}>
-          <View style = {{backgroundColor : background , flex : 1}}>
-             <View style = {header.headerView}>
+
+    return( 
+        <View style = {{backgroundColor : background, flex : 1}}>
+            <View style = {header.headerView}>
                 <ModernHeader 
-                title="Hair Profile Quiz"
+                title="Hair Profile"
                 titleStyle = {header.headerText}
                 backgroundColor= {background}
                 leftIconColor = {borderColor}
@@ -184,40 +138,39 @@ const goToTags = () => {
                 rightDisable
                 />
             </View>
-            <ScrollView>
-           
-            {questionData.length?
-                <FlatList
-                keyExtractor = {(item) => item.id.toString()}
-                data = {questionData}
-                renderItem = {({item, index}) =>(
-                    <SecondaryQuestions
-                        selctedAnswerFunc = {(id , ans) => getSelectedAnswer(id , ans) }
-                        question_id = {item.id}
-                        question = {item.question}
-                        questionNo = {index}
-                        option = {item.option}
-                        clickedAnswer = {answer[item.id]}
-            />
-                )
-            }
-            />: null}
-                <View style = {{ marginTop : 30, width : Dimensions.get('screen').width*0.9,
+            <ScrollView style = {{backgroundColor : background}}>
+            {hairTypeQuestion.length ? 
+            hairTypeQuestion.map((item,index)=>{
+                return(<HairPrimaryQuestions
+                                key = {index.toString()}
+                                selctedAnswerFunc = {(id , ans) => getSelectedAnswer(id , ans) }
+                                question_id = {item.id}
+                                questionNo = {index}
+                                question = {item.question}
+                                option = {item.option}
+                                clickedAnswer = {answer[item.id]}
+                            />)
+            }) 
+            
+            
+            : <View style = {{margin : 20 ,}}>
+                    <Text style = {{fontWeight : 'bold'}}>No Hair Onboarding Questions</Text>
+                </View> }
+                
+                
+                <View style = {{ marginTop : 20, width : Dimensions.get('screen').width*0.95,
                     alignItems:'flex-end'}}>
                     <TouchableOpacity 
                             onPress = {goToTags}
-                            disabled = {submitted}
                             style = {{backgroundColor : theme , width : 40, height : 40 , borderRadius : 50, 
-                            flex : 1, justifyContent : 'center' , alignItems : 'center' , marginBottom : 20}}>
+                            flex : 1, justifyContent : 'center' , alignItems : 'center'}}>
                         <MaterialIcons name = "navigate-next" size= {40} color = "white" />
                     </TouchableOpacity>
-                </View>   
+                </View>
             </ScrollView>
         </View>
-        </View>
-    )
+    );
 }
 
-export default HairOnboardingSecondary
 
-const styles = StyleSheet.create({})
+export default HairOnboardingSecondary;

@@ -64,11 +64,14 @@ const ProductDescription = (props) => {
 const FeedSearch = () =>{
 
     const [productData , setProductData] = React.useState([])
+    const [loading,setLoading] = React.useState(false)
+    const [error,setError] = React.useState(false)
     const route = useRoute()
     const navigation = useNavigation()
     const value = route?.params?.value ? route.params.value : ""
 
     React.useEffect(() => {
+        setLoading(true)
         console.log("item_id" , 1)
 
       const getProductData = () => {
@@ -80,24 +83,23 @@ const FeedSearch = () =>{
         .then(res => res.data)
         .then(function (responseData) {
         //    console.log( "productData : ", responseData)
-           setProductData(responseData)
-            // setLoading(false)
+            setProductData(responseData)
+            setLoading(false)
             // setFirstLoaded(true)
         })
         .catch(function (error) {
            console.log("error: ",error);
-        //   setError(true);      
+           setLoading(false)
+           setError(true);      
         })
       }
     
-    //   setLoading(true)
+
       getProductData()
       
      
     
-        // setLoading(false)
-        // setError(false)
-        // setRefreshing(false)
+  
     
       
       
@@ -117,8 +119,13 @@ const FeedSearch = () =>{
                 />
             </View>
 
-            {productData.length? 
-            
+            { error ? 
+            <View style = {{flex : 1 , justifyContent : 'center' , alignItems : 'center'}}>
+              <Text> Error loading data, please try later</Text>
+            </View> :
+            loading ? 
+            <LoadingPage /> :
+            productData.length? 
             <FlatList
             style = {{margin : 10 }}
             contentContainerStyle = {{}}
@@ -140,7 +147,10 @@ const FeedSearch = () =>{
                 /> 
             )}
             />
-            : null}
+            : 
+            <View style = {{flex : 1 , justifyContent : 'center' , alignItems : 'center'}}>
+              <Text> No new posts </Text>
+            </View>}
         </View>
 
     );
