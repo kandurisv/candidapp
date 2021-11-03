@@ -489,56 +489,6 @@ return (
              <Text>Network Error. Please restart the app</Text>
             </View>
          )
-        // (
-        //     <View style = {home.userDetailsContainer}>
-        //         <View style = {home.userDetailsUserNameContainer}>
-        //             <Text style = {home.userDetailsUserNameText}>Select your username</Text>
-        //             <TextInput 
-        //                 placeholder = "username"
-        //                 style = {home.userDetailsUserNameTextInput}
-        //                 onChangeText = {(text)=>setUserName(text)}
-        //                 value = {userName}
-        //                 autoFocus
-        //             />
-        //         </View>
-        //         <View style = {home.userDetailsUserNameContainer}>
-        //             <Text style = {home.userDetailsUserNameText}>Instagram UserName (Optional)</Text>
-        //             <TextInput 
-        //                 placeholder = "Instagram username"
-        //                 style = {[home.userDetailsUserNameTextInput,{fontSize : 14}]}
-        //                 onChangeText = {(text)=>setInstagram(text )}
-        //                 value = {instagram}
-        //             />
-        //         </View>
-        //         <View style = {home.userDetailsUserNameContainer}>
-        //             <Text style = {home.userDetailsUserNameText}>Coupon Code (Optional)</Text>
-        //             <View style = {{flexDirection : 'row', justifyContent : 'center', alignItems:'center', padding:0}}>
-        //             <TextInput 
-        //                 placeholder = "ABCD"
-        //                 style = {[home.userDetailsUserNameTextInput,{fontSize : 16 , flex : 1, marginTop : 0}]}
-        //                 onChangeText = {(text)=>setCoupon(text)}
-        //                 value = {coupon}
-        //             />
-        //             <TouchableOpacity 
-        //               onPress = {onCouponValid}
-        //               style = {[home.userDetailsUserNameCouponValid,{elevation : 1,}]}>
-        //               <Ionicons name = "checkmark-sharp" size = {couponValid ? 30 : 26} color = {couponValid ? "green" : "black"} />
-        //             </TouchableOpacity>
-        //             </View>
-        //         </View>
-                 
-        //         <View style = {home.userDetailsSubmitContainer}>
-        //             <TouchableOpacity
-        //                 disabled = {userName === "" ? true : false} 
-        //                 onPress = {submitUserDetails}
-        //                 style = {userName === "" ? home.userDetailsDisabledSubmitButton : home.userDetailsSubmitButton}>
-        //                 <Text style = {home.userDetailsSubmitText}>Submit</Text>
-        //             </TouchableOpacity>
-        //         </View>
-
-                
-        //     </View>
-        // )
         
         : (
         <ScrollView 

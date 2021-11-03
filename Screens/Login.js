@@ -3,7 +3,7 @@ import { Animated,Easing, Text, View, TextInput, Button, TouchableOpacity, Platf
 import { FirebaseRecaptchaVerifierModal } from "expo-firebase-recaptcha";
 import * as firebase from "firebase";
 import { useNavigation } from '@react-navigation/native';
-import { firebaseConfig } from "./exports";
+import { background, firebaseConfig, theme } from "./exports";
 import { login } from "./styles";
 
 
@@ -92,16 +92,17 @@ export default function Login() {
 
 
   const onPressLogin = async () => {
+    setLoginClick(true)
     try {
       const phoneProvider = new firebase.auth.PhoneAuthProvider();
       const verificationId = await phoneProvider.verifyPhoneNumber(phoneNumber,recaptchaVerifier.current);
       setVerificationId(verificationId);
       ToastAndroid.show("Verification code has been sent to your phone",ToastAndroid.SHORT)
-      setLoginClick(true)
+     
       setScreen(true)
     } catch (err) {
       ToastAndroid.show("Please wait or try again later !!",ToastAndroid.SHORT )
-      setLoginClick(true)
+      setLoginClick(false)
     }
   }
 
@@ -137,8 +138,8 @@ export default function Login() {
           style = {{width : 300 , height : 300}}
           />
       </View>
-      <View style={login.loginViewPhoneNumberHeaderContainer}>
-        <Text style={login.loginViewPhoneNumberHeaderText}>Enter phone number</Text>
+      <View style={[login.loginViewPhoneNumberHeaderContainer,{justifyContent : 'center', alignItems : 'center'}]}>
+        <Text style={[login.loginViewPhoneNumberHeaderText,{fontSize : 20}]}>Enter phone number</Text>
       </View>
       <View style = {login.loginViewPhoneNumberInputContainer}>
       <View style = {login.loginViewPhoneNumberInputCountryContainer}>
@@ -155,8 +156,12 @@ export default function Login() {
         value = {number}
       />
       
-        <TouchableOpacity onPress={onPressLogin}>
-          <Text>GET OTP</Text>
+        <TouchableOpacity
+        style = {{marginRight : 20, marginLeft : 10 , borderWidth : 1 , borderRadius : 10 , borderColor : theme, padding : 10, backgroundColor : theme}}
+        onPress={onPressLogin}
+        disabled={loginClick}
+        >
+          <Text style = {{color : background}}>GET OTP</Text>
         </TouchableOpacity> 
       </View>
       <View style = {login.loginViewFooterContainer} />

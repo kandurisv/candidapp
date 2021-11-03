@@ -84,7 +84,7 @@ const StartDiscussion = () => {
     
     
         if (!result.cancelled) {
-          setImage(result.uri);
+          setImage(s3URL + userId.slice(1,13) + "/discussion/" + imageLinkName);
           uploadImageOnS3(userId.slice(1,13) + "/discussion/" + imageLinkName,result.uri)
         }
       }; 
@@ -149,7 +149,7 @@ const StartDiscussion = () => {
             "username": "",
             "title": title,
             "tags": tagsData,
-            "image": image == "" ? "" : s3URL + userId.slice(1,13) + "/discussion/"+ imageLinkName ,
+            "image": image ,
             "content": firstComment
           }
     

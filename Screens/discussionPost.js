@@ -45,7 +45,7 @@ const DiscussionPost = () => {
 
 
 React.useEffect(() => {
-    console.log("Clicked Discusison Post" ,body)
+    console.log("Refreshed Clicked ")
     
     const getHeaderData = () => {
         axios.get(URL + "/discussion/get_post", {
@@ -56,38 +56,38 @@ React.useEffect(() => {
         }, {timeout : 5000})
         .then(res => res.data)
         .then(function (responseData) {
+            console.log("HEADER DATA RESPONSE")
             setHeaderData(responseData)
             setLoading(false)
         })
         .catch(function (error) {
+            console.log("HEADER DATA RESPONSE",error)
             setError(true);      
         })
     }
 
-    setLoading(true)
     getHeaderData()
-    setError(false)
-    setRefreshing(false)
+    
 
   const getAnswerData = () => {
     axios.get(URL + "/discussion/answerbox", {
         params: {
-         question_id:body.item_id
+         question_id:body.item_id,
+         user_id : userId.slice(1,13)
         }
       }, {timeout : 5000})
     .then(res => res.data)
     .then(function (responseData) {
+        console.log("ANSWER",responseData)
         setAnswerData(responseData)
         setLoading(false)
     })
     .catch(function (error) {
       setError(true);      
+      console.log("Answer DATA RESPONSE",error)
     })
   }
 
-
-
-  setLoading(true)
   getAnswerData()
   
   
@@ -127,6 +127,7 @@ const replyFunc = (item) => {
 
     
 const submit = () => {
+
     const body1 = {
         "user_id": userId,
         "level": level,
@@ -146,6 +147,7 @@ const submit = () => {
             data: body1
         })
         .then(res => {
+            console.log("Message added")
             setComment("")
             refresh()
         })

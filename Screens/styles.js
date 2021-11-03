@@ -645,6 +645,7 @@ export const login = StyleSheet.create({
         textAlign : 'center',
         fontSize : 16,
         fontFamily : 'Roboto',
+        fontWeight : 'bold'
     },
     loginViewPhoneNumberInputNumberInput : {
         height: 45 ,

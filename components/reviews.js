@@ -64,7 +64,7 @@ const ReviewComponent = ({item}) => {
 
 
 
-const Reviews = () => {
+const Reviews = ({product_id}) => {
 
     const [reviewData , setReviewData]  = React.useState([])
     React.useEffect(() => {
@@ -72,7 +72,7 @@ const Reviews = () => {
       const getReviewData = () => {
         axios.get(URL + "/reviews/getreview", {
             params: {
-             "product_id": 1
+             "product_id": product_id
             }
           }, {timeout : 5000})
         .then(res => res.data)

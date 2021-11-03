@@ -68,7 +68,7 @@ const FeedSearch = () =>{
     const [error,setError] = React.useState(false)
     const route = useRoute()
     const navigation = useNavigation()
-    const value = route?.params?.value ? route.params.value : ""
+    const idValue = route?.params?.idValue ? route.params.idValue : ""
 
     React.useEffect(() => {
         setLoading(true)
@@ -77,7 +77,7 @@ const FeedSearch = () =>{
       const getProductData = () => {
         axios.get(URL + "/product/category", {
             params: {
-             category_id: 1
+             category_id: idValue
             }
           }, {timeout : 5000})
         .then(res => res.data)
