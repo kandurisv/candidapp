@@ -181,8 +181,8 @@ const Home = () => {
 
 
   
-    const goToProductFeed = (name, idValue, value) => {
-        navigation.navigate("FeedSearch", {varValue : value , id : idValue, value : name } )
+    const goToProductFeed = (varValue, id, name) => {
+        navigation.navigate("FeedSearch", {varValue : varValue , id : id, value : name } )
     }
 
 
@@ -491,7 +491,7 @@ return (
                                 uri: 'https://ui-avatars.com/api/?rounded=true&size=512&background=D7354A&color=fff&bold=true'
                                 }} size={30}/>}
                     </TouchableOpacity>
-            <View style = {{flex : 1 , justifyContent : 'center', alignItems : 'center', backgroundColor : background , }}>
+            <View style = {{flex : 1 , justifyContent : 'center', alignItems : 'center', backgroundColor : background , marginRight : 30 }}>
               <Image style={{height : 40 , width : 40 }}
                           source={require('../assets/LogoTransparentSolidColorLine.png')}
               />          

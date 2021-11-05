@@ -2,7 +2,7 @@ import React from 'react'
 import { RefreshControl, StyleSheet, Text, View , TouchableOpacity, FlatList} from 'react-native'
 import { ModernHeader } from "@freakycoder/react-native-header-view";
 import { header } from './styles';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation , useRoute } from '@react-navigation/native';
 import { background,borderColor, theme , AuthContext  , URL} from './exports';
 import { LinearGradient } from 'expo-linear-gradient';
 
@@ -11,35 +11,39 @@ import DiscussionFeed from '../components/discussionFeed'
 
 const MyDiscussions = () => {
 
+    const navigation = useNavigation()
+    const route = useRoute()
+
     const [discussionFeedData,setDiscussionFeedData] = React.useState([])
     const [loading,setLoading] = React.useState(false)
     const [error,setError] = React.useState(false)
     const [userId] = React.useContext(AuthContext)
     const [refreshing,setRefreshing] = React.useState(false)
+    const [body,setBody] = React.useState(route.params?.body)
 
 
     
     React.useEffect(()=>{
-        const getDiscussionFeed = () => {
-            axios.get(URL + "/userinfo/discussion", {
-                params: {
-                  user_id : userId.slice(1,13)
-                }
-              }, {timeout : 5000})
-            .then(res => res.data)
-            .then(function (responseData) {
-                console.log(responseData)
-            //    console.log(error)
-                setDiscussionFeedData(responseData)
-                setLoading(false)
-                // setFirstLoaded(true)
-            })
-            .catch(function (e) {
-              console.log("error: ",e);
-              setError(true);      
-            })
-          }
-          getDiscussionFeed()
+        // const getDiscussionFeed = () => {
+        //     axios.get(URL + "/userinfo/discussion", {
+        //         params: {
+        //           user_id : userId.slice(1,13)
+        //         }
+        //       }, {timeout : 5000})
+        //     .then(res => res.data)
+        //     .then(function (responseData) {
+        //         console.log(responseData)
+        //     //    console.log(error)
+        //         setDiscussionFeedData(responseData)
+        //         setLoading(false)
+        //         // setFirstLoaded(true)
+        //     })
+        //     .catch(function (e) {
+        //       console.log("error: ",e);
+        //       setError(true);      
+        //     })
+        //   }
+        //   getDiscussionFeed()
 
     },[])
     
@@ -48,7 +52,7 @@ const MyDiscussions = () => {
 
     }
 
-    const navigation = useNavigation()
+   
     return (
         <View style = {{backgroundColor : background, flex:1}}>
             <View style = {header.headerView}>
@@ -71,7 +75,7 @@ const MyDiscussions = () => {
             style = {{marginBottom : 120,}}
             contentContainerStyle = {{}}
             keyExtractor = {(item) => item.item_id.toString()}
-            data = {discussionFeedData}
+            data = {body}
             showsVerticalScrollIndicator = {false}
             renderItem = {({item,index})=> (
                 <DiscussionFeed 

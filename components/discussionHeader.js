@@ -14,7 +14,7 @@ const TagsView = ({data}) => {
 
     return(
     <View style = {{flexDirection : 'row', flexWrap : 'wrap', flex:1 }}>
-        {data.map((item,index)=>{
+        {data && data.map((item,index)=>{
             return(
             <TouchableOpacity 
                 key={index}

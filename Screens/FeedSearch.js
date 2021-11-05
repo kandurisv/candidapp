@@ -40,12 +40,12 @@ const ProductDescription = (props) => {
                   </Text>
                 </View>
                 
-                <View style = {{flexDirection : 'row' , justifyContent : 'space-between'}}>
-                {props.number_of_reviews ?
+                <View style = {{flexDirection : 'row-reverse' , justifyContent : 'space-between'}}>
+                {/* {props.number_of_reviews ?
                   <View style = {{flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}}>
                     <MaterialIcons name = "recommend" size = {15}/> 
                     <Text style = {{marginLeft : 5, fontSize : 15, fontStyle : 'italic' , color : "#0E76A8"}}>{props.number_of_reviews}</Text>
-                  </View>: <View><Text></Text></View>}
+                  </View>: <View><Text></Text></View>} */}
                   {props.number_of_reviews ?
                   <View style = {{flexDirection : 'row', justifyContent : 'center' , alignItems : 'center'}}>
                     <MaterialIcons name = "rate-review" size = {15}/> 
@@ -68,7 +68,9 @@ const FeedSearch = () =>{
     const [error,setError] = React.useState(false)
     const route = useRoute()
     const navigation = useNavigation()
-    const idValue = route?.params?.idValue ? route.params.idValue : ""
+    const varValue = route?.params?.varValue ? route.params.varValue : ""
+    const id = route?.params?.id ? route.params.id : ""
+    const name = route?.params?.name ? route.params.name : ""
 
     React.useEffect(() => {
         setLoading(true)
@@ -77,7 +79,8 @@ const FeedSearch = () =>{
       const getProductData = () => {
         axios.get(URL + "/product/category", {
             params: {
-             category_id: idValue
+             var: varValue,
+             value : id
             }
           }, {timeout : 5000})
         .then(res => res.data)
@@ -110,7 +113,7 @@ const FeedSearch = () =>{
         <View style = {{backgroundColor : background, flex : 1}}>
             <View style = {header.headerView}>
                 <ModernHeader 
-                title={value}
+                title={varValue}
                 titleStyle = {header.headerText}
                 backgroundColor= {background}
                 leftIconColor = {borderColor}

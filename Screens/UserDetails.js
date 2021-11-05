@@ -38,6 +38,7 @@ const UserDetails = () => {
     const [myPostsEmpty,setMyPostsEmpty] = React.useState(true)
     const [userPosts,setUserPosts]= React.useState([])
     const [userPostsError,setUserPostsError] = React.useState(false)
+    const [discussionFeedData,setDiscussionFeedData] = React.useState([])
 
 
  
@@ -111,6 +112,28 @@ const UserDetails = () => {
         });
     }
     fetchJourney()
+
+    const getDiscussionFeed = () => {
+        axios.get(URL + "/userinfo/discussion", {
+            params: {
+              user_id : userId.slice(1,13)
+            }
+          }, {timeout : 5000})
+        .then(res => res.data)
+        .then(function (responseData) {
+            console.log(responseData)
+        //    console.log(error)
+            setDiscussionFeedData(responseData)
+            setLoading(false)
+            // setFirstLoaded(true)
+        })
+        .catch(function (e) {
+          console.log("error: ",e);
+          setError(true);      
+        })
+      }
+      getDiscussionFeed()
+
 
         
     },[result, focus , refresh]);
@@ -219,8 +242,8 @@ const UserDetails = () => {
                         </View> 
                         <View style = {user.mainViewDetailsSummaryContainer}>
                         <View style = {user.mainViewDetailsSummaryButtonContainer}>
-                            <Text style={user.mainViewDetailsSummaryValue}>{userDetails.length && userDetails[0].number_of_referrals ? userDetails[0].number_of_reviews : 0}</Text>
-                            <Text style={user.mainViewDetailsSummaryName}>Referrals</Text>
+                            <Text style={user.mainViewDetailsSummaryValue}>{ discussionFeedData && discussionFeedData.length ? discussionFeedData.length : 0}</Text>
+                            <Text style={user.mainViewDetailsSummaryName}>Discussions</Text>
                         </View>
                         <View style = {user.mainViewDetailsSummaryButtonContainer}>
                             <Text style={user.mainViewDetailsSummaryValue}>{userDetails.length && userDetails[0].number_of_reviews ? userDetails[0].number_of_reviews : 0}</Text>
@@ -240,21 +263,31 @@ const UserDetails = () => {
                     <View style = {user.listContainer}>
                         
                         <TouchableOpacity style = {user.listOptionButton}
-                        onPress = {()=>navigation.navigate("MyDiscussions")}
+                        onPress = {()=>navigation.navigate("MyDiscussions" , {body : discussionFeedData})}
                         >
                             <MaterialIcons name = 'groups' color = {theme} size = {20} />
                             <View style = {user.listOptionButtonTextView}>
-                                <Text style = {user.listOptionButtonText}>My Discussion</Text>
-                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                                <Text style = {[user.listOptionButtonText,{
+                                    color : discussionFeedData && discussionFeedData.length ? borderColor : "#666"
+                                }]}>My Discussion</Text>
+                                <Text style = {[user.listOptionButtonText,{
+                                    color : discussionFeedData && discussionFeedData.length ? borderColor : "#666"
+                                }]}>{discussionFeedData && discussionFeedData.length ? discussionFeedData.length : 0} Items</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style = {user.listOptionButton}
+                        <TouchableOpacity 
+                        style = {user.listOptionButton}
+                        disabled = {userDetails.length && userDetails[0].number_of_reviews ? false : true}
                         onPress = {()=>navigation.navigate("MyReviews")}
                         >
                             <MaterialIcons name = 'notes' color = {neutralTheme} size = {20} />
                             <View style = {user.listOptionButtonTextView}>
-                                <Text style = {user.listOptionButtonText}>My Reviews</Text>
-                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                                <Text style = {[user.listOptionButtonText,{
+                                    color : userDetails.length && userDetails[0].number_of_reviews ? borderColor : "#666"
+                                }]}>My Reviews</Text>
+                                <Text style = {[user.listOptionButtonText,{
+                                     color : userDetails.length && userDetails[0].number_of_reviews ? borderColor : "#666"
+                                }]}>{userDetails.length && userDetails[0].number_of_reviews ? userDetails[0].number_of_reviews : 0} Items</Text>
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style = {[user.listOptionButton,{borderBottomWidth : 0}]}

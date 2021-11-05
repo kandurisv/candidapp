@@ -74,10 +74,10 @@ const UpdatedCarousel = ({DATA , onClickItem , varValue}) => {
               <TouchableOpacity disabled style = {home.mainViewCarouselScrollableItemButton} onPress = {() => {itemClick(item)}}>
                   <View style = {{flex: 1  , width : 100, backgroundColor : background}}>
                     <Image source = {{uri : item.image ? item.image : "No Image"}} 
-                        style = {[home.mainViewCarouselScrollableItemImageBackground, {opacity : 1 , backgroundColor : background, borderRadius : 5 , width : 80, height : 80 , marginLeft : 10} ]} />
+                        style = {[home.mainViewCarouselScrollableItemImageBackground, {opacity : 1 , backgroundColor : background, borderRadius : 40 , width : 80, height : 80 , marginLeft : 10} ]} />
                   </View>
-                  <View style = {{backgroundColor : "#FFF" , height : 45 , borderRadius : 5, }}>
-                      <Text style={[home.mainViewCarouselScrollableItemText,{margin:1 ,fontSize : 10 , color : borderColor}]}>{item.name.length > 30 ? item.name.substring(0,30) + "..." : item.name}</Text>
+                  <View style = {{backgroundColor : background , height : 45 , borderRadius : 5, }}>
+                      <Text style={[home.mainViewCarouselScrollableItemText,{margin:1 ,fontSize : 10 , color : borderColor , }]}>{item.name.length > 30 ? item.name.substring(0,30) + "..." : item.name}</Text>
                   </View>
               </TouchableOpacity>
           </Animated.View>
@@ -345,7 +345,7 @@ return (
                                 uri: 'https://ui-avatars.com/api/?rounded=true&size=512&background=D7354A&color=fff&bold=true'
                                 }} size={30}/>}
                     </TouchableOpacity>
-            <View style = {{flex : 1 , justifyContent : 'center', alignItems : 'center', backgroundColor : 'white' , }}>
+            <View style = {{flex : 1 , justifyContent : 'center', alignItems : 'center', backgroundColor : 'white' ,marginRight : 30  }}>
               <Image style={{height : 40 , width : 40 }}
                           source={require('../assets/LogoTransparentSolidColorLine.png')}
               />          
@@ -406,8 +406,8 @@ return (
 
         {response.length > 0 && response.map((item,index) =>{
             return (
-            <View key = {index.toString()} style = {[home.mainViewCarouselContainer,{marginTop : 0, paddingRight : 10 , elevation:1 , shadowRadius : 2, shadowColor : theme  , backgroundColor : background  }]}>
-              <Text style = {[home.mainViewCarouselTitle,{marginTop : 5}]}>{item.header}</Text>
+            <View key = {index.toString()} style = {[home.mainViewCarouselContainer,{marginTop : 0, paddingRight : 0 , elevation:0 , shadowRadius : 2, shadowColor : theme  , backgroundColor : background  }]}>
+              {/* <Text style = {[home.mainViewCarouselTitle,{marginTop : 5}]}>{item.header}</Text> */}
               <View style = {home.mainViewCarouselChild}>
                 <UpdatedCarousel key = {index.toString()} DATA = {item.data} onClickItem = {goToProductFeed} varValue = {item.var}/>
               </View>

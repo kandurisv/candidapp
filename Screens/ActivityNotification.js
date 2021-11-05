@@ -61,35 +61,42 @@ const ActivityNotification = () => {
         setRefreshEvents(!refreshEvents)
     }
 
-    const LikeNotification = ({username, product}) => {
-        return(
-        <View>
-            <Text style = {{flexDirection : 'row' , fontSize : 15}}>
-                <Text style = {{fontWeight : 'bold'}}>{username}</Text>
-                <Text>{' liked your review on '}</Text>
-                <Text style = {{fontWeight : 'bold'}}>{product}</Text>
-            </Text>
-        </View>)
-    }
+   
 
-    const CommentNotification = ({username}) => {
-        return(
-        <View>
-            <Text style = {{flexDirection : 'row' , fontSize : 15}}>
-                <Text style = {{fontWeight : 'bold'}}>{username}</Text>
-                <Text>{' commented on your post'}</Text>
-            </Text>
-        </View>)
-    }
+   
 
 
-    const onClickNotification = (review_sum_id) => {
-        navigation.navigate("PostLink", {id : review_sum_id})
+    const onClickNotification = (type,id) => {
+        //ToastAndroid.show("You can visit your activity from user profile",ToastAndroid.SHORT) 
+        console.log(type,id.toString())
+        if(type == "journey") {
+            axios.get(URL + "/journey/getitem",{params:{journey_id : id , user_id : userId.slice(1,13)}} , {timeout : 5000})
+                .then(res => res.data).then(function(responseData) {
+                    console.log(responseData[0])
+                    navigation.navigate("JourneyDetails",{item: responseData[0]})
+                })
+                .catch(function(error) {
+                    console.log(error)
+                    setError(true)
+                });
+       } else { 
+           axios.get(URL + "/discussion/get_post",{params:{item_id : id , user_id : userId.slice(1,13)}} , {timeout : 5000})
+            .then(res => res.data).then(function(responseData) {
+           console.log(responseData[0])
+           navigation.navigate("DiscussionPost",{body : responseData[0]})
+        })
+       .catch(function(error) {
+           console.log(error)
+           setError(true)
+       });
+             }
+
+
     }
 
 
     const items = ({item,index}) => (
-        item && item.username && item.product_name ?
+        item ?
                 <TouchableOpacity 
                     style = {{
                         flexDirection : 'row' , 
@@ -98,29 +105,26 @@ const ActivityNotification = () => {
                         padding : 10,
                         marginRight : 10, 
                         marginLeft : 0,
+                        borderBottomColor : '#EEE' , borderBottomWidth : 1, 
                     }}
-                    onPress = {()=>onClickNotification(item.review_sum_id)}
+                    onPress = {()=>onClickNotification(item.type, item.id)}
                 >
                     <View style = {{marginRight : 10}}>
-                     { item  && item.engagement_profile_image && item.engagement_profile_image != "None" && item.engagement_profile_image != "" ?
-                        <Image 
-                            source = {{uri: item.engagement_profile_image + "?" + new Date()}} 
-                            style = {{width :30, height : 30 , borderRadius : 30  }} /> :
-                        item.length && item.engagement_user_name ? 
+                     { item && item.username ? 
                                 <Avatar.Image 
                                 source={{
-                                uri: 'https://ui-avatars.com/api/?rounded=true&name='+ item.engagement_user_name.replace(' ','+') + '&size=512&background=D7354A&color=fff&bold=true'
+                                uri: 'https://ui-avatars.com/api/?rounded=true&size=512&background=D7354A&color=fff&bold=true&name='+ item.username.replace(' ','+') 
                                 }} size={30}/> :
                                 <Avatar.Image 
                                 source={{
-                                uri: 'https://ui-avatars.com/api/?rounded=true&size=512&background=D7354A&color=fff&bold=true'
+                                uri: 'https://ui-avatars.com/api/?rounded=true&size=512&background=D7354A&color=fff&bold=true&name=ELON+MUSK'
                                 }} size={30}/>}
                     </View>
 
-                    <View style = {{marginRight : 10}}>
-                        { item.upvote == 1 ?
-                            <LikeNotification username = {item.engagement_user_name} product = {item.product_name} /> :
-                            <CommentNotification username = {item.engagement_user_name} />
+                    <View style = {{paddingBottom : 10, paddingTop : 10,  alignItems : 'center', }}>
+                        { item.type == "journey" ?
+                           <Text><Text style = {{fontWeight : 'bold'}}>{item.username}</Text> engaged on your journey - <Text style = {{fontWeight : 'bold'}}>{item.title}</Text></Text> :
+                           <Text><Text style = {{fontWeight : 'bold'}}>{item.username}</Text> engaged on your discussion - <Text style = {{fontWeight : 'bold'}}>{item.title}</Text></Text>
                         }
                     </View>
                    </TouchableOpacity>    : null   
@@ -150,7 +154,7 @@ const ActivityNotification = () => {
             </View>
             {error ? <ErrorPage /> : loading ? <LoadingPage /> :
             <FlatList 
-                keyExtractor={item => item.id.toString()} 
+                keyExtractor={item => item.noti_id.toString()} 
                 style = {{paddingRight : 5}}
                 contentContainerStyle = {{paddingRight : 5}}
                 showsVerticalScrollIndicator={false}
