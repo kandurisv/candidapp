@@ -26,7 +26,7 @@ const ActivityNotification = () => {
         const getNotifications = () => {
             axios.get(URL + "/notifications/allnotifications",{params:{user_id : userId.slice(1,13) }} , {timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
-    //                console.log("ALL NOTIFICATIONS",responseData)
+                    console.log("ALL NOTIFICATIONS",responseData)
                     setLoading(false)
                     setNotificationsData(responseData)
                 })

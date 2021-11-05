@@ -4,7 +4,7 @@ import {Avatar} from 'react-native-paper';
 import { Text, View , FlatList , Dimensions, ImageBackground, TouchableOpacity, Animated, ScrollView, Alert, TextInput, ToastAndroid, Platform , Share, Image, Pressable} from 'react-native'
 import { useNavigation , useRoute } from '@react-navigation/native';
 import axios from 'axios';
-import {URL, LoadingPage,  background, theme, firebaseConfig, AuthContext, borderColor} from './exports'
+import {URL, LoadingPage,  background, theme, firebaseConfig, AuthContext, borderColor, contrastTheme} from './exports'
 import { AntDesign, Entypo, FontAwesome, Fontisto, Ionicons } from '@expo/vector-icons';
 
 import { header1, home } from './styles';
@@ -18,6 +18,7 @@ import Constants from 'expo-constants';
 
 import 'react-native-get-random-values'
 import { nanoid } from 'nanoid'
+import moment from 'moment'
 
 import Swiper from 'react-native-swiper'
 
@@ -35,6 +36,29 @@ try {
 const {width, height} = Dimensions.get("window")
 const CAROUSEL_ITEM_SQUARE_SIZE = 100
 const CAROUSEL_ITEM_SPACING = 5
+
+const TagsView = ({data}) => {
+
+  React.useEffect(() =>{
+     // console.log("Data", data)
+  },[])
+
+  return(
+  <View style = {{flexDirection : 'row', flexWrap : 'wrap',}}>
+      {data.map((item,index)=>{
+          return(
+          <TouchableOpacity 
+              key={index.toString()}
+              style = {{flexDirection : 'row', alignItems : 'center', marginVertical : 5, marginRight : 10, borderRadius : 5 ,paddingHorizontal : 5, paddingVertical : 5, backgroundColor : contrastTheme,}}
+              onPress = {()=>console.log("clicked on tag")}>
+              <Text style = {{color : 'white' }}>{item}</Text>
+          </TouchableOpacity>)
+      })}
+  </View>
+)}
+
+
+
 
 
 const UpdatedCarousel = ({DATA , onClickItem , varValue}) => {
@@ -70,13 +94,13 @@ const UpdatedCarousel = ({DATA , onClickItem , varValue}) => {
       })
 
       return(
-          <Animated.View style={[home.mainViewCarouselScrollableItemContainer  , {transform : [{scale}]}]}>
-              <TouchableOpacity style = {home.mainViewCarouselScrollableItemButton} onPress = {() => {itemClick(item)}}>
+          <Animated.View style={[home.mainViewCarouselScrollableItemContainer,{borderWidth : 0}  , {transform : [{scale}]}]}>
+              <TouchableOpacity style = {[home.mainViewCarouselScrollableItemButton,{borderWidth : 0}]} onPress = {() => {itemClick(item)}}>
                   <View style = {{flex: 1  , width : 100, backgroundColor : background}}>
                     <Image source = {{uri : item.image ? item.image : "No Image"}} 
-                        style = {[home.mainViewCarouselScrollableItemImageBackground, {opacity : 1 , backgroundColor : background, borderRadius : 5 , width : 80, height : 80 , marginLeft : 10} ]} />
+                        style = {[home.mainViewCarouselScrollableItemImageBackground, {opacity : 1 , backgroundColor : background, borderRadius : 40 , width : 80, height : 80 , marginLeft : 10} ]} />
                   </View>
-                  <View style = {{backgroundColor : "#FFF" , height : 45 , borderRadius : 5, }}>
+                  <View style = {{backgroundColor : background , height : 45 , borderRadius : 5, }}>
                       <Text style={[home.mainViewCarouselScrollableItemText,{margin:1 ,fontSize : 10 , color : borderColor}]}>{item.name.length > 30 ? item.name.substring(0,30) + "..." : item.name}</Text>
                   </View>
               </TouchableOpacity>
@@ -151,6 +175,8 @@ const Home = () => {
     const [heroSearchText,setHeroSearchText] = React.useState("")
 
     const [brandCarousel,setBrandCarousel] = React.useState([])
+
+    const [trendingDiscussion,setTrendingDiscussion] = React.useState([])
 
 
 
@@ -286,6 +312,19 @@ const Home = () => {
                     setResult(true)
                     setError(true)
                 });
+                axios.get(URL + "/discussion/trending", {timeout : 5000})
+                .then(res => res.data).then(function(responseData) {
+                    console.log(responseData)
+                    setTrendingDiscussion(responseData)
+                    setHomeLoading(false)
+                    setResult(true)
+                })
+                .catch(function(error) {
+                    setInfoLoading(false)
+                    setHomeLoading(false)
+                    setResult(true)
+                    setError(true)
+                });
                 axios.get(URL + "/home/hero", {timeout : 5000})
                 .then(res => res.data).then(function(responseData) {
                    // console.log(responseData)
@@ -312,20 +351,6 @@ const Home = () => {
                 navigation.navigate("Auth")
             }
         })
-
- 
-
-// App Update 
-
-    // inAppUpdates.checkNeedsUpdate().then((result) => {
-    //     if (result.shouldUpdate) {
-    //         setUpdateAvailable(true)
-    //         if (Platform.OS === 'android') {
-    //         // android only, on iOS the user will be promped to go to your app store page
-    //         setUpdateOptions({updateType: IAUUpdateKind.FLEXIBLE})
-    //     }
-    //     }
-    // });
 
 
 },[result, source])
@@ -447,7 +472,7 @@ const submitUserDetails = () => {
 }
 
 return (
-    <View style = {home.container}>  
+    <View style = {[home.container,{flex : 1 , backgroundColor : background}]}>  
         <StatusBar style="dark" />
         <View style = {[header1.headerView,{backgroundColor : background, marginTop:30,}]}>
            
@@ -466,7 +491,7 @@ return (
                                 uri: 'https://ui-avatars.com/api/?rounded=true&size=512&background=D7354A&color=fff&bold=true'
                                 }} size={30}/>}
                     </TouchableOpacity>
-            <View style = {{flex : 1 , justifyContent : 'center', alignItems : 'center', backgroundColor : 'white' , }}>
+            <View style = {{flex : 1 , justifyContent : 'center', alignItems : 'center', backgroundColor : background , }}>
               <Image style={{height : 40 , width : 40 }}
                           source={require('../assets/LogoTransparentSolidColorLine.png')}
               />          
@@ -495,7 +520,7 @@ return (
             contentContainerStyle = {home.mainViewScrollableContentContainer}
             style = {home.mainViewScrollableContainer}
             >
-              <View
+              {/* <View
                 style = {{flexDirection : 'row' , borderWidth : 1 , borderColor : '#bbb', backgroundColor : '#EEE' ,
                 borderRadius : 2, padding : 5, margin : 5 , height : 50, justifyContent: 'center', 
                 alignItems:'center'}}>
@@ -512,7 +537,7 @@ return (
                 >
                   <Fontisto name = "search" size = {20} color = {theme} />
                 </TouchableOpacity>
-              </View>
+              </View> */}
               {heroImage.length > 0 ?
               <View style = {home.mainViewHeroBannerContainer}>
                 
@@ -553,13 +578,39 @@ return (
 
         {response.length > 0 && response.map((item,index) =>{
             return (
-            <View key = {index.toString()} style = {[home.mainViewCarouselContainer,{marginTop : 0, paddingRight : 10 , elevation:1 , shadowRadius : 2, shadowColor : theme  , backgroundColor : background  }]}>
-              <Text style = {[home.mainViewCarouselTitle,{marginTop : 5}]}>{item.header}</Text>
+            <View key = {index.toString()} style = {[home.mainViewCarouselContainer,{marginTop : 0, paddingRight : 0 , elevation:0 , shadowRadius : 2, shadowColor : theme  , backgroundColor : background  }]}>
+              {/* <Text style = {[home.mainViewCarouselTitle,{marginTop : 5}]}>{item.header}</Text> */}
               <View style = {home.mainViewCarouselChild}>
                 <UpdatedCarousel DATA = {item.data} onClickItem = {goToProductFeed} varValue = {item.var}/>
               </View>
             </View> )
         })}
+
+        <View>
+          <Text style = {[home.mainViewCarouselTitle,{marginBottom : 10 , fontSize : 20 , fontStyle : 'normal', fontWeight : 'bold' }]}> Trending Discussions</Text>
+          {trendingDiscussion.length > 0 && trendingDiscussion.map((item,index)=>{
+            return (
+            <TouchableOpacity 
+            key = {index.toString()}
+            style = {{margin : 10 , marginVertical : 5,  paddingHorizontal : 10 , paddingVertical : 5 , borderWidth : 1 , elevation : 0 , borderRadius : 10 , borderColor : "#EEE"}}
+            onPress = {()=>navigation.navigate('DiscussionPost' , {body: item})} >
+              <View style = {{flexDirection : 'row', justifyContent : 'space-between'}}>
+                <Text style = {{fontWeight : 'bold', fontSize : 18 , marginBottom : 10, color : "#444" }}>{item.title}</Text>
+                <Text style = {{fontStyle : 'italic', fontSize : 12}}>{moment(item.created_at,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
+              </View>
+              <Text style = {{marginBottom : 10, color : "#888" , fontSize : 12 }}>{item.content}</Text>
+              <View>
+                  <TagsView data = {item.tags} />
+              </View>
+            
+             
+            </TouchableOpacity>  )
+          })}
+        </View>
+
+
+
+
     </ScrollView> )
 }
   </View>

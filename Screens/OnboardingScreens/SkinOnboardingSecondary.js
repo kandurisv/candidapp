@@ -60,7 +60,7 @@ const SkinOnboardingSecondary = () => {
     const [ skinTags, setSkinTags ] = React.useState([])
     const [ submitted,setSubmitted ] = React.useState(false)
     const route = useRoute()
-    const {body} = route.params
+    const [body,setBody] = React.useState(route.params.body)
 
 
     const navigation  = useNavigation();
@@ -73,7 +73,7 @@ const SkinOnboardingSecondary = () => {
         console.log("Body" , URL)
       
         const getSkinTypeQuestions = () => {
-            axios.get(URL + "/skinquiz", {
+            axios.get(URL + "/onboarding", {
                 params: {
                  question_type: "skinquiz"
                 }

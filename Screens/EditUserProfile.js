@@ -53,6 +53,10 @@ const EditUserProfile = () => {
 
     const [userDob,setUserDob] = useState(route?.params?.userInfo.dob ? route.params.userInfo.dob :"")
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+    const [expoToken, setExpoToken] = useState(route?.params?.userInfo.expo_token ? route.params.userInfo.expo_token : "")
+    const [deviceToken, setDeviceToken] = useState(route?.params?.userInfo.device_token ? route.params.userInfo.device_token : "")
+    
     
     const showDatePicker = () => {setDatePickerVisibility(true);};
     const hideDatePicker = () => {setDatePickerVisibility(false);};
@@ -83,8 +87,7 @@ const EditUserProfile = () => {
 
     const submit = () => {
       setSubmitted(true)
-      var expoToken = AsyncStorage.getItem('expoToken')
-      var deviceToken = AsyncStorage.getItem('deviceToken')
+     
       const body = {
         "var" : "edit user",
         "user_id": user_id,
@@ -100,7 +103,7 @@ const EditUserProfile = () => {
         
       }
 
-    //  console.log(body)
+      console.log(body)
 
     axios({
       method: 'post',

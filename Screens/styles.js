@@ -257,7 +257,7 @@ export const home = StyleSheet.create({
         height : 125 , 
         width : 100, 
         backgroundColor : background, 
-        elevation : 1, 
+      //  elevation : 1, 
     },
     mainViewCarouselScrollableItemButton : {
 

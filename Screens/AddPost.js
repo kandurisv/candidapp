@@ -365,24 +365,7 @@ return (
             contentContainerStyle = {home.mainViewScrollableContentContainer}
             style = {home.mainViewScrollableContainer}
             >
-              <View
-                style = {{flexDirection : 'row' , borderWidth : 1 , borderColor : '#bbb', backgroundColor : '#EEE' ,
-                borderRadius : 2, padding : 5, margin : 5 , height : 50, justifyContent: 'center', 
-                alignItems:'center'}}>
-                <TextInput 
-                  style = {{flex : 1 , fontSize : 14}}
-                  placeholder = "Search categories, brands or products"
-                  onChangeText = {(text)=>setHeroSearchText(text)}
-                  value = {heroSearchText}
-                />
-
-                <TouchableOpacity 
-                  style = {{ paddingTop : 2, paddingBottom : 2, paddingLeft : 5, paddingRight: 5, justifyContent : 'center' , alignItems : 'center', borderRadius : 5 }}
-                  onPress = {()=>console.log("click")}
-                >
-                  <Fontisto name = "search" size = {20} color = {theme} />
-                </TouchableOpacity>
-              </View>
+              
               {heroImage.length > 0 ?
               <View style = {home.mainViewHeroBannerContainer}>
                 
@@ -447,7 +430,7 @@ return (
         position : 'absolute', 
         backgroundColor : 'white', 
         width : Dimensions.get('screen').width*0.9,
-        height : 300,
+        height : 250,
         borderTopLeftRadius : 20,
         borderTopRightRadius : 20,
         zIndex : 101,
@@ -490,18 +473,10 @@ return (
             onPress = {()=>navigation.navigate("AddJourney")}>
             <MaterialIcons name = 'directions-transit' color = {lightTheme} size = {25} />
             <View style = {{flex : 1 }}>
-              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Add Private Journey</Text>
+              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Add Journey</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity style = {{flexDirection : 'row-reverse' , justifyContent : 'flex-start',
-            alignItems : 'center' , padding : 10,marginTop : 20, marginBottom : 20,  borderBottomWidth : 1, borderBottomColor : "#DDD"
-            }}
-            onPress = {()=>navigation.navigate("GiveRecommendation")}>
-            <MaterialIcons name = 'favorite' color = {contrastTheme} size = {25} />
-            <View style = {{flex : 1 }}>
-              <Text style = {{fontWeight : 'bold' , fontSize : 16,marginLeft : 5}}>Give Recommendation</Text>
-            </View>
-          </TouchableOpacity>
+          
         </View>
       </View>
   </View>

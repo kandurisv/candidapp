@@ -12,7 +12,7 @@ import { AntDesign, Entypo, MaterialIcons } from '@expo/vector-icons';
 const {width,height} = Dimensions.get('screen')
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {Menu,MenuOptions,MenuOption,MenuTrigger,} from 'react-native-popup-menu';
-
+import moment from 'moment'
 //import * as Amplitude from 'expo-analytics-amplitude';
 import { header , header1, user } from './styles';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
@@ -49,7 +49,7 @@ const UserDetails = () => {
      //       console.log(phoneNumber)
             axios.get(URL + "/user/summary", {params:{user_id : phoneNumber.slice(1,13)}} , {timeout : 5})
             .then(res => res.data).then(function(responseData) {
-      //      console.log("USER Summary " , responseData)
+            console.log("USER DETAILS " , responseData)
       //      console.log("REached to response")
       
             setUserDetails(responseData)
@@ -73,9 +73,9 @@ const UserDetails = () => {
       const getUserInfo =  async () => {
         const phoneNumber = await AsyncStorage.getItem("phoneNumber")
  //       console.log(phoneNumber)
-        axios.get(URL + "/user/info", {params:{user_id : phoneNumber.slice(1,13)}} , {timeout : 5000})
+        axios.get(URL + "/user/info", {params:{user_id : userId.slice(1,13)}} , {timeout : 5000})
             .then(res => res.data).then(function(responseData) {
-        console.log("USER DETAILS " , responseData)
+        console.log("USER INFO " , responseData)
   //      console.log("REached to response")
   
         setUserInfo(responseData)
@@ -95,10 +95,10 @@ const UserDetails = () => {
         getUserInfo()
 
 
-      const fetchPinsPost = () => {
-        axios.get(URL + "/user/items", {params:{user_id : userId.slice(1,13) }} , {timeout : 5})
+      const fetchJourney = () => {
+        axios.get(URL + "/userinfo/journey", {params:{user_id : userId.slice(1,13) }} , {timeout : 5000})
         .then(res => res.data).then(function(responseData) {
-           console.log("Fetch Posts in User", responseData)
+           console.log("Fetch Journey in User", responseData)
             if(responseData.length > 0) {
               setMyPostsEmpty(false)
               setUserPosts(responseData)
@@ -110,7 +110,7 @@ const UserDetails = () => {
             setUserPostsError(true)
         });
     }
-      fetchPinsPost()
+    fetchJourney()
 
         
     },[result, focus , refresh]);
@@ -173,16 +173,17 @@ const UserDetails = () => {
         loading ? (<LoadingPage />) :
         (
             <View style = {[user.container,{marginBottom : 10}]}>
-                <View style = {header1.headerView}>
-                    <ModernHeader 
-                        title="User"
-                        titleStyle = {header1.headerText}
-                        backgroundColor= {background}
-                        height = {50}
-                        leftIconColor = {borderColor}
-                        leftIconOnPress={() => navigation.navigate("Home")}
-                        rightDisable
-                        />
+                <View style = {header.headerView}>
+                    <ModernHeader
+                    title="User Details"
+                    height = {50}
+                    titleStyle = {header.headerText}
+                    backgroundColor= {background}
+                    leftIconColor = {borderColor}
+                    leftIconOnPress={() => navigation.goBack()}
+                   
+                    rightDisable
+                    />
                 </View>   
                 <ScrollView 
                 contentContainerStyle = {user.mainViewContentContainer}
@@ -232,11 +233,7 @@ const UserDetails = () => {
                         </View>   
                     </View>
                     </View>
-                    {userDetails.length &&  userDetails[0].show_referral_code && userDetails[0].existing_referral_code ?
-                    <TouchableWithoutFeedback style = {user.mainViewReferralCodeView} onPress = {onReferralPress}>
-                        <Text style = {user.mainViewReferralCodeText}>Your referral code is '{userDetails[0].existing_referral_code}'</Text>
-                    </TouchableWithoutFeedback> : null
-                    }
+                    
                     <TouchableOpacity style = {user.mainViewEditProfileButton} onPress={onEdit}>
                         <Text style = {user.mainViewEditProfileText}> Edit Profile </Text>
                     </TouchableOpacity>
@@ -252,15 +249,6 @@ const UserDetails = () => {
                             </View>
                         </TouchableOpacity>
                         <TouchableOpacity style = {user.listOptionButton}
-                        onPress = {()=>navigation.navigate("MyQNA")}
-                        >
-                            <MaterialIcons name = 'loupe' color = {contrastLightTheme} size = {20} />
-                            <View style = {user.listOptionButtonTextView}>
-                                <Text style = {user.listOptionButtonText}>My Questions and Answers</Text>
-                                <Text style = {user.listOptionButtonText}>10 items</Text>
-                            </View>
-                        </TouchableOpacity>
-                        <TouchableOpacity style = {user.listOptionButton}
                         onPress = {()=>navigation.navigate("MyReviews")}
                         >
                             <MaterialIcons name = 'notes' color = {neutralTheme} size = {20} />
@@ -269,24 +257,35 @@ const UserDetails = () => {
                                 <Text style = {user.listOptionButtonText}>10 items</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style = {user.listOptionButton}
+                        <TouchableOpacity style = {[user.listOptionButton,{borderBottomWidth : 0}]}
                         onPress = {()=>navigation.navigate("MyJourneys")}
                         >
                             <MaterialIcons name = 'directions-transit' color = {lightTheme} size = {20} />
                             <View style = {user.listOptionButtonTextView}>
-                                <Text style = {user.listOptionButtonText}>My Journeys</Text>
-                                <Text style = {user.listOptionButtonText}>10 items</Text>
+                                <Text style = {[user.listOptionButtonText,{fontWeight : 'bold', color : contrastTheme}]}>My Journeys</Text>
                             </View>
                         </TouchableOpacity>
-                        <TouchableOpacity style = {user.listOptionButton}
-                        onPress = {()=>navigation.navigate("MyRecommendations")}
-                        >
-                            <MaterialIcons name = 'favorite' color = {contrastTheme} size = {20} />
-                            <View style = {user.listOptionButtonTextView}>
-                                <Text style = {user.listOptionButtonText}>My Recommendations</Text>
-                                <Text style = {user.listOptionButtonText}>10 items</Text>
-                            </View>
-                        </TouchableOpacity>
+                        <View style = {{marginLeft : 40}}>
+                            {userPosts.length ? 
+                            userPosts.map((item,index)=>{
+                                return(
+                                <TouchableOpacity 
+                                key = {index.toString()}
+                                style = {{ marginTop : 5, padding : 5, borderBottomWidth : 1 , borderBottomColor : '#EEE'}}
+                                onPress = {()=>navigation.navigate("JourneyDetails", {item : item} )}
+                                >
+                                <View style = {{flexDirection : 'row', justifyContent : 'space-between'}}>
+                                    <Text style = {[user.listOptionButtonText,{fontStyle : 'normal'}]}>{item.journey_title}</Text>
+                                    <Text style = {{fontStyle : 'italic', fontSize : 12}}>{moment(item.last_updated,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
+                                </View>
+                                </TouchableOpacity>
+                                )
+                            })
+                        : null 
+                        }
+                            
+                        </View>
+                        
                     </View>
                 </ScrollView>
             </View>

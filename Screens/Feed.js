@@ -72,15 +72,15 @@ const FeedItem = ({item}) => {
             {imageCheck ? 
             Object.keys(item.image).map((key , index) => {return(
               <View key = {index.toString()}>
-                <Image key = {index.toString()} style = {[feed.scrollableFeedItemHorizontalScrollImage,{height : ((3*width)/4)-30}]} source = {{uri: item.image[key] ? item.image[key] : "No Image"}}/>
+                <Image key = {index.toString()} style = {[feed.scrollableFeedItemHorizontalScrollImage,{height : ((3*width)/4)-30 , borderBottomLeftRadius : 0 , borderBottomRightRadius : 0}]} source = {{uri: item.image[key] ? item.image[key] : "No Image"}}/>
                 <View style = {feed.scrollableFeedItemImagesCount}>
-                  <Text style = {{fontSize:10, color : background}} >{index+1}/{item.image.length}</Text>
+                  <Text style = {{fontSize:10, color : background}} >{index+1}/{Object.keys(item.image).length}</Text>
                 </View>
               </View>  
             )}) : null } 
             </ScrollView> : null }
             <View style ={ imageCheck ?
-              [feed.scrollableFeedItemProductView,{borderRadius:10}] :
+              [feed.scrollableFeedItemProductView,{borderRadius:10 , borderTopLeftRadius : 0 ,borderTopRightRadius : 0}] :
               [{borderRadius : 10 , marginTop : 10 ,  width : width - 45 ,  paddingBottom : 5, backgroundColor : background,} ]
               }>
                 <View style = {{flexDirection : 'row', justifyContent : 'space-between', marginRight : 10 , alignItems : 'center'}}>

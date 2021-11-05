@@ -119,7 +119,7 @@ const BottomMenu = ({ iconName, isCurrent , label, value, index}) => {
 
 const TabBar = ({state,descriptors,navigation}) => {
     const [userId] = React.useContext(AuthContext)
-    const [badgeValue,setBadgeValue] = React.useState([0,10,0,30,40])
+    const [badgeValue,setBadgeValue] = React.useState([0,0,0,0,0])
     React.useEffect(() => {
 
       axios.all([
@@ -308,7 +308,6 @@ const TabNavigator = () => {
         <Stack.Screen name="Search" component ={Search} />
         <Stack.Screen name="FeedSearch" component ={FeedSearch} />
         <Stack.Screen name="ActivityNotification" component ={ActivityNotification} />
-
         <Stack.Screen name="DiscussionPost" component ={DiscussionPost} />
         <Stack.Screen name="Input" component ={Input} />
         <Stack.Screen name="ProductDetails" component ={ProductDetails} />
@@ -333,6 +332,7 @@ const TabNavigator = () => {
         <Stack.Screen name="MyReviews" component ={MyReviews} />
         <Stack.Screen name="MyRecommendations" component ={MyRecommendations} />
         <Stack.Screen name="JourneyDetails" component ={JourneyDetails} />
+        <Stack.Screen name="UserDetails" component ={UserDetails} />
       </Stack.Navigator>
     );
   }

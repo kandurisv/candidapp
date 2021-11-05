@@ -74,9 +74,9 @@ const HairOnboardingSecondary = () => {
         setHairTypeQuestion([])
       
         const getHairTypeQuestions = () => {
-            axios.get(URL + "/hairquiz", {
+            axios.get(URL + "/onboarding", {
                 params: {
-                 question_type: "hairprimary"
+                 question_type: "hairquiz"
                 }
               }, {timeout : 5000})
             .then(res => res.data)
