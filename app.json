@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "candidapp",
+    "name": "Candid",
     "owner": "kandurisv",
     "slug": "candidapp",
     "scheme": "candid",
@@ -22,7 +22,7 @@
       "supportsTablet": true
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./assets/logo.png",
         "backgroundColor": "#FFFFFF"
