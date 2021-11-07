@@ -69,7 +69,7 @@ const UpdatedCarousel = ({DATA , onClickItem , varValue}) => {
   
   const renderItem = ({item , index}) => {
       const itemClick = (item) => {
-          onClickItem(item.name , item.id, varValue)
+          onClickItem(varValue , item.id, item.name)
       }
      
       const inputRange = [

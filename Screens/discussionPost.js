@@ -188,7 +188,10 @@ const submit = () => {
                         number_of_upvote = {body.number_of_upvote}
                         number_of_downvote = {body.number_of_downvote}
                         tags = {body.tags}
-                        number_of_answer = {headerData[0].number_of_answer}
+                        number_of_answer = {body.number_of_answer}
+                        upvote = {headerData[0].upvote}
+                        downvote = {headerData[0].downvote}
+                        engagement_user_id = {userId.slice(1,13)}
                         /> : null }
                 
                 </View>
@@ -213,6 +216,9 @@ const submit = () => {
                             number_of_downvote = {item.number_of_downvote}
                             reply = {item.reply}
                             replyFunction = {(questionData)=>replyFunc(questionData)}
+                            engagement_user_id = {userId.slice(1,13)}
+                            upvote = {item.upvote}
+                            downvote = {item.downvote}
                         />
                     ) }
                     /> : null}

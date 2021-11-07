@@ -7,14 +7,14 @@ import { background, theme } from '../Screens/exports';
 
 const ProductDetailsHeader = (props) => {
     return(
-        <View style = {{ flexDirection : 'row' , backgroundColor : background}}>
+        <View style = {{ flexDirection : 'row' ,marginTop : 20,alignItems : 'center' }}>
             <View style = {{borderRadius : 10}}>
                 <Image
                     source={{uri:props.image}}
-                    style = {{height: 70 , width: 70 , borderRadius: 10  } }
+                    style = {{height: 50 , width: 50 , borderRadius: 50  } }
                     />
             </View>
-            <View style = {{flexShrink : 1 , marginLeft : 10}}>
+            <View style = {{flexShrink : 1 , marginLeft : 10 , flex : 1 ,  alignItems : 'center', paddingVertical : 10}}>
                 <View style = {{flex : 1, }}>
                     <View  style = {{justifyContent : 'flex-end' , borderRadius : 5,}}>
                         <Text style = {{color : theme, fontWeight : 'bold'}}>
@@ -27,7 +27,6 @@ const ProductDetailsHeader = (props) => {
                         {props.product_name}
                     </Text>
                 </View>
-                
             </View>
 
         </View>

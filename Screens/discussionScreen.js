@@ -104,7 +104,7 @@ const onRefresh = () => {
             loading ? 
             <LoadingPage /> : 
             <FlatList 
-            style = {{marginBottom : 120,}}
+            style = {{marginBottom : 60,}}
             contentContainerStyle = {{}}
             keyExtractor = {(item) => item.item_id.toString()}
             data = {discussionFeedData}
@@ -118,6 +118,7 @@ const onRefresh = () => {
                 username = {item.username}
                 content = {item.content}
                 created_at = {item.created_at}
+                number_of_answer =  {item.number_of_answer}
                 number_of_upvote = {item.number_of_upvote}
                 number_of_downvote = {item.number_of_downvote}
                 answer = {item.answer}

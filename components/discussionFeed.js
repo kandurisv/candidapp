@@ -151,10 +151,11 @@ const DiscussionFeed = (props) => {
                         <Text>{props.number_of_downvote}</Text>
                     </TouchableOpacity>
                 </View>
+                {props.number_of_answer ? 
                 <View style ={{flexDirection : 'row', marginRight : 20,}}>
                     <Fontisto name = "comments" color = {"#888"} size = {18} />
-                    <Text> 4</Text>       
-                </View>
+                    <Text>{props.number_of_answer}</Text>       
+                </View> : null }
 
             </View>
         </TouchableOpacity>

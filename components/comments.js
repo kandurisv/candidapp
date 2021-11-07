@@ -6,10 +6,64 @@ import { AntDesign, MaterialCommunityIcons } from '@expo/vector-icons';
 import moment from 'moment';
 import { Avatar } from 'react-native-paper';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
+import axios from 'axios'
+import { URL } from '../Screens/exports';
+
 
 const Comments = (props) => {
 
     const navigation = useNavigation();
+    const [liked ,setLiked] = React.useState(props.upvote ? props.upvote : false)
+    const [numberLikes,setNumberLikes] = React.useState(props.number_of_upvote ? props.number_of_upvote : 0)
+    const like = () => {
+        
+        if (liked && numberLikes > 0) {
+            setLiked(false)
+            setNumberLikes(numberLikes-1)
+        } else {
+            setLiked(true)
+            setNumberLikes(numberLikes+1)
+        }
+
+        const body =
+        {
+            "item_id": props.item_id,
+            "engagement_user_id": props.engagement_user_id,
+            "upvote": !liked,
+            "downvote": null
+        }
+
+        axios({
+            method: 'post',
+            url: URL + '/discussion/engagement',
+            data: body
+          }, {timeout : 5000})
+        .then(res => {
+         //   console.log(res)
+        }).catch((e) => console.log(e))
+    }
+
+    // const commentLike = (id) => {
+        
+
+    //     const body =
+    //     {
+    //         "item_id": props.item_id,
+    //         "engagement_user_id": props.engagement_user_id,
+    //         "upvote": !liked,
+    //         "downvote": null
+    //     }
+
+    //     axios({
+    //         method: 'post',
+    //         url: URL + '/discussion/engagement',
+    //         data: body
+    //       }, {timeout : 5000})
+    //     .then(res => {
+    //      //   console.log(res)
+    //     }).catch((e) => console.log(e))
+    // }
+
 
     const questionData = {
         "parent_id": props.item_id,
@@ -48,7 +102,7 @@ const Comments = (props) => {
                         {props.content}
                     </Text>
                 </View>
-                <View style = {{flexDirection : 'row-reverse' , justifyContent : 'space-between', marginTop : 10,marginHorizontal : 10}}>
+                <View style = {{flexDirection : 'row-reverse' , justifyContent : 'space-between', marginTop : 10,marginHorizontal : 10 , paddingBottom: 5}}>
                     <TouchableOpacity
                       //  onPress = {() => navigation.navigate('Input' , {level: 3 , parent_id: questionData.parent_id , question_id:  questionData.question_id } )}
                       onPress = {()=>onClickReply(questionData)}  
@@ -61,9 +115,11 @@ const Comments = (props) => {
                             <Text style = {{color : "#888"}}>Reply</Text>
                         </View>
                     </TouchableOpacity>
-                    <TouchableOpacity style ={{flexDirection : 'row', marginRight : 20, justifyContent : 'flex-end'}}>
-                        <AntDesign name = "like2" color = {"#888"} size = {15} />
-                        <Text>{props.number_of_upvote}</Text>
+                    <TouchableOpacity 
+                    onPress = {like}
+                    style ={{flexDirection : 'row', marginRight : 20, justifyContent : 'flex-end', alignItems : 'center'}}>
+                        <AntDesign name = "like2" color = {liked ? "green" :"#888"} size = {15} />
+                        <Text style = {{paddingLeft : 5}}>{numberLikes}</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -94,15 +150,17 @@ const Comments = (props) => {
                             <Text style = {{fontStyle : 'italic'}}>{moment(item.created_at,"YYYY-MM-DD hh:mm:ss").add(5,'hours').add(30, 'minutes').fromNow()}</Text>
                         </View>
                     </View>
-                    <View style ={{marginTop : 10, paddingLeft : 10,borderLeftColor : '#EEE', borderLeftWidth : 1, borderStyle : 'dotted' }}>
+                    <View style ={{marginTop : 10, paddingLeft : 10,borderLeftColor : '#EEE', borderLeftWidth : 1, borderStyle : 'dotted' , paddingBottom : 10, }}>
                         <Text style = {{fontWeight : '100'}}>
                             {item.content}
                         </Text>
                     </View>
-                    <TouchableOpacity style ={{flexDirection : 'row', paddingLeft : 10,marginRight : 20, justifyContent : 'flex-start', marginTop : 10,}}>
+                    {/* <TouchableOpacity 
+                    onPress = {()=>commentLike(item.id)}
+                    style ={{flexDirection : 'row', paddingLeft : 10,marginRight : 20, justifyContent : 'flex-start', marginTop : 10,}}>
                             <AntDesign name = "like2" color = {"#888"} size = {15} />
-                            <Text>{item.number_of_upvote}</Text>
-                    </TouchableOpacity>
+                            <Text style = {{marginLeft : 5, }}>{item.number_of_upvote}</Text>
+                    </TouchableOpacity> */}
                 </View>
             ) }
             />

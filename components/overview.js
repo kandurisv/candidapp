@@ -6,6 +6,10 @@ import { background, blueText, contrastLightTheme, contrastTheme, theme } from '
 // import fontawesome from 'react-native-vector-icons/fontawesome';
 
 const Overview = (props) => {
+
+    
+
+
     return(
         <ScrollView 
         showsVerticalScrollIndicator = {false}

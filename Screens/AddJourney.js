@@ -49,6 +49,8 @@ const AddJourney = () => {
     const [inputFocus,setInputFocus] = React.useState(false)
     const [searchText,setSearchText] = React.useState("")
     const [searchTextProduct,setSearchTextProduct] = React.useState("")
+    const [searchArray,setSearchArray] = React.useState([])
+    const [searchLoading,setSearchLoading] = React.useState(false)
 
     const [category,setCategory] = React.useState("")
     const [title,setTitle] = React.useState("")
@@ -87,7 +89,17 @@ const AddJourney = () => {
             }
         getExistingJourneys()
 
-
+        axios.get(URL + "/search/product", {timeout : 3000})
+        .then(res => res.data).then(function(responseData) {
+            console.log("SearchArray",responseData)
+            setSearchLoading(false)
+            setSearchArray(responseData)
+        //    console.log("Reached Here response")
+        })
+        .catch(function(error) {
+                setSearchLoading(false)
+            //    console.log("Reached Here error")
+        });
 
     },[])
 
@@ -111,11 +123,25 @@ const AddJourney = () => {
 
     const search = (text) => {
         setSearchText(text)
+      
 
       }
 
       const searchProduct = (text) => {
         setSearchTextProduct(text)
+        setSearchLoading(true)
+        
+        axios.get(URL + "/search/product", {params:{str2Match : text }} , {timeout : 3000})
+          .then(res => res.data).then(function(responseData) {
+              console.log("SearchArray",responseData)
+              setSearchLoading(false)
+              setSearchArray(responseData)
+          //    console.log("Reached Here response")
+        })
+        .catch(function(error) {
+              setSearchLoading(false)
+          //    console.log("Reached Here error")
+        });
 
       }
     
@@ -325,26 +351,19 @@ const AddJourney = () => {
                             <AntDesign name = "plus" size = {24} color = {theme} />
                         </TouchableOpacity>
                     </View>
-                
-                    {inputFocus ? 
                     <View style = {{ }}>
-                        <TouchableHighlight 
+                    {inputFocus && searchArray.length? 
+                    searchArray.map((item,index)=>{return(
+                        <TouchableOpacity 
+                                    key = {index.toString()}
                                     style = {addPost.productSearchResultsButton}
-                                    onPress = {()=>onClickSearchItemChild('A')} >
-                            <Text style = {addPost.productSearchResultsText}>A</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight 
-                                    style = {addPost.productSearchResultsButton}
-                                    onPress = {()=>onClickSearchItemChild('B')} >
-                            <Text style = {addPost.productSearchResultsText}>B</Text>
-                        </TouchableHighlight>
-                        <TouchableHighlight 
-                                    style = {addPost.productSearchResultsButton}
-                                    onPress = {()=>onClickSearchItemChild('C')} >
-                            <Text style = {addPost.productSearchResultsText}>C</Text>
-                        </TouchableHighlight>
-                    
-                    </View> : null}
+                                    onPress = {()=>onClickSearchItemChild(item.product_name)} >
+                            <Text style = {addPost.productSearchResultsText}>{item.product_name}</Text>
+                        </TouchableOpacity>
+                       )})
+                        
+                    : null}
+                     </View>
                         
                 </View> 
                 <View style = {{justifyContent : 'center', alignItems : 'center'}}> 

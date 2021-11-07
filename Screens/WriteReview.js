@@ -82,6 +82,20 @@ const WriteReview = () => {
             }
         
         fetchUser()
+
+
+        axios.get(URL + "/search/product", {timeout : 3000})
+          .then(res => res.data).then(function(responseData) {
+              console.log("SearchArray",responseData)
+              setSearchLoading(false)
+              setSearchArray(responseData)
+          //    console.log("Reached Here response")
+        })
+        .catch(function(error) {
+              setSearchLoading(false)
+          //    console.log("Reached Here error")
+        });
+     
     },[])
 
     
@@ -288,26 +302,23 @@ const WriteReview = () => {
                         <AntDesign name = "close" size = {24} color = {theme} />
                     </TouchableOpacity>
                 </View> }
-
-                {inputFocus ? 
                 <View>
-                   <TouchableHighlight 
+                {inputFocus && searchArray.length ? 
+                searchArray.map((item,index)=>{
+                    return(
+                        <TouchableHighlight 
+                                key = {index.toString()}
                                 style = {addPost.productSearchResultsButton}
-                                onPress = {()=>onClickSearchItem("A")} >
-                        <Text style = {addPost.productSearchResultsText}>A</Text>
+                                onPress = {()=>onClickSearchItem(item.product_name)} >
+                        <Text style = {addPost.productSearchResultsText}>{item.product_name}</Text>
                     </TouchableHighlight>
-                    <TouchableHighlight 
-                                style = {addPost.productSearchResultsButton}
-                                onPress = {()=>onClickSearchItem("B")} >
-                        <Text style = {addPost.productSearchResultsText}>B</Text>
-                    </TouchableHighlight>
-                    <TouchableHighlight 
-                                style = {addPost.productSearchResultsButton}
-                                onPress = {()=>onClickSearchItem("C")} >
-                        <Text style = {addPost.productSearchResultsText}>C</Text>
-                    </TouchableHighlight>
+                    )
+                })
                    
-                </View> : null}
+                 
+                   
+                : null}
+                </View> 
              
             </View>
             <View style = {addPost.sdIndividualComponent}>

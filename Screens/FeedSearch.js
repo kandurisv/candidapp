@@ -74,7 +74,7 @@ const FeedSearch = () =>{
 
     React.useEffect(() => {
         setLoading(true)
-        console.log("item_id" , 1)
+        console.log(varValue, id)
 
       const getProductData = () => {
         axios.get(URL + "/product/category", {

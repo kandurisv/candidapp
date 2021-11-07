@@ -23,8 +23,8 @@ const Tabs = (props) =>{
             {/* <Tab.Screen name = "Overview" children={()=><Overview product_id={props.product_id}/>} /> */}
             
             <Tab.Screen name = "Reviews" children={()=><Reviews product_id={props.product_id}/>} />
-            <Tab.Screen name = "Description" children={()=><Overview product_id={props.product_id}/>} /> 
-            
+            {/* <Tab.Screen name = "Description" children={()=><Overview product_id={props.product_id}/>} /> 
+             */}
         </Tab.Navigator>
         )
         ;

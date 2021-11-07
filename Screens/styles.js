@@ -1384,12 +1384,13 @@ export const addPost = StyleSheet.create({
     },
     productSearchResultsItem : {},
     productSearchResultsButton : {
-        flex : 1 , 
+       
         borderWidth : 1, 
         borderColor : '#DDD',  
         marginTop : 10, 
         padding : 10, 
-        justifyContent : 'center'
+        justifyContent : 'center',
+        
     },
     productSearchResultsText : {
         fontSize :14,

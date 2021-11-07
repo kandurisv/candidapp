@@ -1,9 +1,10 @@
 import { AntDesign, Fontisto } from '@expo/vector-icons';
 import moment from 'moment';
 import React from 'react';
+import axios, { Axios } from 'axios'
 import { StyleSheet, Text, View , Image , TouchableOpacity, ImageBackground} from 'react-native';
 import { Avatar } from 'react-native-paper';
-import { theme, width } from '../Screens/exports';
+import { theme, URL, width } from '../Screens/exports';
 // import fontawesome from 'react-native-vector-icons/fontawesome';
 
 const TagsView = ({data}) => {
@@ -28,6 +29,71 @@ const TagsView = ({data}) => {
 
 
 const DiscussionHeader = (props) => {
+
+    const [liked ,setLiked] = React.useState(props.upvote ? props.upvote : false)
+    const [disliked ,setDisliked] = React.useState(props.downvote ? props.downvote : false)
+    const [numberLike,setNumberLike] = React.useState(props.number_of_upvote ? props.number_of_upvote : false)
+    const [numberDislike,setNumberDislike] = React.useState(props.number_of_downvote ? props.number_of_downvote : false)
+
+
+    const like = () => {
+        setLiked(!liked)
+        if (liked) {
+            setNumberLike(numberLike-1)
+        } else {
+            setNumberLike(numberLike+1)
+        }
+
+        const body =
+        {
+            "item_id": props.item_id,
+            "engagement_user_id": props.engagement_user_id,
+            "upvote": !liked,
+            "downvote": disliked
+        }
+
+        axios({
+            method: 'post',
+            url: URL + '/discussion/engagement',
+            data: body
+          }, {timeout : 5000})
+        .then(res => {
+         //   console.log(res)
+        }).catch((e) => console.log(e))
+
+        
+    }
+
+    const dislike = () => {
+        setDisliked(!disliked)
+        if (disliked) {
+            setNumberDislike(numberDislike-1)
+        } else {
+            setNumberDislike(numberDislike+1)
+        }
+
+        const body =
+        {
+            "item_id": props.item_id,
+            "engagement_user_id": props.engagement_user_id,
+            "upvote": liked,
+            "downvote": !disliked
+        }
+
+      //  console.log(body)
+
+        axios({
+            method: 'post',
+            url: URL + '/discussion/engagement',
+            data: body
+        }, {timeout : 5000})
+        .then(res => {console.log(res)})
+        .catch((e) => console.log(e))
+
+    }
+
+
+
     return(
         <View  style ={{backgroundColor : 'rgba(255,255,255,0.4)', padding : 10, margin : 10,borderRadius : 20, borderColor : "#EEE" , borderWidth : 1, }}  >
             <View style ={{flexDirection : 'row'}}>
@@ -66,23 +132,29 @@ const DiscussionHeader = (props) => {
             }
              
             </View> 
-            <View style = {{flexDirection : 'row' , marginTop:10, justifyContent : 'space-evenly'}}>
-                <View style ={{flexDirection : 'row', marginRight : 20,}}>
-                    <AntDesign name = "like2" color = {"#888"} size = {20} />
-                    <Text>{props.number_of_upvote}</Text>
+            <View style = {{flexDirection : 'row' , marginTop:10, justifyContent : 'space-between'}}>
+                <View style = {{flexDirection : 'row', marginLeft : 10,}}>
+                    <TouchableOpacity 
+                    disabled = {disliked}
+                    onPress = {like}
+                    style ={{flexDirection : 'row', marginRight : 20,}}>
+                        <AntDesign name = "like2"  color = {disliked ? "#DDD" : liked ? "green" : "#888"} size = {20} />
+                        <Text style = {{marginLeft : 5}}>{numberLike}</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity 
+                    disabled = {liked}
+                    onPress = {dislike}
+                    style ={{flexDirection : 'row', marginRight : 20,}}>
+                        <AntDesign name = "dislike2" color = {liked ? "#DDD" : disliked ? "red" : "#888"} size = {20} />
+                        <Text style = {{marginLeft : 5}}>{numberDislike}</Text>
+                    </TouchableOpacity>
                 </View>
-                <View style ={{flexDirection : 'row', marginRight : 20,}}>
-                    <AntDesign name = "dislike2" color = {"#888"} size = {20} />
-                    <Text>{props.number_of_downvote}</Text>
-                </View>
+                {props.number_of_answer ?
                 <View style ={{flexDirection : 'row', marginRight : 20,}}>
                     <Fontisto name = "comments" color = {"#888"} size = {18} />
-                    <Text> 4</Text>       
-                </View>
-                <View style ={{flexDirection : 'row', marginRight : 20,}}> 
-                    <AntDesign name = "sharealt" color = {"#888"} size = {20} />
-                    <Text> 4 </Text>   
-                </View>
+                    <Text>{props.number_of_answer}</Text>       
+                </View> : null }
+                
             </View>        
         </View>
     )
