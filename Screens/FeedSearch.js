@@ -70,7 +70,7 @@ const FeedSearch = () =>{
     const navigation = useNavigation()
     const varValue = route?.params?.varValue ? route.params.varValue : ""
     const id = route?.params?.id ? route.params.id : ""
-    const name = route?.params?.name ? route.params.name : ""
+    const name = route?.params?.value ? route.params.value : ""
 
     React.useEffect(() => {
         setLoading(true)
@@ -113,7 +113,7 @@ const FeedSearch = () =>{
         <View style = {{backgroundColor : background, flex : 1}}>
             <View style = {header.headerView}>
                 <ModernHeader 
-                title={varValue}
+                title={name}
                 titleStyle = {header.headerText}
                 backgroundColor= {background}
                 leftIconColor = {borderColor}

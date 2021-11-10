@@ -15,7 +15,6 @@ import { AuthContext, background, borderColor, theme, uploadImageOnS3, URL , s3U
 import { editUserDetails, home, user ,header } from '../styles';
 import { AntDesign, Entypo, EvilIcons, MaterialIcons } from '@expo/vector-icons';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-import * as Contacts from 'expo-contacts';
 import * as Notifications from 'expo-notifications'
 import Constants from 'expo-constants';
 
@@ -60,7 +59,7 @@ const NewUserOnboarding = () => {
     };
 
 
-    const [contactsAlreadyExist,setContactsAlreadyExist] = React.useState(true)
+   // const [contactsAlreadyExist,setContactsAlreadyExist] = React.useState(true)
 
     
     const registerForExpoPushNotificationsAsync= async() => {
@@ -163,24 +162,24 @@ const NewUserOnboarding = () => {
        }
        getUserInfo()
        
-       const contactsUpdateReq = () => {
-        axios.get(URL + "/contacts/ifexists", {params:{user_id : user_id }} , {timeout:5000})
-        .then(res => res.data).then(function(responseData) {
-        //    console.log("USER INFO",responseData)
-           if(!responseData.length) {
-             console.log("Data doesnt exist . New Update. Hence New API")
-             setContactsAlreadyExist(false)
-           }
-           else {
-            if(moment(responseData[0].created_at,"YYYY-MM-DD hh:mm:ss").add(1,'months').isBefore(moment())) {
-              console.log("data exists but More than a month difference , hence renew API")
-            }
-           }
-        })
-        .catch(function(error) {
-            //
-        });
-       }
+      //  const contactsUpdateReq = () => {
+      //   axios.get(URL + "/contacts/ifexists", {params:{user_id : user_id }} , {timeout:5000})
+      //   .then(res => res.data).then(function(responseData) {
+      //   //    console.log("USER INFO",responseData)
+      //      if(!responseData.length) {
+      //        console.log("Data doesn't exist . New Update. Hence New API")
+      //        setContactsAlreadyExist(false)
+      //      }
+      //      else {
+      //       if(moment(responseData[0].created_at,"YYYY-MM-DD hh:mm:ss").add(1,'months').isBefore(moment())) {
+      //         console.log("data exists but More than a month difference , hence renew API")
+      //       }
+      //      }
+      //   })
+      //   .catch(function(error) {
+      //       //
+      //   });
+      //  }
 
 
 

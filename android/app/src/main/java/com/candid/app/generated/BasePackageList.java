@@ -11,7 +11,6 @@ public class BasePackageList {
         new expo.modules.analytics.segment.SegmentPackage(),
         new expo.modules.application.ApplicationPackage(),
         new expo.modules.constants.ConstantsPackage(),
-        new expo.modules.contacts.ContactsPackage(),
         new expo.modules.device.DevicePackage(),
         new expo.modules.errorrecovery.ErrorRecoveryPackage(),
         new expo.modules.filesystem.FileSystemPackage(),

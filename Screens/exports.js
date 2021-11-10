@@ -28,10 +28,10 @@ export const s3bucket = new S3({
   signatureVersion: 'v4',
 });
 
-export const URL = "https://5k8l5ao5b5.execute-api.ap-south-1.amazonaws.com/prod2";
-export const schema = 'https://www.getcandid.app/'
-// export const URL = "https://5k8l5ao5b5.execute-api.ap-south-1.amazonaws.com/dev" ;
-// export const schema = 'exp://192.168.43.31:19000/'
+// export const URL = "https://5k8l5ao5b5.execute-api.ap-south-1.amazonaws.com/prod2";
+// export const schema = 'https://www.getcandid.app/'
+export const URL = "https://5k8l5ao5b5.execute-api.ap-south-1.amazonaws.com/dev" ;
+export const schema = 'exp://192.168.43.31:19000/'
      
 
 
